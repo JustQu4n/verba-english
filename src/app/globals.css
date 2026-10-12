@@ -1,0 +1,194 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* "Ruled notebook" palette: blue-white paper, light blue rules, blue ink, red margin and pen. */
+:root {
+  --radius: 0.625rem;
+  --background: #f6f9fd;
+  --foreground: #14213d;
+  --card: #ffffff;
+  --card-foreground: #14213d;
+  --popover: #ffffff;
+  --popover-foreground: #14213d;
+  --primary: #243c9e;
+  --primary-foreground: #ffffff;
+  --secondary: #e8effa;
+  --secondary-foreground: #14213d;
+  --muted: #eaf0f9;
+  --muted-foreground: #55617a;
+  --accent: #e8effa;
+  --accent-foreground: #14213d;
+  --destructive: #c8283f;
+  --border: #d3e0f2;
+  --input: #bccde6;
+  --ring: #5b7bd6;
+
+  --rule: #cfe0f5;
+  --margin: #e5586b;
+  --pen: #d3263f;
+  --navy: #0f1b3f;
+}
+
+.dark {
+  --background: #0f1b3f;
+  --foreground: #eef3fb;
+  --card: #16244d;
+  --card-foreground: #eef3fb;
+  --popover: #16244d;
+  --popover-foreground: #eef3fb;
+  --primary: #9db4ff;
+  --primary-foreground: #0f1b3f;
+  --secondary: #1d2d5e;
+  --secondary-foreground: #eef3fb;
+  --muted: #1d2d5e;
+  --muted-foreground: #a9b6d3;
+  --accent: #1d2d5e;
+  --accent-foreground: #eef3fb;
+  --destructive: #ff8095;
+  --border: #2a3b70;
+  --input: #34467f;
+  --ring: #7f9be6;
+}
+
+@theme inline {
+  --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif;
+  --font-hand: "Caveat Variable", "Segoe Print", "Bradley Hand", cursive;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-rule: var(--rule);
+  --color-margin: var(--margin);
+  --color-pen: var(--pen);
+  --color-navy: var(--navy);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  :focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/* ---------- Notebook page ---------- */
+.notebook {
+  --line: 3.5rem;
+  position: relative;
+  background-color: #fff;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--line) - 1px),
+    var(--rule) calc(var(--line) - 1px),
+    var(--rule) var(--line)
+  );
+}
+.notebook::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 2.5rem;
+  width: 2px;
+  background: var(--margin);
+  opacity: 0.75;
+}
+.notebook-line {
+  font-family: var(--font-hand);
+  font-size: 1.6rem;
+  line-height: var(--line);
+  min-height: var(--line);
+  color: var(--primary);
+}
+@media (min-width: 640px) {
+  .notebook-line {
+    font-size: 1.85rem;
+  }
+}
+.notebook-label {
+  line-height: var(--line);
+  min-height: var(--line);
+}
+
+/* ---------- Red grading pen: the page's only motion ---------- */
+.pen-strike {
+  background: linear-gradient(var(--pen), var(--pen)) no-repeat 0 58% / 0% 3px;
+  animation: pen-strike 0.55s ease-out forwards;
+  animation-delay: var(--d, 1s);
+}
+.pen-fix,
+.pen-note {
+  opacity: 0;
+  animation: pen-appear 0.4s ease-out forwards;
+  animation-delay: calc(var(--d, 1s) + 0.45s);
+}
+.pen-fix {
+  position: absolute;
+  inset-inline-start: 0;
+  top: -1.15rem;
+  font-size: 1.45rem;
+  line-height: 1;
+  color: var(--pen);
+  transform: rotate(-3deg);
+  white-space: nowrap;
+}
+.pen-note {
+  color: var(--pen);
+}
+@keyframes pen-strike {
+  to {
+    background-size: 100% 3px;
+  }
+}
+@keyframes pen-appear {
+  from {
+    opacity: 0;
+    transform: translateY(4px) rotate(-3deg);
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .pen-strike {
+    animation: none;
+    background-size: 100% 3px;
+  }
+  .pen-fix,
+  .pen-note {
+    animation: none;
+    opacity: 1;
+  }
+}

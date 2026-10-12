@@ -1,0 +1,91 @@
+{
+  "Meta": {
+    "title": "Verba — Practice writing in English",
+    "description": "Pick a prompt, write in English and get your text back corrected, with the reason for every mistake."
+  },
+  "Common": {
+    "skipToContent": "Skip to content",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "startWithGoogle": "Start with Google",
+    "language": "Language"
+  },
+  "Header": {
+    "navLabel": "Main navigation",
+    "howItWorks": "How it works",
+    "features": "Features"
+  },
+  "Hero": {
+    "title": "Practice writing English, corrected sentence by sentence",
+    "subtitle": "Pick a prompt, write a few paragraphs and get your text back corrected, with the reason for each mistake so you don't repeat it.",
+    "seeHow": "See how it works",
+    "note": "Sign in once with your Google account. No password to remember."
+  },
+  "Demo": {
+    "label": "An example of a corrected text",
+    "prompt": "Prompt: Tell us about your weekend",
+    "fixedTo": "corrected to",
+    "comment": "Almost there! Watch your past simple."
+  },
+  "HowItWorks": {
+    "title": "From prompt to corrected text in three steps",
+    "step1Title": "Pick a prompt",
+    "step1Body": "Choose a topic and length that suit your level, from a short email to a full paragraph.",
+    "step2Title": "Write in English",
+    "step2Body": "Write freely, it doesn't have to be perfect. Your text is saved so you can continue later.",
+    "step3Title": "Read the corrections",
+    "step3Body": "See each mistake, the reason and the fix, then rewrite a better version."
+  },
+  "Features": {
+    "title": "Corrections that help you understand, not just fix",
+    "grammarTitle": "Grammar and word choice",
+    "grammarBody": "Every mistake is marked, with why it is wrong and how to fix it.",
+    "naturalTitle": "More natural phrasing",
+    "naturalBody": "Correct but stiff? See other ways native speakers say the same thing.",
+    "levelTitle": "Prompts for your level",
+    "levelBody": "From a short email to arguing a point in a paragraph, getting harder as you improve.",
+    "memoryTitle": "Remembers your habits",
+    "memoryBody": "Repeated mistakes are tracked so you know what to practise next."
+  },
+  "Cta": {
+    "title": "Write your first sentence today",
+    "body": "Signing in takes a few seconds. We use your Google name, email and profile photo to create your account."
+  },
+  "Footer": {
+    "tagline": "Words That Work."
+  },
+  "UserMenu": {
+    "account": "{name}'s account",
+    "dashboard": "Go to dashboard"
+  },
+  "Profile": {
+    "anonymous": "User"
+  },
+  "Login": {
+    "backHome": "← Back to home",
+    "welcome": "Welcome",
+    "intro": "Sign in to save your writing and track your progress.",
+    "continueWithGoogle": "Continue with Google",
+    "redirecting": "Redirecting to Google…",
+    "googleNote": "We only use your Google name, email and profile photo to create your account.",
+    "showEmail": "Use email and password",
+    "hideEmail": "Hide email sign-in",
+    "email": "Email",
+    "password": "Password",
+    "passwordPlaceholder": "Password (at least 6 characters)",
+    "createAccount": "Create account",
+    "checkEmail": "Check your email to confirm your account.",
+    "brandLine": "One sentence a day and your writing will visibly improve.",
+    "errors": {
+      "oauth_failed": "Google sign-in was cancelled or failed. Please try again.",
+      "missing_code": "The sign-in link is invalid. Please try again.",
+      "auth_failed": "We couldn't finish signing you in. Please try again."
+    }
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "loading": "Loading...",
+    "noName": "No name set",
+    "joined": "{name} · joined {date}"
+  }
+}

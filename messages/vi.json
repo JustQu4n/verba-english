@@ -1,0 +1,91 @@
+{
+  "Meta": {
+    "title": "Verba — Luyện viết tiếng Anh",
+    "description": "Chọn đề bài, viết bằng tiếng Anh và nhận lại bài đã được chữa kèm lý do cho từng lỗi."
+  },
+  "Common": {
+    "skipToContent": "Bỏ qua điều hướng",
+    "signIn": "Đăng nhập",
+    "signOut": "Đăng xuất",
+    "startWithGoogle": "Bắt đầu với Google",
+    "language": "Ngôn ngữ"
+  },
+  "Header": {
+    "navLabel": "Điều hướng chính",
+    "howItWorks": "Cách hoạt động",
+    "features": "Tính năng"
+  },
+  "Hero": {
+    "title": "Luyện viết tiếng Anh, được chữa bài từng câu",
+    "subtitle": "Chọn một đề, viết vài đoạn và nhận lại bài đã được chữa, kèm lý do cho từng lỗi để lần sau bạn không mắc lại.",
+    "seeHow": "Xem cách hoạt động",
+    "note": "Đăng nhập một lần bằng tài khoản Google, không cần nhớ mật khẩu."
+  },
+  "Demo": {
+    "label": "Ví dụ một bài viết được chữa",
+    "prompt": "Đề: Kể về cuối tuần của bạn",
+    "fixedTo": "sửa thành",
+    "comment": "Gần đúng rồi! Chú ý thì quá khứ đơn nhé."
+  },
+  "HowItWorks": {
+    "title": "Từ đề bài đến bài đã chữa, trong ba bước",
+    "step1Title": "Chọn một đề bài",
+    "step1Body": "Chọn chủ đề và độ dài hợp với trình độ của bạn, từ một email ngắn đến một đoạn văn.",
+    "step2Title": "Viết bằng tiếng Anh",
+    "step2Body": "Viết thoải mái, không cần hoàn hảo. Bài được lưu lại để bạn viết tiếp lúc khác.",
+    "step3Title": "Đọc bài đã chữa",
+    "step3Body": "Xem từng lỗi, lý do và cách sửa, rồi viết lại một bản tốt hơn."
+  },
+  "Features": {
+    "title": "Chữa bài để bạn hiểu, không chỉ để sửa",
+    "grammarTitle": "Chữa ngữ pháp và dùng từ",
+    "grammarBody": "Mỗi lỗi được đánh dấu, kèm lý do vì sao sai và cách sửa đúng.",
+    "naturalTitle": "Gợi ý cách viết tự nhiên hơn",
+    "naturalBody": "Câu đúng nhưng còn gượng? Xem thêm những cách diễn đạt người bản xứ hay dùng.",
+    "levelTitle": "Đề bài theo trình độ",
+    "levelBody": "Từ viết một email ngắn đến lập luận trong một đoạn văn, tăng dần độ khó.",
+    "memoryTitle": "Nhớ lỗi bạn hay mắc",
+    "memoryBody": "Những lỗi lặp lại được ghi nhớ, để bạn biết cần luyện điểm nào tiếp theo."
+  },
+  "Cta": {
+    "title": "Viết câu đầu tiên của bạn hôm nay",
+    "body": "Chỉ mất vài giây để đăng nhập. Chúng tôi dùng tên, email và ảnh đại diện Google của bạn để tạo tài khoản."
+  },
+  "Footer": {
+    "tagline": "Words That Work."
+  },
+  "UserMenu": {
+    "account": "Tài khoản của {name}",
+    "dashboard": "Vào dashboard"
+  },
+  "Profile": {
+    "anonymous": "Người dùng"
+  },
+  "Login": {
+    "backHome": "← Về trang chủ",
+    "welcome": "Chào mừng bạn",
+    "intro": "Đăng nhập để lưu bài viết và theo dõi tiến bộ của bạn.",
+    "continueWithGoogle": "Tiếp tục với Google",
+    "redirecting": "Đang chuyển tới Google…",
+    "googleNote": "Chúng tôi chỉ dùng tên, email và ảnh đại diện Google của bạn để tạo tài khoản.",
+    "showEmail": "Dùng email và mật khẩu",
+    "hideEmail": "Ẩn đăng nhập bằng email",
+    "email": "Email",
+    "password": "Mật khẩu",
+    "passwordPlaceholder": "Mật khẩu (tối thiểu 6 ký tự)",
+    "createAccount": "Tạo tài khoản",
+    "checkEmail": "Kiểm tra email để xác nhận tài khoản.",
+    "brandLine": "Mỗi ngày một câu, bài viết của bạn sẽ tốt lên thấy rõ.",
+    "errors": {
+      "oauth_failed": "Đăng nhập Google bị hủy hoặc không thành công. Bạn thử lại nhé.",
+      "missing_code": "Liên kết đăng nhập không hợp lệ. Vui lòng thử lại.",
+      "auth_failed": "Không thể hoàn tất đăng nhập. Vui lòng thử lại."
+    }
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "loading": "Đang tải...",
+    "noName": "Chưa đặt tên",
+    "joined": "{name} · tham gia {date}"
+  }
+}
