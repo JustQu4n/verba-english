@@ -63,5 +63,6 @@ Paste `supabase/migrations/0002_profile_from_oauth.sql` into the **SQL Editor** 
 | `/login?error=oauth_failed` | Google returned an error or you cancelled; also check the Supabase logs (**Logs → Auth**). |
 | `/login?error=auth_failed` | Code exchange failed: the PKCE cookie was lost (domain changed between start and return, e.g. `127.0.0.1` ↔ `localhost`) or the code expired. Always use the same address. |
 | After sign-in you land on the home page/Site URL instead of `/dashboard` | `…/auth/callback` is not in **Redirect URLs** (step 4). |
+| In production Google returns to `http://localhost:3000/auth/callback?code=...` | Supabase fell back to a **Site URL** of `localhost` because the production callback is not in **Redirect URLs**. Set **Site URL** to your production domain and add `https://<your-domain>/auth/callback` (step 4). The app now builds the callback from the request host, so `NEXT_PUBLIC_SITE_URL` no longer decides it; set it anyway to the production domain (it is read at build time, so redeploy after changing it). |
 | `Unsupported provider: provider is not enabled` (log) | Google was not enabled in step 3. |
 | Google sign-in with the same email as a password account | Supabase automatically links identities with the same verified email into one user. |

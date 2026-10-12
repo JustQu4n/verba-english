@@ -32,7 +32,7 @@ This repository is also a reference for a **spec-driven, test-driven, clean-arch
 | Area | What exists today |
 | --- | --- |
 | Landing page | Hero with an animated "teacher's red pen" correction demo, how it works, features, call to action, footer |
-| Sign-in | Google (OAuth, PKCE) and email + password, callback route, sign-out, session refresh |
+| Sign-in and sign-up | Google (OAuth, PKCE); email + password with a sign-in/sign-up tab form, per-field translated errors, password rules, show/hide password, email confirmation with resend; callback route, sign-out, session refresh |
 | Account menu | Avatar, name and email in the navbar, menu with "Go to dashboard" and "Sign out" |
 | Dashboard | Protected page showing the signed-in user's profile |
 | Languages | Vietnamese (`/`) and English (`/en`), language switcher, choice remembered in a cookie |
@@ -85,7 +85,7 @@ Open the Supabase **SQL Editor** and run, in order:
 
 ### 4. (Optional) Turn on Google sign-in
 
-Follow [`docs/google-login-setup.md`](docs/google-login-setup.md). It covers the Google Cloud OAuth client, the callback URL, the Supabase provider settings and the redirect URLs for local and production.
+Follow [`docs/google-login-setup.md`](docs/google-login-setup.md) (email and password setup: [`docs/email-auth-setup.md`](docs/email-auth-setup.md)). It covers the Google Cloud OAuth client, the callback URL, the Supabase provider settings and the redirect URLs for local and production.
 
 ### 5. Run
 
@@ -223,7 +223,11 @@ flowchart LR
 ## Authentication
 
 - **Google:** `loginWithGoogle` (Server Action) asks the use case for the provider URL (`signInWithOAuth`, PKCE) and redirects. Google returns to Supabase, which returns to `/auth/callback?code=...`. The callback exchanges the code for a session and redirects to `next` (default `/dashboard`).
-- **Email and password:** `signIn` and `signUp` use cases. If email confirmation is on, the user is told to check their inbox.
+- **Email and password:** `signIn`, `signUp` and `resendConfirmation` use cases (spec 008, setup in [`docs/email-auth-setup.md`](docs/email-auth-setup.md)).
+  - Sign-up asks for full name, email, password and confirmation. Passwords must be 8-72 characters with a letter and a digit; sign-in only requires a non-empty password so older accounts keep working.
+  - Email is trimmed and lower-cased. The full name is saved to `profiles.full_name`.
+  - Failures are stable codes (`invalid_credentials`, `email_taken`, ...) that the form translates; raw Supabase messages are never shown, and a sign-up with an existing email looks like a new one when confirmation is on (no email enumeration).
+  - With email confirmation on, the user sees a "Check your email" screen with a resend button.
 - **Sign-out:** `POST /auth/signout`, then redirect to the login page.
 - **Session refresh:** the proxy calls `getUser()` on every request, so tokens stay fresh. Server code always uses `getUser()`, never `getSession()`.
 - **Open-redirect protection:** every `next` or redirect parameter goes through `safeNextPath()` (only same-site paths are accepted). The app base URL comes from `getSiteUrl()`, never a hard-coded host.
@@ -296,6 +300,7 @@ The spec is the source of truth and tests are the evidence.
 | 005 landing-page | Landing page and login screen |
 | 006 navbar-profile | Name, email, avatar and account menu in the navbar |
 | 007 i18n | Vietnamese and English |
+| 008 email-auth | Sign-up and sign-in with email and password |
 
 ## Working with Claude Code
 

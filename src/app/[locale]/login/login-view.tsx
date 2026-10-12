@@ -2,16 +2,16 @@
 
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useActionState, useState } from "react";
+import { Suspense, useActionState } from "react";
 
 import { GoogleIcon } from "@/components/landing/google-icon";
 import { LanguageSwitcher } from "@/components/landing/language-switcher";
 import { Logo } from "@/components/landing/logo";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Link } from "@/i18n/navigation";
 
-import { login, loginWithGoogle, signup } from "./actions";
+import { loginWithGoogle } from "./actions";
+import { EmailAuthForms } from "./email-auth-forms";
 
 const CALLBACK_ERRORS = ["oauth_failed", "missing_code", "auth_failed"] as const;
 
@@ -47,18 +47,13 @@ function BrandPanel() {
 
 function LoginPanel() {
   const t = useTranslations("Login");
-  const tCommon = useTranslations("Common");
-  const [loginState, loginAction, loginPending] = useActionState(login, undefined);
-  const [signupState, signupAction, signupPending] = useActionState(signup, undefined);
   const [googleState, googleAction, googlePending] = useActionState(loginWithGoogle, undefined);
-  const [emailOpen, setEmailOpen] = useState(false);
-  const errorCode = useSearchParams().get("error");
+  const searchParams = useSearchParams();
+  const errorCode = searchParams.get("error");
   const callbackError = CALLBACK_ERRORS.find((c) => c === errorCode);
+  const initialMode = searchParams.get("mode") === "signup" ? "signup" : "signin";
 
-  const emailState = signupState ?? loginState;
   const googleError = googleState?.error ?? (callbackError ? t(`errors.${callbackError}`) : undefined);
-  const showEmail = emailOpen || Boolean(emailState?.error || emailState?.message);
-  const busy = loginPending || signupPending || googlePending;
 
   return (
     <div className="mx-auto flex w-full max-w-sm flex-col px-5 py-10 sm:px-0">
@@ -84,7 +79,7 @@ function LoginPanel() {
           type="submit"
           variant="outline"
           size="lg"
-          disabled={busy}
+          disabled={googlePending}
           className="h-12 w-full gap-3 border-input bg-white text-base font-semibold shadow-sm hover:bg-secondary"
         >
           <GoogleIcon className="size-5" />
@@ -95,46 +90,13 @@ function LoginPanel() {
         {t("googleNote")}
       </p>
 
-      <div className="mt-10 border-t border-rule pt-6">
-        <button
-          type="button"
-          onClick={() => setEmailOpen((v) => !v)}
-          aria-expanded={showEmail}
-          aria-controls="email-form"
-          className="rounded-md text-sm font-medium text-primary underline-offset-4 hover:underline"
-        >
-          {showEmail ? t("hideEmail") : t("showEmail")}
-        </button>
-
-        {showEmail && (
-          <form id="email-form" className="mt-4 flex flex-col gap-3">
-            <label className="sr-only" htmlFor="email">{t("email")}</label>
-            <Input id="email" name="email" type="email" placeholder={t("email")} autoComplete="email" required />
-            <label className="sr-only" htmlFor="password">{t("password")}</label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              placeholder={t("passwordPlaceholder")}
-              autoComplete="current-password"
-              minLength={6}
-              required
-            />
-            <Button formAction={loginAction} disabled={busy}>
-              {tCommon("signIn")}
-            </Button>
-            <Button variant="outline" formAction={signupAction} disabled={busy}>
-              {t("createAccount")}
-            </Button>
-            {emailState?.error && (
-              <p role="alert" className="text-sm text-destructive">
-                {emailState.error}
-              </p>
-            )}
-            {emailState?.message && <p className="text-sm text-muted-foreground">{emailState.message}</p>}
-          </form>
-        )}
+      <div className="my-8 flex items-center gap-4 text-sm text-muted-foreground" role="separator">
+        <span className="h-px flex-1 bg-rule" />
+        {t("orUseEmail")}
+        <span className="h-px flex-1 bg-rule" />
       </div>
+
+      <EmailAuthForms initialMode={initialMode} />
     </div>
   );
 }
