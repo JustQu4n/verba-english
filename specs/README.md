@@ -13,5 +13,6 @@ Mẫu ở `_templates/`. Nguyên tắc ở [constitution.md](./constitution.md).
 | [005-landing-page](./005-landing-page/spec.md) | Trang chủ giới thiệu, giao diện đăng nhập Google | `LND` |
 | [006-navbar-profile](./006-navbar-profile/spec.md) | Tên, email, ảnh đại diện và menu tài khoản trên thanh điều hướng | `NAV` |
 | [007-i18n](./007-i18n/spec.md) | Đa ngôn ngữ Tiếng Việt / English | `I18N` |
+| [008-email-auth](./008-email-auth/spec.md) | Đăng ký và đăng nhập bằng email + mật khẩu | `EML` |
 
 Kiểm tra mọi AC đều có test: `npm run specs:check`.

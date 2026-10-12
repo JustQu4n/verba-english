@@ -35,6 +35,7 @@ Người dùng muốn vào ứng dụng nhanh bằng tài khoản Google, không
 - **GGL-AC-10** `manual` Luồng đầu-cuối: (a) bấm nút Google → chọn tài khoản → vào `/dashboard`; (b) đăng xuất → về `/login`, mở `/dashboard` bị chuyển về `/login`; (c) đăng nhập lại, tắt và mở lại trình duyệt, `/dashboard` vẫn vào được; (d) hủy ở màn hình Google → thấy thông báo ở `/login`. *Kiểm tra:* làm tay theo `docs/google-login-setup.md` mục 7.
 - **GGL-AC-11** `manual` Trang đăng nhập có nút "Tiếp tục với Google" và hiển thị thông báo tiếng Việt cho từng mã lỗi ở GGL-AC-07. *Kiểm tra:* mở `/login?error=auth_failed`.
 - **GGL-AC-12** Given biến cấu hình địa chỉ gốc (có thể thừa dấu `/` cuối), when tạo địa chỉ quay lại, then dùng đúng giá trị đó đã chuẩn hóa; chưa cấu hình thì dùng `http://localhost:3000`.
+- **GGL-AC-13** Given một yêu cầu có header `host` (và có thể `x-forwarded-host`, `x-forwarded-proto` khi chạy sau proxy), when tạo địa chỉ quay lại, then dùng địa chỉ gốc của chính yêu cầu đó (ưu tiên header chuyển tiếp; giao thức mặc định `http` cho `localhost`/`127.0.0.1`, `https` cho tên miền khác), để môi trường production không bao giờ quay về `localhost` dù biến cấu hình bị thiếu hoặc sai; header thiếu hoặc không hợp lệ (chứa ký tự lạ) thì dùng giá trị cấu hình như GGL-AC-12.
 
 ## 6. Ràng buộc phi chức năng & bảo mật
 - Chống open redirect (FR-2, GGL-AC-06).

@@ -18,6 +18,8 @@ export default defineConfig({
         "src/lib/site-url.ts",
         "src/lib/landing-cta.ts",
         "src/lib/profile-display.ts",
+        "src/lib/form-errors.ts",
+        "src/lib/auth-form.ts",
         "src/i18n/locale-path.ts",
         "src/app/auth/callback/route.ts",
         "src/infrastructure/supabase/proxy.ts",
