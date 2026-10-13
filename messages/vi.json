@@ -223,7 +223,31 @@
       "referenceHelp": "Miễn phí. Đối chiếu với đáp án có sẵn và gợi ý cấu trúc ngữ pháp."
     },
     "referenceMiss": "Đây là đáp án chuẩn gần nhất với câu của bạn. Hãy sửa lại và gửi tiếp, hoặc chọn chấm bằng AI để kiểm tra cách diễn đạt khác.",
-    "referenceNone": "Câu này chưa có đáp án chuẩn. Hãy chọn chấm bằng AI để kiểm tra câu trả lời."
+    "referenceNone": "Câu này chưa có đáp án chuẩn. Hãy chọn chấm bằng AI để kiểm tra câu trả lời.",
+    "history": {
+      "link": "Bài đã làm",
+      "back": "Sentence",
+      "title": "Bài đã làm",
+      "intro": "Xem lại các đáp án đúng bạn đã viết và nhận xét đã nhận.",
+      "count": "{count} đáp án đúng",
+      "empty": "Chưa có đáp án đúng nào",
+      "emptyBody": "Làm đúng một câu ở phần luyện Sentence, đáp án sẽ hiện ở đây.",
+      "startPractice": "Bắt đầu luyện",
+      "yourAnswer": "Bài của bạn",
+      "suggestion": "Gợi ý",
+      "correct": "Chính xác",
+      "incorrect": "Chưa đúng",
+      "mode": {
+        "ai": "Nhận xét của AI",
+        "reference": "Đáp án chuẩn"
+      },
+      "removed": "Câu này không còn trong danh sách.",
+      "pagination": "Phân trang",
+      "previous": "Trước",
+      "next": "Sau",
+      "pageOf": "Trang {page}/{pageCount}",
+      "tries": "Đã gửi {count} lần"
+    }
   },
   "Admin": {
     "badge": "Admin",
