@@ -9,18 +9,25 @@ import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { canSubmitAnswer, MAX_ANSWER_LENGTH } from "@/modules/writing/domain/sentence-answer";
 import type { Category, Level, SentencePrompt } from "@/modules/writing/domain/sentence-catalog";
+import type { SentenceProgress } from "@/modules/writing/domain/sentence-progress";
+
+import { ProgressBar } from "./progress-bar";
+import { isGradedAnswer, type FeedbackState } from "./feedback-state";
+import { SentenceFeedback } from "./sentence-feedback";
 
 interface SentencePracticeProps {
   prompt: SentencePrompt;
   level: Level;
   category: Category;
-  /** 1-based position of the sentence in this session. */
-  position: number;
+  progress: SentenceProgress | null;
   answer: string;
   onAnswerChange: (answer: string) => void;
   hintOpen: boolean;
   onToggleHint: () => void;
-  submitted: boolean;
+  feedback: FeedbackState;
+  /** Graded correct and unchanged since: the learner may continue. */
+  passed: boolean;
+  credits: number | null;
   onSubmit: () => void;
   onSkip: () => void;
   onNext: () => void;
@@ -34,12 +41,14 @@ export function SentencePractice({
   prompt,
   level,
   category,
-  position,
+  progress,
   answer,
   onAnswerChange,
   hintOpen,
   onToggleHint,
-  submitted,
+  feedback,
+  passed,
+  credits,
   onSubmit,
   onSkip,
   onNext,
@@ -51,11 +60,18 @@ export function SentencePractice({
   const [focused, setFocused] = useState(false);
   const length = answer.trim().length;
   const tooLong = length > MAX_ANSWER_LENGTH;
-  const canSubmit = canSubmitAnswer(answer) && !submitted && !loading;
+  const grading = feedback.status === "grading";
+  const outOfCredits = credits !== null && credits < 1;
+  // The same graded answer cannot be sent twice: it would only spend credit on the same verdict.
+  const canSubmit = canSubmitAnswer(answer) && !grading && !loading && !passed && !isGradedAnswer(feedback, answer) && !outOfCredits;
 
   function onKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
-    if (event.key === "Enter" && (event.metaKey || event.ctrlKey) && canSubmit) {
-      event.preventDefault();
+    // Enter sends (Shift+Enter keeps a new line); Enter during IME composition only confirms the text.
+    if (event.key !== "Enter" || event.shiftKey || event.nativeEvent.isComposing) return;
+    event.preventDefault();
+    if (passed) {
+      if (!loading) onNext();
+    } else if (canSubmit) {
       onSubmit();
     }
   }
@@ -68,8 +84,8 @@ export function SentencePractice({
           <span className="mx-2 text-muted-foreground" aria-hidden="true">/</span>
           <span className="shrink-0">{t(`levels.${level}.name`)}</span>
         </p>
-        <p className="shrink-0 font-medium text-muted-foreground">{t("sentenceNumber", { n: position })}</p>
       </div>
+      {progress && <ProgressBar progress={progress} />}
 
       <p className="mt-10 text-sm text-muted-foreground">{t("translateLabel")}</p>
       <h1 lang="vi" className="mt-2 text-3xl/tight font-semibold tracking-tight text-balance sm:text-4xl/tight">
@@ -106,6 +122,7 @@ export function SentencePractice({
             placeholder={t("placeholder")}
             aria-describedby="answer-count"
             aria-invalid={tooLong}
+            readOnly={passed}
             spellCheck={false}
             autoCapitalize="sentences"
             className="block w-full resize-none rounded-xl bg-transparent px-4 pt-4 text-lg/relaxed outline-none placeholder:text-muted-foreground"
@@ -117,6 +134,7 @@ export function SentencePractice({
             {t("count", { count: length, max: MAX_ANSWER_LENGTH })}
           </p>
         </div>
+        <p className="mt-2 text-xs text-muted-foreground">{t(passed ? "enterNext" : "enterHint")}</p>
       </div>
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
@@ -125,7 +143,7 @@ export function SentencePractice({
           {t("quit")}
         </Button>
         <div className="flex flex-wrap items-center gap-2">
-          <Button variant="outline" onClick={onSkip} disabled={loading}>
+          <Button variant="outline" onClick={onSkip} disabled={loading || grading}>
             <SkipForward aria-hidden="true" />
             {t("skip")}
           </Button>
@@ -135,10 +153,16 @@ export function SentencePractice({
           </Button>
           <Button onClick={onSubmit} disabled={!canSubmit}>
             <Send aria-hidden="true" />
-            {t("submit")}
+            {grading ? t("grading") : t("submit")}
           </Button>
         </div>
       </div>
+
+      {outOfCredits && (
+        <p role="status" className="mt-4 rounded-lg border-2 border-foreground px-4 py-3 text-sm font-medium">
+          {t("noCredits")}
+        </p>
+      )}
 
       {error && (
         <p role="alert" className="mt-4 text-sm font-medium text-destructive">
@@ -151,19 +175,12 @@ export function SentencePractice({
         </p>
       )}
 
-      <section aria-labelledby="feedback-heading" className="mt-10 rounded-2xl border p-6">
-        <h2 id="feedback-heading" className="text-base font-semibold tracking-tight">
-          {t("feedbackTitle")}
-        </h2>
-        <p className="mt-3 rounded-lg bg-muted px-4 py-3 text-sm/relaxed" aria-live="polite">
-          {submitted ? t("feedbackUnavailable") : t("feedbackIdle")}
-        </p>
-        {submitted && (
-          <Button className="mt-4" onClick={onNext} disabled={loading}>
-            {t("next")}
-          </Button>
-        )}
-      </section>
+      <SentenceFeedback
+        feedback={feedback}
+        passed={passed}
+        onNext={onNext}
+        loading={loading}
+      />
     </div>
   );
 }

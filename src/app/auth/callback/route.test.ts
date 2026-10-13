@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { UnauthorizedError } from "@/core/errors";
 import { getContainer } from "@/server/container";
-import { fakeAuth, fakePromptRepo } from "@/test/fakes";
+import { fakeAuth, fakeCredits, fakePoints, fakeProgress, fakePromptRepo } from "@/test/fakes";
 
 import { GET } from "./route";
 
@@ -18,7 +18,12 @@ beforeEach(() => {
     profiles: { findById: vi.fn() },
     roles: { isAdmin: vi.fn() },
     prompts: fakePromptRepo(),
-    sentencePrompts: { list: vi.fn() },
+    sentencePrompts: { list: vi.fn(), get: vi.fn() },
+    credits: fakeCredits(),
+    grader: { grade: vi.fn() },
+    gradeCache: { get: vi.fn(), set: vi.fn() },
+    sentenceProgress: fakeProgress(),
+    points: fakePoints(),
   });
 });
 

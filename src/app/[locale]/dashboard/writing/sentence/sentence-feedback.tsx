@@ -1,0 +1,104 @@
+"use client";
+
+import { Check, Loader2, X } from "lucide-react";
+import { useTranslations } from "next-intl";
+
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+import type { FeedbackState } from "./feedback-state";
+
+interface SentenceFeedbackProps {
+  feedback: FeedbackState;
+  /** The answer was graded correct and is unchanged: the learner may continue. */
+  passed: boolean;
+  onNext: () => void;
+  loading: boolean;
+}
+
+/** AI feedback for the last submitted answer. Wrong answers keep the learner here until they are right. */
+export function SentenceFeedback({ feedback, passed, onNext, loading }: SentenceFeedbackProps) {
+  const t = useTranslations("Sentence");
+
+  return (
+    <section aria-labelledby="feedback-heading" className="mt-10 rounded-2xl border p-6">
+      <h2 id="feedback-heading" className="text-base font-semibold tracking-tight">
+        {t("feedbackTitle")}
+      </h2>
+
+      <div aria-live="polite" aria-busy={feedback.status === "grading"} className="mt-3 text-sm/relaxed">
+        {feedback.status === "idle" && (
+          <p className="rounded-lg bg-muted px-4 py-3">{t("feedbackIdle")}</p>
+        )}
+
+        {feedback.status === "grading" && (
+          <p className="flex items-center gap-2 rounded-lg bg-muted px-4 py-3">
+            <Loader2 className="size-4 motion-safe:animate-spin" aria-hidden="true" />
+            {t("grading")}
+          </p>
+        )}
+
+        {feedback.status === "error" && (
+          <p role="alert" className="rounded-lg bg-muted px-4 py-3 font-medium">
+            {t(`gradeErrors.${feedback.reason}`)}
+          </p>
+        )}
+
+        {feedback.status === "graded" && (
+          <div className="flex flex-col gap-4">
+            <p
+              className={cn(
+                "inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold",
+                feedback.grade.correct ? "bg-foreground text-background" : "border-2 border-foreground"
+              )}
+            >
+              {feedback.grade.correct ? (
+                <Check className="size-4" aria-hidden="true" />
+              ) : (
+                <X className="size-4" aria-hidden="true" />
+              )}
+              {feedback.grade.correct ? t("correct") : t("incorrect")}
+            </p>
+            {feedback.earned > 0 && (
+              <p className="w-fit rounded-full border-2 border-foreground px-3 py-1 text-sm font-bold tabular-nums">
+                {t("pointsEarned", { count: feedback.earned })}
+              </p>
+            )}
+
+            <p>
+              <span className="font-semibold">{t("feedbackSuggestion")}:</span>{" "}
+              <span lang="en" className="text-base font-medium">
+                {feedback.grade.suggestion}
+              </span>
+            </p>
+
+            {feedback.grade.improvements.length > 0 && (
+              <div>
+                <p className="font-semibold">{t("feedbackImprovements")}:</p>
+                <ul lang="vi" className="mt-1.5 list-disc space-y-1.5 pl-5">
+                  {feedback.grade.improvements.map((note) => (
+                    <li key={note}>{note}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {feedback.grade.comment && (
+              <p>
+                <span className="font-semibold">{t("feedbackComment")}:</span> <span lang="vi">{feedback.grade.comment}</span>
+              </p>
+            )}
+
+            {!feedback.grade.correct && <p className="text-muted-foreground">{t("tryAgain")}</p>}
+          </div>
+        )}
+      </div>
+
+      {passed && (
+        <Button className="mt-5" onClick={onNext} disabled={loading}>
+          {t("next")}
+        </Button>
+      )}
+    </section>
+  );
+}

@@ -6,6 +6,7 @@ import { AppError } from "@/core/errors";
 const STATUS_BY_CODE: Record<string, number> = {
   VALIDATION_ERROR: 400,
   UNAUTHORIZED: 401,
+  INSUFFICIENT_CREDITS: 402,
   FORBIDDEN: 403,
   NOT_FOUND: 404,
 };

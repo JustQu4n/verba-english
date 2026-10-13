@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { CATEGORIES, LEVELS, type Category, type Level } from "@/modules/writing/domain/sentence-catalog";
+import type { SentenceProgress } from "@/modules/writing/domain/sentence-progress";
 
 import { CATEGORY_ICONS } from "./category-icons";
 import { ChoiceCard } from "./choice-card";
@@ -17,6 +18,8 @@ interface SentenceSetupProps {
   onCategoryChange: (category: Category) => void;
   onStart: () => void;
   starting: boolean;
+  /** Progress of the chosen pair, once known. */
+  progress: SentenceProgress | null;
   error: "unauthorized" | "not_found" | "unknown" | null;
 }
 
@@ -39,6 +42,7 @@ export function SentenceSetup({
   onCategoryChange,
   onStart,
   starting,
+  progress,
   error,
 }: SentenceSetupProps) {
   const t = useTranslations("Sentence");
@@ -120,6 +124,12 @@ export function SentenceSetup({
                 <span className="font-semibold text-foreground">{t(`categories.${category}`)}</span>
                 {" · "}
                 {t(`levels.${level}.name`)}
+                {progress && (
+                  <>
+                    {" · "}
+                    {t("progressDone", { completed: progress.completed, total: progress.total })}
+                  </>
+                )}
               </>
             ) : (
               t("chooseBoth")

@@ -16,5 +16,8 @@ Mẫu ở `_templates/`. Nguyên tắc ở [constitution.md](./constitution.md).
 | [008-email-auth](./008-email-auth/spec.md) | Đăng ký và đăng nhập bằng email + mật khẩu | `EML` |
 | [009-writing-sentence](./009-writing-sentence/spec.md) | Luyện viết câu: chọn trình độ, chủ đề, màn luyện viết | `WSN` |
 | [010-admin-prompts](./010-admin-prompts/spec.md) | Khu Admin: quyền quản trị và CRUD đề bài | `APR` |
+| [011-ai-grading](./011-ai-grading/spec.md) | Chấm câu bằng AI (Gemini) và credit | `AIG` |
+| [012-sentence-progress](./012-sentence-progress/spec.md) | Lịch sử làm bài và tiến độ luyện câu | `SPG` |
+| [013-points](./013-points/spec.md) | Điểm thưởng mỗi câu, pháo hoa chúc mừng, phím Enter | `PTS` |
 
 Kiểm tra mọi AC đều có test: `npm run specs:check`.
