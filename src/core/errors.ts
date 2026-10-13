@@ -25,6 +25,11 @@ export class ForbiddenError extends AppError {
   readonly code = "FORBIDDEN";
 }
 
+/** The user has fewer credits than the action costs. */
+export class InsufficientCreditsError extends AppError {
+  readonly code = "INSUFFICIENT_CREDITS";
+}
+
 export class NotFoundError extends AppError {
   readonly code = "NOT_FOUND";
 }

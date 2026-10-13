@@ -27,6 +27,7 @@ Mọi tính năng cần cách thống nhất để báo lỗi nghiệp vụ và 
 - **CORE-AC-09** Given một Route Handler bị ném lỗi, when được bọc bởi cơ chế xử lý lỗi chung, then phản hồi theo CORE-AC-03..06 thay vì làm sập request.
 - **CORE-AC-10** Given lỗi điều khiển luồng của nền tảng web (chuyển hướng, không tìm thấy, dữ liệu động), when đi qua cơ chế xử lý lỗi chung (HTTP hoặc form), then lỗi được ném lại nguyên vẹn, không bị biến thành phản hồi 500 hay thông báo lỗi.
 - **CORE-AC-11** Given lỗi `FORBIDDEN` (đã đăng nhập nhưng không đủ quyền), when trả HTTP, then status 403.
+- **CORE-AC-12** Given lỗi `INSUFFICIENT_CREDITS` (hết credit), when trả HTTP, then status 402.
 
 ## 6. Ràng buộc phi chức năng & bảo mật
 - Không trả stack trace hay thông điệp lỗi của DB cho client.

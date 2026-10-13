@@ -34,4 +34,19 @@ export class SupabaseSentencePromptSource implements SentencePromptSource {
       .filter((p): p is NonNullable<typeof p> => p !== null)
       .map(({ id, level: l, category: c, vietnamese, hint }) => ({ id, level: l, category: c, vietnamese, hint }));
   }
+
+  async get(id: string): Promise<SentencePrompt | null> {
+    const { data, error } = await this.client
+      .from("prompts")
+      .select("id, difficulty, category, prompt_text, hint")
+      .eq("id", id)
+      .eq("writing_type", "sentence")
+      .eq("is_published", true)
+      .maybeSingle<PracticeRow>();
+
+    if (error) throw new InfrastructureError("Could not read the sentence prompt", { cause: error });
+    if (!data) return null;
+    const prompt = toPrompt({ ...data, is_published: true, created_at: "", updated_at: "" });
+    return prompt && { id: prompt.id, level: prompt.level, category: prompt.category, vietnamese: prompt.vietnamese, hint: prompt.hint };
+  }
 }

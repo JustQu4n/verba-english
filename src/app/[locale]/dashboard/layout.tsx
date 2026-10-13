@@ -2,6 +2,8 @@ import { useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { Suspense } from "react";
 
+import { CreditsProvider } from "@/components/dashboard/credits-context";
+import { CreditsLoader } from "@/components/dashboard/credits-loader";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 
 import { DashboardGate } from "./dashboard-gate";
@@ -26,13 +28,18 @@ export default async function DashboardLayout({ children, params }: LayoutProps<
   setRequestLocale(locale);
   return (
     <div className="theme-mono flex min-h-screen flex-col bg-background text-foreground">
-      <SkipLink />
-      <DashboardHeader />
-      <main id="main" className="flex-1">
+      <CreditsProvider>
         <Suspense fallback={null}>
-          <DashboardGate>{children}</DashboardGate>
+          <CreditsLoader />
         </Suspense>
-      </main>
+        <SkipLink />
+        <DashboardHeader />
+        <main id="main" className="flex-1">
+          <Suspense fallback={null}>
+            <DashboardGate>{children}</DashboardGate>
+          </Suspense>
+        </main>
+      </CreditsProvider>
     </div>
   );
 }

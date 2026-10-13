@@ -50,4 +50,37 @@ describe("SupabaseSentencePromptSource", () => {
     await expect(promise).rejects.toBeInstanceOf(InfrastructureError);
     await expect(promise).rejects.not.toThrow(/relation/);
   });
+
+  it("AIG-AC-04: get returns one published sentence prompt by id", async () => {
+    const row = { id: "p1", difficulty: "beginner", category: "food-drink", prompt_text: "Tôi đói.", hint: "hungry" };
+    const { source, calls } = sourceReturning({ data: row, error: null });
+    await expect(source.get("p1")).resolves.toEqual({
+      id: "p1",
+      level: "beginner",
+      category: "food-drink",
+      vietnamese: "Tôi đói.",
+      hint: "hungry",
+    });
+    const eq = calls.filter(([n]) => n === "eq").map(([, a]) => a);
+    expect(eq).toEqual(
+      expect.arrayContaining([
+        ["id", "p1"],
+        ["writing_type", "sentence"],
+        ["is_published", true],
+      ])
+    );
+  });
+
+  it("AIG-AC-04: get returns null for a missing or invalid row", async () => {
+    await expect(sourceReturning({ data: null, error: null }).source.get("p1")).resolves.toBeNull();
+    const bad = { id: "p1", difficulty: "expert", category: "food-drink", prompt_text: "x", hint: "y" };
+    await expect(sourceReturning({ data: bad, error: null }).source.get("p1")).resolves.toBeNull();
+  });
+
+  it("AIG-AC-04: get reports a DB error without its message", async () => {
+    const { source } = sourceReturning({ data: null, error: { message: "relation prompts does not exist" } });
+    const promise = source.get("p1");
+    await expect(promise).rejects.toBeInstanceOf(InfrastructureError);
+    await expect(promise).rejects.not.toThrow(/relation/);
+  });
 });

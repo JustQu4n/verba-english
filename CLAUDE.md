@@ -33,7 +33,7 @@ src/
   proxy.ts                   Next.js 16 (replaces middleware): refreshes the session, blocks private routes
 supabase/migrations/         numbered SQL 0001_...sql
 ```
-Existing modules: `auth` (password + Google), `profile`, `greeting`, `writing` (sentence practice; prompts live in the database, sample data in `supabase/seed.sql`), `admin` (role check). Google sign-in dashboard setup: `docs/google-login-setup.md`. Alias `@/*` → `src/*`.
+Existing modules: `auth` (password + Google), `profile`, `greeting`, `writing` (sentence practice; prompts live in the database, sample data in `supabase/seed.sql`), `admin` (role check), `credits` (AI-grading balance, `spend_credits` RPC), `points` (10 per completed sentence in `profiles.points`, for a leaderboard; completions are written only by the server with the service role through `complete_sentence`); AI grading uses Gemini via `GEMINI_API_KEY` (`docs/ai-grading-setup.md`). Google sign-in dashboard setup: `docs/google-login-setup.md`. Alias `@/*` → `src/*`.
 
 Boundaries are **enforced by ESLint** (`eslint.config.mjs`): domain/core import no framework or other layer; application imports no infrastructure/Next/Supabase; `src/app` imports no infrastructure (it goes through `getContainer()`).
 

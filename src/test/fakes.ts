@@ -2,6 +2,11 @@ import { vi } from "vitest";
 
 import type { RoleReader } from "@/modules/admin/application/role-reader";
 import type { AuthService } from "@/modules/auth/application/auth-service";
+import type { CreditStore } from "@/modules/credits/application/credit-store";
+import type { PointsStore } from "@/modules/points/application/points-store";
+import type { SentenceProgressStore } from "@/modules/writing/application/sentence-progress-store";
+import type { SentenceGrader } from "@/modules/writing/application/sentence-grader";
+import type { SentenceGrade } from "@/modules/writing/domain/sentence-grade";
 import type { PromptRepository } from "@/modules/writing/application/prompt-repository";
 import type { Prompt } from "@/modules/writing/domain/prompt";
 
@@ -50,4 +55,42 @@ export function fakePromptRepo(overrides: Partial<PromptRepository> = {}): Promp
     remove: vi.fn().mockResolvedValue(true),
     ...overrides,
   };
+}
+
+/** Fake CreditStore with a fixed balance; `spend` follows the real contract (null when too low). */
+export function fakeCredits(balance = 100, overrides: Partial<CreditStore> = {}): CreditStore {
+  return {
+    balance: vi.fn().mockResolvedValue(balance),
+    spend: vi.fn().mockImplementation(async (amount: number) => (balance >= amount ? balance - amount : null)),
+    ...overrides,
+  };
+}
+
+export function sampleGrade(overrides: Partial<SentenceGrade> = {}): SentenceGrade {
+  return {
+    correct: false,
+    suggestion: "I want to go to the beach.",
+    improvements: ["Thiếu động từ go."],
+    comment: "Bạn đã dùng đúng I want to.",
+    ...overrides,
+  };
+}
+
+/** Fake SentenceGrader that always returns `grade`. */
+export function fakeGrader(grade: SentenceGrade = sampleGrade()): SentenceGrader {
+  return { grade: vi.fn().mockResolvedValue(grade) };
+}
+
+/** Fake SentenceProgressStore: `done` are the ids the user already completed. */
+export function fakeProgress(done: string[] = [], overrides: Partial<SentenceProgressStore> = {}): SentenceProgressStore {
+  return {
+    completedIds: vi.fn().mockResolvedValue(new Set(done)),
+    markCompleted: vi.fn().mockResolvedValue({ awarded: 10, totalPoints: 10 }),
+    ...overrides,
+  };
+}
+
+/** Fake PointsStore with a fixed total. */
+export function fakePoints(total = 0): PointsStore {
+  return { total: vi.fn().mockResolvedValue(total) };
 }
