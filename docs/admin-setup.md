@@ -8,7 +8,7 @@ Run `supabase/migrations/0003_writing_schema.sql` and `0004_admin_prompts.sql` i
 `0004` adds the `role` column, locks it against self-promotion, adds the `is_admin()` helper and the admin-only policies on `prompts`.
 
 ## 1b. Load the sample prompts (optional)
-Run `supabase/seed.sql` in the SQL Editor. It inserts 60 published sentence prompts (3 per category) and can be re-run safely: rows that already exist are skipped. `supabase db reset` runs it automatically.
+Run `supabase/seed.sql` in the SQL Editor. It inserts 60 published sentence prompts (3 per category) and, once migration 0008 is applied, their accepted answers with grammar notes and can be re-run safely: rows that already exist are skipped. `supabase db reset` runs it automatically.
 
 ## 2. Create the admin account
 Sign up with email and password on `/login` (confirm the email if "Confirm email" is on).

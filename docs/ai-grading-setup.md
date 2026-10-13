@@ -11,6 +11,8 @@ Then run `supabase/migrations/0006_sentence_progress.sql`. It adds `sentence_com
 Then run `supabase/migrations/0007_points.sql`. It adds `profiles.points` (10 points per completed sentence, for the leaderboard) and moves recording a completion to the server-only `complete_sentence` function.
 **It requires `SUPABASE_SERVICE_ROLE_KEY`** in `.env.local` and in your hosting provider's variables (server-only, never `NEXT_PUBLIC_`). Without it, a correct answer cannot be recorded.
 
+Then run `supabase/migrations/0008_accepted_answers.sql`. It adds `prompt_answers` (accepted answers per prompt, readable by admins only). An answer that equals an accepted answer is graded correct without the AI, so it also works when the AI quota is used up. Admins fill them in the prompt form ("Accepted answers"), optionally with the "Suggest with AI" button. Server code reads them with `SUPABASE_SERVICE_ROLE_KEY`; if that read fails, grading falls back to the AI.
+
 ## 2. Gemini key
 1. Create a key at <https://aistudio.google.com/apikey>.
 2. Put it in `.env.local` as `GEMINI_API_KEY=...` and in your hosting provider's environment variables (Vercel: Project → Settings → Environment Variables), then redeploy.
@@ -50,6 +52,14 @@ select auth.uid(), id from public.prompts limit 1;
 -- Must fail: points cannot be edited by the user, nor the server function called.
 update public.profiles set points = 9999 where id = auth.uid();
 select * from public.complete_sentence(auth.uid(), (select id from public.prompts limit 1));
+```
+
+## Checks for ANS-AC-15 (signed-in learner session)
+```sql
+-- Must return no rows: learners cannot read accepted answers.
+select * from public.prompt_answers;
+-- Must fail: nor write them.
+insert into public.prompt_answers (prompt_id, answers) select id, '[]' from public.prompts limit 1;
 ```
 
 ## Giving credits by hand (until purchases exist)

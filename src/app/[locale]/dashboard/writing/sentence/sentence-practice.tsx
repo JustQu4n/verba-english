@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { canSubmitAnswer, MAX_ANSWER_LENGTH } from "@/modules/writing/domain/sentence-answer";
+import { GRADING_MODES, type GradingMode } from "@/modules/writing/domain/grading-mode";
 import type { Category, Level, SentencePrompt } from "@/modules/writing/domain/sentence-catalog";
 import type { SentenceProgress } from "@/modules/writing/domain/sentence-progress";
 
@@ -28,6 +29,8 @@ interface SentencePracticeProps {
   /** Graded correct and unchanged since: the learner may continue. */
   passed: boolean;
   credits: number | null;
+  mode: GradingMode;
+  onModeChange: (mode: GradingMode) => void;
   onSubmit: () => void;
   onSkip: () => void;
   onNext: () => void;
@@ -49,6 +52,8 @@ export function SentencePractice({
   feedback,
   passed,
   credits,
+  mode,
+  onModeChange,
   onSubmit,
   onSkip,
   onNext,
@@ -62,8 +67,9 @@ export function SentencePractice({
   const tooLong = length > MAX_ANSWER_LENGTH;
   const grading = feedback.status === "grading";
   const outOfCredits = credits !== null && credits < 1;
+  // Out of credits does not lock sending: an answer equal to an accepted answer is graded for free, the server refuses the rest.
   // The same graded answer cannot be sent twice: it would only spend credit on the same verdict.
-  const canSubmit = canSubmitAnswer(answer) && !grading && !loading && !passed && !isGradedAnswer(feedback, answer) && !outOfCredits;
+  const canSubmit = canSubmitAnswer(answer) && !grading && !loading && !passed && !isGradedAnswer(feedback, answer, mode);
 
   function onKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
     // Enter sends (Shift+Enter keeps a new line); Enter during IME composition only confirms the text.
@@ -137,6 +143,29 @@ export function SentencePractice({
         <p className="mt-2 text-xs text-muted-foreground">{t(passed ? "enterNext" : "enterHint")}</p>
       </div>
 
+      <fieldset className="mt-4" disabled={grading || passed}>
+        <legend className="text-sm font-medium">{t("gradeMode.label")}</legend>
+        <div className="mt-2 grid gap-2 sm:grid-cols-2">
+          {GRADING_MODES.map((option) => (
+            <label
+              key={option}
+              className="flex cursor-pointer flex-col gap-0.5 rounded-lg border px-4 py-3 transition-colors hover:border-foreground has-[:checked]:border-foreground has-[:checked]:bg-foreground has-[:checked]:text-background has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-60 has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2"
+            >
+              <input
+                type="radio"
+                name="grading-mode"
+                value={option}
+                checked={mode === option}
+                onChange={() => onModeChange(option)}
+                className="sr-only"
+              />
+              <span className="text-sm font-semibold">{t(`gradeMode.${option}`)}</span>
+              <span className="text-xs opacity-80">{t(`gradeMode.${option}Help`)}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         <Button variant="ghost" onClick={onQuit}>
           <ArrowLeft aria-hidden="true" />
@@ -158,7 +187,7 @@ export function SentencePractice({
         </div>
       </div>
 
-      {outOfCredits && (
+      {outOfCredits && mode === "ai" && (
         <p role="status" className="mt-4 rounded-lg border-2 border-foreground px-4 py-3 text-sm font-medium">
           {t("noCredits")}
         </p>

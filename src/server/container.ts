@@ -18,6 +18,10 @@ import type { PromptRepository } from "@/modules/writing/application/prompt-repo
 import type { SentenceProgressStore } from "@/modules/writing/application/sentence-progress-store";
 import type { SentenceGrader } from "@/modules/writing/application/sentence-grader";
 import type { SentencePromptSource } from "@/modules/writing/application/sentence-prompt-source";
+import type { AnswerSuggester } from "@/modules/writing/application/answer-suggester";
+import type { ReferenceAnswerSource } from "@/modules/writing/application/reference-answer-source";
+import { GeminiAnswerSuggester } from "@/modules/writing/infrastructure/gemini-answer-suggester";
+import { SupabaseReferenceAnswerSource } from "@/modules/writing/infrastructure/supabase-reference-answer-source";
 import { GeminiSentenceGrader } from "@/modules/writing/infrastructure/gemini-sentence-grader";
 import { SupabaseSentenceProgressStore } from "@/modules/writing/infrastructure/supabase-sentence-progress-store";
 import { MemoryGradeCache } from "@/modules/writing/infrastructure/memory-grade-cache";
@@ -41,6 +45,10 @@ export interface Container {
   credits: CreditStore;
   /** AI grader for sentence answers. */
   grader: SentenceGrader;
+  /** Accepted answers per prompt, read only by trusted server code. */
+  references: ReferenceAnswerSource;
+  /** AI drafts of accepted answers for the admin form. */
+  suggester: AnswerSuggester;
   gradeCache: GradeCache;
   /** Which sentences each learner completed. */
   sentenceProgress: SentenceProgressStore;
@@ -56,6 +64,11 @@ const gradeCache = new MemoryGradeCache();
  */
 export const getContainer = cache(async (): Promise<Container> => {
   const supabase = await createClient();
+  const gemini = {
+    apiKey: process.env.GEMINI_API_KEY,
+    model: process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL,
+    thinkingLevel: process.env.GEMINI_THINKING_LEVEL || DEFAULT_THINKING_LEVEL,
+  };
   return {
     auth: new SupabaseAuthService(supabase),
     profiles: new SupabaseProfileRepository(supabase),
@@ -63,11 +76,10 @@ export const getContainer = cache(async (): Promise<Container> => {
     prompts: new SupabasePromptRepository(supabase),
     sentencePrompts: new SupabaseSentencePromptSource(supabase),
     credits: new SupabaseCreditStore(supabase),
-    grader: new GeminiSentenceGrader({
-      apiKey: process.env.GEMINI_API_KEY,
-      model: process.env.GEMINI_MODEL || DEFAULT_GEMINI_MODEL,
-      thinkingLevel: process.env.GEMINI_THINKING_LEVEL || DEFAULT_THINKING_LEVEL,
-    }),
+    grader: new GeminiSentenceGrader(gemini),
+    suggester: new GeminiAnswerSuggester(gemini),
+    // Learners cannot read prompt_answers, so the answers are read with the service role by server code only.
+    references: new SupabaseReferenceAnswerSource(createAdminClient),
     gradeCache,
     // Completions award points, so they are written by trusted server code with the service role, never by the user's session.
     sentenceProgress: new SupabaseSentenceProgressStore(supabase, createAdminClient),

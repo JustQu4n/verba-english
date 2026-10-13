@@ -66,6 +66,14 @@ export class SupabasePromptRepository implements PromptRepository {
     return data ? toPrompt(data) : null;
   }
 
+  /** Replaces the accepted answers of a prompt. Stored apart from the prompt so learners can never read them. */
+  private async saveAnswers(promptId: string, draft: PromptDraft): Promise<void> {
+    const { error } = await this.client
+      .from("prompt_answers")
+      .upsert({ prompt_id: promptId, answers: draft.answers }, { onConflict: "prompt_id" });
+    if (error) throw new InfrastructureError("Could not save the accepted answers", { cause: error });
+  }
+
   async create(draft: PromptDraft): Promise<Prompt> {
     const { data, error } = await this.client
       .from("prompts")
@@ -74,7 +82,8 @@ export class SupabasePromptRepository implements PromptRepository {
       .single<PromptRow>();
     const prompt = data ? toPrompt(data) : null;
     if (error || !prompt) throw new InfrastructureError("Could not create prompt", { cause: error });
-    return prompt;
+    await this.saveAnswers(prompt.id, draft);
+    return { ...prompt, answers: draft.answers };
   }
 
   async update(id: string, draft: PromptDraft): Promise<Prompt | null> {
@@ -86,7 +95,10 @@ export class SupabasePromptRepository implements PromptRepository {
       .select(PROMPT_COLUMNS)
       .maybeSingle<PromptRow>();
     if (error) throw new InfrastructureError("Could not update prompt", { cause: error });
-    return data ? toPrompt(data) : null;
+    const prompt = data ? toPrompt(data) : null;
+    if (!prompt) return null;
+    await this.saveAnswers(prompt.id, draft);
+    return { ...prompt, answers: draft.answers };
   }
 
   async remove(id: string): Promise<boolean> {

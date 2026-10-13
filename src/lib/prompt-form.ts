@@ -2,9 +2,9 @@ import { unstable_rethrow } from "next/navigation";
 
 import { AppError, ForbiddenError, NotFoundError, UnauthorizedError, ValidationError } from "@/core/errors";
 
-export type PromptField = "level" | "category" | "vietnamese" | "hint";
+export type PromptField = "level" | "category" | "vietnamese" | "hint" | "answers";
 
-const FIELDS: readonly string[] = ["level", "category", "vietnamese", "hint"];
+const FIELDS: readonly string[] = ["level", "category", "vietnamese", "hint", "answers"];
 
 /** Error codes for the prompt form: per-field codes and an optional form-wide code. All are translatable. */
 export interface PromptFormErrors {
@@ -13,12 +13,19 @@ export interface PromptFormErrors {
 }
 
 /** What the form shows again after a failed save: exactly what the admin typed. */
+export interface AnswerFormValues {
+  text: string;
+  structureVi: string;
+  structureEn: string;
+}
+
 export interface PromptFormValues {
   level: string;
   category: string;
   vietnamese: string;
   hint: string;
   published: boolean;
+  answers: AnswerFormValues[];
 }
 
 export type PromptFormState = undefined | { status: "error"; errors: PromptFormErrors; values: PromptFormValues };
@@ -28,6 +35,18 @@ const text = (data: FormData, name: string) => {
   return typeof value === "string" ? value : "";
 };
 
+const texts = (data: FormData, name: string) => data.getAll(name).map((value) => (typeof value === "string" ? value : ""));
+
+/** Zips the repeated answer fields into rows; a row left completely blank is dropped. */
+function readAnswers(data: FormData): AnswerFormValues[] {
+  const text = texts(data, "answerText");
+  const structureVi = texts(data, "answerStructureVi");
+  const structureEn = texts(data, "answerStructureEn");
+  return text
+    .map((value, index) => ({ text: value, structureVi: structureVi[index] ?? "", structureEn: structureEn[index] ?? "" }))
+    .filter((row) => [row.text, row.structureVi, row.structureEn].some((field) => field.trim() !== ""));
+}
+
 /** Reads the create/edit form. Validation happens in the use case; here we only keep the raw values. */
 export function readPromptForm(data: FormData) {
   const values: PromptFormValues = {
@@ -36,6 +55,7 @@ export function readPromptForm(data: FormData) {
     vietnamese: text(data, "vietnamese"),
     hint: text(data, "hint"),
     published: data.get("published") === "on",
+    answers: readAnswers(data),
   };
   return { input: values, values };
 }

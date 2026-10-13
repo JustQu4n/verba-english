@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 
 import { useCredits } from "@/components/dashboard/credits-context";
+import { DEFAULT_GRADING_MODE, type GradingMode } from "@/modules/writing/domain/grading-mode";
 import { normalizeAnswer } from "@/modules/writing/domain/sentence-answer";
 import type { Category, Level, SentencePrompt } from "@/modules/writing/domain/sentence-catalog";
 import type { SentenceProgress } from "@/modules/writing/domain/sentence-progress";
@@ -26,6 +27,8 @@ export function SentenceWriting() {
   const [answer, setAnswer] = useState("");
   const [hintOpen, setHintOpen] = useState(false);
   const [feedback, setFeedback] = useState<FeedbackState>(IDLE);
+  // Kept across sentences: it is a preference, not part of one answer.
+  const [mode, setMode] = useState<GradingMode>(DEFAULT_GRADING_MODE);
   const { credits, setCredits, setPoints } = useCredits();
   const [progress, setProgress] = useState<SentenceProgress | null>(null);
   const [allDone, setAllDone] = useState(false);
@@ -84,16 +87,16 @@ export function SentenceWriting() {
     const promptId = prompt.id;
     setFeedback({ status: "grading" });
     startTransition(async () => {
-      const result = await gradeAnswer({ promptId, answer });
+      const result = await gradeAnswer({ promptId, answer, mode });
       if (currentPromptId.current !== promptId) return;
-      if (result.status === "error") return setFeedback({ status: "error", reason: result.reason });
+      if (result.status === "error") return setFeedback({ status: "error", reason: result.reason, mode });
       setCredits(result.credits);
       if (result.progress) setProgress(result.progress);
       if (result.points) {
         setPoints(result.points.total);
         completedNow.current = true;
       }
-      setFeedback({ status: "graded", grade: result.grade, answer: normalizeAnswer(answer), earned: result.points?.earned ?? 0 });
+      setFeedback({ status: "graded", grade: result.grade, answer: normalizeAnswer(answer), earned: result.points?.earned ?? 0, mode, source: result.source });
     });
   }
 
@@ -128,6 +131,8 @@ export function SentenceWriting() {
         feedback={feedback}
         passed={hasPassed(feedback, answer)}
         credits={credits}
+        mode={mode}
+        onModeChange={setMode}
         onSubmit={submit}
         onSkip={() => loadSentence(seenIds)}
         onNext={() => loadSentence(seenIds)}

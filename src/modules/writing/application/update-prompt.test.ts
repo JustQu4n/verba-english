@@ -25,6 +25,7 @@ describe("updatePrompt", () => {
       vietnamese: "Luật là luật.",
       hint: "law",
       published: true,
+      answers: [],
     });
     expect(updated.published).toBe(true);
   });

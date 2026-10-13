@@ -45,7 +45,7 @@ Sau khi người học gửi bản dịch của một câu, hệ thống nhờ A
 - **AIG-AC-22** Given ngôn ngữ giao diện (vi hoặc en), when chấm, then ngôn ngữ do máy chủ xác định (không nhận từ trình duyệt) được gửi cho AI để viết phần cải thiện và nhận xét, và là một phần của khóa bộ nhớ đệm.
 - **AIG-AC-17** `manual` Given đã gửi một bản dịch, when có kết quả, then khung phản hồi hiện "Suggestion" (câu đúng), "Suggested improvements" (gạch đầu dòng) và "Nhận xét" ("Comment" khi giao diện tiếng Anh), viết theo ngôn ngữ giao diện, kèm trạng thái đúng hoặc chưa đúng. *Kiểm tra:* gửi "I want to the beach" cho câu "Tôi muốn đi biển".
 - **AIG-AC-18** `manual` Given câu trả lời chưa đúng, when xem màn luyện, then không có nút "Câu tiếp theo"; sửa câu trả lời thì gửi lại được, còn giữ nguyên câu cũ thì không gửi lại được; "Bỏ qua" vẫn dùng được. Khi đúng thì hiện "Câu tiếp theo".
-- **AIG-AC-19** `manual` Given màn luyện và màn chọn, when xem, then thấy số credit còn lại, cập nhật sau mỗi lần chấm; hết credit thì khóa nút Gửi và hiện thông báo việc mua thêm sẽ có sau.
+- **AIG-AC-19** `manual` Given màn luyện và màn chọn, when xem, then thấy số credit còn lại, cập nhật sau mỗi lần chấm; hết credit thì hiện thông báo việc mua thêm sẽ có và nút Gửi vẫn dùng được (câu khớp đáp án chuẩn vẫn được chấm đúng miễn phí, xem spec 014; câu khác nhận báo hết credit) sau.
 - **AIG-AC-20** `manual` Given bảng hồ sơ, when thử sửa cột credit bằng phiên người dùng hoặc gọi hàm trừ với số âm, then bị từ chối. *Kiểm tra:* chạy các lệnh SQL trong `docs/ai-grading-setup.md`.
 - **AIG-AC-21** `manual` Giao diện đen trắng, đủ chữ Tiếng Việt và English, dùng được ở 390px không cuộn ngang, trạng thái "đang chấm" có thông báo cho trình đọc màn hình.
 

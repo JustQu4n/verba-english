@@ -1,19 +1,22 @@
 "use client";
 
+import { Plus, Sparkles, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useActionState, useId, useState } from "react";
+import { useActionState, useId, useState, useTransition } from "react";
 
 import { Field } from "@/components/form-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Link } from "@/i18n/navigation";
-import type { PromptFormState, PromptFormValues } from "@/lib/prompt-form";
+import { suggestAnswersAction } from "./actions";
+import type { AnswerFormValues, PromptFormState, PromptFormValues } from "@/lib/prompt-form";
 import { cn } from "@/lib/utils";
+import { answerKey, MAX_ACCEPTED_ANSWERS, MAX_ANSWER_TEXT_LENGTH, MAX_STRUCTURE_LENGTH } from "@/modules/writing/domain/accepted-answer";
 import { MAX_HINT_LENGTH, MAX_VIETNAMESE_LENGTH } from "@/modules/writing/domain/prompt";
 import { CATEGORIES, LEVELS } from "@/modules/writing/domain/sentence-catalog";
 
-export const EMPTY_PROMPT: PromptFormValues = { level: "beginner", category: "", vietnamese: "", hint: "", published: false };
+export const EMPTY_PROMPT: PromptFormValues = { level: "beginner", category: "", vietnamese: "", hint: "", published: false, answers: [] };
 
 interface PromptFormProps {
   action: (state: PromptFormState, formData: FormData) => Promise<PromptFormState>;
@@ -42,7 +45,7 @@ export function PromptForm({ action, initial = EMPTY_PROMPT, mode }: PromptFormP
     setValues((current) => ({ ...current, [key]: value }));
 
   const errors = state?.status === "error" ? state.errors : undefined;
-  const fieldError = (field: "level" | "category" | "vietnamese" | "hint") => {
+  const fieldError = (field: "level" | "category" | "vietnamese" | "hint" | "answers") => {
     const code = errors?.fieldErrors?.[field];
     return code ? t(`errors.${code}`) : undefined;
   };
@@ -130,6 +133,13 @@ export function PromptForm({ action, initial = EMPTY_PROMPT, mode }: PromptFormP
         )}
       </Field>
 
+      <AnswersEditor
+        answers={values.answers}
+        onChange={(answers) => set("answers", answers)}
+        sentence={{ vietnamese: values.vietnamese, level: values.level, hint: values.hint }}
+        error={fieldError("answers")}
+      />
+
       <label className="flex cursor-pointer items-start gap-3 rounded-lg border p-4">
         <input
           type="checkbox"
@@ -153,5 +163,141 @@ export function PromptForm({ action, initial = EMPTY_PROMPT, mode }: PromptFormP
         </Button>
       </div>
     </form>
+  );
+}
+
+const EMPTY_ANSWER: AnswerFormValues = { text: "", structureVi: "", structureEn: "" };
+const textareaClass =
+  "w-full resize-y rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50";
+
+interface AnswersEditorProps {
+  answers: AnswerFormValues[];
+  onChange: (answers: AnswerFormValues[]) => void;
+  sentence: { vietnamese: string; level: string; hint: string };
+  error?: string;
+}
+
+/**
+ * Accepted answers with grammar notes. A learner whose answer equals one of them is graded right away, without the AI.
+ * "AI suggestions" only fills rows to review: nothing is saved until the form is.
+ */
+function AnswersEditor({ answers, onChange, sentence, error }: AnswersEditorProps) {
+  const t = useTranslations("Admin.form.answers");
+  const [pending, startTransition] = useTransition();
+  const [notice, setNotice] = useState<string | null>(null);
+  const full = answers.length >= MAX_ACCEPTED_ANSWERS;
+  const update = (index: number, patch: Partial<AnswerFormValues>) =>
+    onChange(answers.map((answer, i) => (i === index ? { ...answer, ...patch } : answer)));
+
+  function suggest() {
+    setNotice(null);
+    startTransition(async () => {
+      const result = await suggestAnswersAction(sentence);
+      if (result.status === "error") return setNotice(t(`suggestErrors.${result.reason}`));
+      const known = new Set(answers.map((answer) => answerKey(answer.text)));
+      const fresh = result.answers.filter((answer) => !known.has(answerKey(answer.text)));
+      const merged = [...answers, ...fresh].slice(0, MAX_ACCEPTED_ANSWERS);
+      onChange(merged);
+      setNotice(t("suggested", { count: merged.length - answers.length }));
+    });
+  }
+
+  return (
+    <fieldset className="flex flex-col gap-3">
+      <legend className="text-sm font-medium">{t("title")}</legend>
+      <p className="text-xs text-muted-foreground">{t("help")}</p>
+
+      {answers.map((answer, index) => (
+        <div key={index} className="flex flex-col gap-3 rounded-lg border p-4">
+          <div className="flex items-start gap-2">
+            <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+              <label htmlFor={`answer-${index}`} className="text-sm font-medium">
+                {t("answer", { number: index + 1 })}
+              </label>
+              <Input
+                id={`answer-${index}`}
+                name="answerText"
+                lang="en"
+                value={answer.text}
+                maxLength={MAX_ANSWER_TEXT_LENGTH + 50}
+                onChange={(event) => update(index, { text: event.target.value })}
+              />
+            </div>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="mt-6"
+              aria-label={t("remove", { number: index + 1 })}
+              onClick={() => onChange(answers.filter((_, i) => i !== index))}
+            >
+              <Trash2 aria-hidden="true" />
+            </Button>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor={`structure-vi-${index}`} className="text-sm text-muted-foreground">
+                {t("structureVi")}
+              </label>
+              <textarea
+                id={`structure-vi-${index}`}
+                name="answerStructureVi"
+                lang="vi"
+                rows={3}
+                value={answer.structureVi}
+                maxLength={MAX_STRUCTURE_LENGTH + 50}
+                onChange={(event) => update(index, { structureVi: event.target.value })}
+                className={textareaClass}
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor={`structure-en-${index}`} className="text-sm text-muted-foreground">
+                {t("structureEn")}
+              </label>
+              <textarea
+                id={`structure-en-${index}`}
+                name="answerStructureEn"
+                lang="en"
+                rows={3}
+                value={answer.structureEn}
+                maxLength={MAX_STRUCTURE_LENGTH + 50}
+                onChange={(event) => update(index, { structureEn: event.target.value })}
+                className={textareaClass}
+              />
+            </div>
+          </div>
+        </div>
+      ))}
+
+      {error && (
+        <p role="alert" className="text-sm text-destructive">
+          {error}
+        </p>
+      )}
+
+      <div className="flex flex-wrap items-center gap-2">
+        <Button type="button" variant="outline" disabled={full} onClick={() => onChange([...answers, EMPTY_ANSWER])}>
+          <Plus aria-hidden="true" />
+          {t("add")}
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          disabled={pending || full || sentence.vietnamese.trim() === ""}
+          onClick={suggest}
+        >
+          <Sparkles aria-hidden="true" />
+          {pending ? t("suggesting") : t("suggest")}
+        </Button>
+        <span className="text-xs text-muted-foreground tabular-nums">
+          {answers.length}/{MAX_ACCEPTED_ANSWERS}
+        </span>
+      </div>
+      {notice && (
+        <p role="status" className="text-sm text-muted-foreground">
+          {notice}
+        </p>
+      )}
+    </fieldset>
   );
 }

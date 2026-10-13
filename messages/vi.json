@@ -190,7 +190,7 @@
     "next": "Câu tiếp theo",
     "feedbackTitle": "Phản hồi",
     "feedbackIdle": "Viết bản dịch rồi bấm Gửi. Phản hồi sẽ xuất hiện ở đây.",
-    "noCredits": "Bạn đã dùng hết credit miễn phí. Tính năng mua thêm credit sẽ sớm có.",
+    "noCredits": "Bạn đã dùng hết credit miễn phí. Tính năng mua thêm credit sẽ sớm có. Câu khớp đáp án chuẩn vẫn được chấm đúng miễn phí.",
     "grading": "Đang chấm…",
     "correct": "Chính xác",
     "incorrect": "Chưa đúng",
@@ -204,14 +204,25 @@
       "invalid": "Hãy viết từ 1 đến 300 ký tự.",
       "no_credits": "Bạn đã hết credit. Tính năng mua thêm sẽ sớm có.",
       "unavailable": "Chấm bằng AI đang tạm không dùng được. Hãy thử lại sau ít phút.",
-      "unknown": "Đã có lỗi xảy ra. Hãy thử lại."
+      "unknown": "Đã có lỗi xảy ra. Hãy thử lại.",
+      "referenceUnavailable": "Chưa đọc được đáp án chuẩn lúc này. Hãy thử lại hoặc chọn chấm bằng AI."
     },
     "signInAgain": "Đăng nhập lại",
     "errors": {
       "unauthorized": "Phiên đăng nhập đã hết hạn.",
       "not_found": "Chưa có câu cho lựa chọn này.",
       "unknown": "Có lỗi xảy ra. Vui lòng thử lại."
-    }
+    },
+    "feedbackStructure": "Cấu trúc ngữ pháp",
+    "gradeMode": {
+      "label": "Chấm bài bằng",
+      "ai": "Nhận xét của AI",
+      "aiHelp": "Nhận xét chi tiết cho mọi cách diễn đạt. Sai thì trừ 1 credit.",
+      "reference": "Đáp án chuẩn",
+      "referenceHelp": "Miễn phí. Đối chiếu với đáp án có sẵn và gợi ý cấu trúc ngữ pháp."
+    },
+    "referenceMiss": "Đây là đáp án chuẩn gần nhất với câu của bạn. Hãy sửa lại và gửi tiếp, hoặc chọn chấm bằng AI để kiểm tra cách diễn đạt khác.",
+    "referenceNone": "Câu này chưa có đáp án chuẩn. Hãy chọn chấm bằng AI để kiểm tra câu trả lời."
   },
   "Admin": {
     "badge": "Admin",
@@ -304,13 +315,36 @@
         "hint_required": "Nhập gợi ý từ khóa.",
         "hint_too_long": "Gợi ý tối đa 200 ký tự.",
         "level_invalid": "Chọn một trình độ.",
-        "category_invalid": "Chọn một chủ đề."
+        "category_invalid": "Chọn một chủ đề.",
+        "answer_required": "Mỗi đáp án chuẩn cần có nội dung tiếng Anh.",
+        "answer_too_long": "Đáp án tối đa 300 ký tự.",
+        "structure_too_long": "Ghi chú cấu trúc tối đa 500 ký tự.",
+        "answers_too_many": "Chỉ thêm tối đa 5 đáp án chuẩn."
       },
       "formErrors": {
         "unauthorized": "Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại.",
         "forbidden": "Bạn không có quyền thực hiện thao tác này.",
         "not_found": "Đề này không còn tồn tại.",
         "unknown": "Có lỗi xảy ra. Vui lòng thử lại."
+      },
+      "answers": {
+        "title": "Đáp án chuẩn",
+        "help": "Các cách dịch đúng. Học viên viết trùng một đáp án (không phân biệt hoa thường, dấu câu) sẽ được chấm đúng ngay, không cần AI, và thấy ghi chú cấu trúc. Không bắt buộc.",
+        "answer": "Đáp án {number}",
+        "remove": "Xóa đáp án {number}",
+        "structureVi": "Cấu trúc ngữ pháp (Tiếng Việt)",
+        "structureEn": "Cấu trúc ngữ pháp (English)",
+        "add": "Thêm đáp án",
+        "suggest": "Gợi ý bằng AI",
+        "suggesting": "Đang soạn gợi ý…",
+        "suggested": "Đã thêm {count} gợi ý. Hãy kiểm tra trước khi lưu.",
+        "suggestErrors": {
+          "unauthorized": "Phiên đăng nhập đã hết hạn.",
+          "forbidden": "Bạn không có quyền thực hiện thao tác này.",
+          "invalid": "Hãy nhập câu tiếng Việt trước.",
+          "unavailable": "AI đang không khả dụng. Hãy thử lại sau ít phút.",
+          "unknown": "Có lỗi xảy ra. Vui lòng thử lại."
+        }
       }
     }
   }
