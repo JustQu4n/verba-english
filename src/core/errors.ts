@@ -20,6 +20,11 @@ export class UnauthorizedError extends AppError {
   readonly code = "UNAUTHORIZED";
 }
 
+/** Signed in, but not allowed to do this. */
+export class ForbiddenError extends AppError {
+  readonly code = "FORBIDDEN";
+}
+
 export class NotFoundError extends AppError {
   readonly code = "NOT_FOUND";
 }

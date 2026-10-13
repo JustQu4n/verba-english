@@ -52,6 +52,31 @@
   --ring: #7f9be6;
 }
 
+/*
+ * Black-and-white theme for the signed-in area, matching the logo. It keys off a marker class with :has()
+ * so portaled UI (dropdown menus) outside the marked element picks the same tokens up.
+ */
+:root:has(.theme-mono) {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --card: #ffffff;
+  --card-foreground: #0a0a0a;
+  --popover: #ffffff;
+  --popover-foreground: #0a0a0a;
+  --primary: #0a0a0a;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #0a0a0a;
+  --muted: #f4f4f5;
+  --muted-foreground: #52525b;
+  --accent: #f4f4f5;
+  --accent-foreground: #0a0a0a;
+  --destructive: #b91c1c;
+  --border: #e4e4e7;
+  --input: #d4d4d8;
+  --ring: #0a0a0a;
+}
+
 @theme inline {
   --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif;
   --font-hand: "Caveat Variable", "Segoe Print", "Bradley Hand", cursive;

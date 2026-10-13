@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { UnauthorizedError } from "@/core/errors";
 import { getContainer } from "@/server/container";
-import { fakeAuth } from "@/test/fakes";
+import { fakeAuth, fakePromptRepo } from "@/test/fakes";
 
 import { GET } from "./route";
 
@@ -16,6 +16,9 @@ beforeEach(() => {
   vi.mocked(getContainer).mockResolvedValue({
     auth: fakeAuth({ exchangeCodeForSession: exchange }),
     profiles: { findById: vi.fn() },
+    roles: { isAdmin: vi.fn() },
+    prompts: fakePromptRepo(),
+    sentencePrompts: { list: vi.fn() },
   });
 });
 

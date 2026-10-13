@@ -1,0 +1,72 @@
+-- Seed data: sample sentence prompts (3 per category = 60), published.
+-- Safe to re-run: a row is skipped when the same sentence already exists for that level and category.
+-- Run in the Supabase SQL editor after migrations 0003 and 0004.
+
+insert into public.prompts (writing_type, title, prompt_text, hint, difficulty, category, is_published)
+select 'sentence'::public.writing_type, left(v.vietnamese, 80), v.vietnamese, v.hint, v.level, v.category, true
+from (values
+  ('beginner', 'personal-communication', 'Tôi muốn giới thiệu bạn của tôi.', 'introduce, friend'),
+  ('intermediate', 'personal-communication', 'Bạn có thể gửi lại tin nhắn cho tôi trước buổi tối được không?', 'resend, message, before evening'),
+  ('advanced', 'personal-communication', 'Dù đã giải thích nhiều lần, anh ấy vẫn hiểu sai ý của tôi.', 'despite, explain, misunderstand, intention'),
+  ('beginner', 'everyday-life', 'Sáng nào tôi cũng dậy lúc sáu giờ.', 'wake up, every morning'),
+  ('intermediate', 'everyday-life', 'Tôi thường dành cuối tuần để dọn dẹp nhà cửa và nấu ăn cho cả tuần.', 'spend, tidy up, meals for the week'),
+  ('advanced', 'everyday-life', 'Giữ một thói quen đều đặn khó hơn nhiều so với việc bắt đầu nó.', 'maintain, routine, consistent'),
+  ('beginner', 'transportation-travel', 'Xe buýt đến trạm lúc tám giờ.', 'bus, stop, arrive'),
+  ('intermediate', 'transportation-travel', 'Chuyến bay của chúng tôi bị hoãn vì thời tiết xấu.', 'flight, delay, bad weather'),
+  ('advanced', 'transportation-travel', 'Nếu tôi biết trước đường sẽ kẹt như vậy, tôi đã đi tàu điện ngầm.', 'if I had known, traffic jam, subway'),
+  ('beginner', 'school-education', 'Em gái tôi học lớp năm.', 'younger sister, fifth grade'),
+  ('intermediate', 'school-education', 'Giáo viên yêu cầu chúng tôi nộp bài tập vào thứ Sáu.', 'teacher, require, submit, assignment'),
+  ('advanced', 'school-education', 'Giáo dục không chỉ truyền đạt kiến thức mà còn rèn luyện tư duy phản biện.', 'not only, but also, convey, critical thinking'),
+  ('beginner', 'work-business', 'Chị ấy làm việc trong một công ty nhỏ.', 'work, company'),
+  ('intermediate', 'work-business', 'Chúng tôi cần hoàn thành báo cáo trước cuộc họp vào sáng mai.', 'finish, report, meeting'),
+  ('advanced', 'work-business', 'Công ty đang cân nhắc mở rộng thị trường để giảm sự phụ thuộc vào một khách hàng.', 'consider, expand, market, reduce dependence'),
+  ('beginner', 'public-services', 'Thư viện mở cửa lúc chín giờ.', 'library, open'),
+  ('intermediate', 'public-services', 'Tôi phải xếp hàng hai tiếng để làm giấy tờ ở phường.', 'queue, paperwork, local office'),
+  ('advanced', 'public-services', 'Dịch vụ công trực tuyến giúp người dân tiết kiệm thời gian, nhưng cần đảm bảo ai cũng tiếp cận được.', 'online public services, ensure, access, citizens'),
+  ('beginner', 'health-medicine', 'Tôi bị đau đầu.', 'have a headache'),
+  ('intermediate', 'health-medicine', 'Bác sĩ khuyên tôi nên ngủ đủ giấc và uống nhiều nước.', 'advise, enough sleep, plenty of water'),
+  ('advanced', 'health-medicine', 'Phòng bệnh luôn hiệu quả hơn và rẻ hơn so với chữa bệnh.', 'prevention, effective, treatment'),
+  ('beginner', 'shopping-money', 'Cái áo này giá bao nhiêu?', 'how much, shirt'),
+  ('intermediate', 'shopping-money', 'Tôi đang cố tiết kiệm tiền để mua một chiếc laptop mới.', 'save money, laptop'),
+  ('advanced', 'shopping-money', 'Nhiều người tiêu dùng bị thuyết phục mua những thứ họ thật sự không cần.', 'consumers, persuaded, actually need'),
+  ('beginner', 'food-drink', 'Tôi thích ăn phở vào bữa sáng.', 'like, pho, breakfast'),
+  ('intermediate', 'food-drink', 'Món canh này hơi mặn, bạn có thể thêm chút nước không?', 'soup, salty, add water'),
+  ('advanced', 'food-drink', 'Ẩm thực địa phương phản ánh lịch sử và khí hậu của cả một vùng.', 'cuisine, reflect, climate, region'),
+  ('beginner', 'entertainment-leisure', 'Chúng tôi xem phim vào tối thứ Bảy.', 'watch a movie, Saturday evening'),
+  ('intermediate', 'entertainment-leisure', 'Cuối tuần này bạn có muốn đi xem hòa nhạc với tôi không?', 'concert, this weekend, would you like'),
+  ('advanced', 'entertainment-leisure', 'Thời gian rảnh được dùng tốt có thể giúp con người hồi phục và sáng tạo hơn.', 'leisure time, recover, creative'),
+  ('beginner', 'nature-environment', 'Hôm nay trời nắng và đẹp.', 'sunny, beautiful'),
+  ('intermediate', 'nature-environment', 'Chúng ta nên giảm rác thải nhựa để bảo vệ biển.', 'reduce, plastic waste, protect, ocean'),
+  ('advanced', 'nature-environment', 'Biến đổi khí hậu đang đe dọa nhiều loài động vật đến mức tuyệt chủng.', 'climate change, threaten, species, extinction'),
+  ('beginner', 'science-technology', 'Điện thoại của tôi hết pin.', 'phone, battery, run out'),
+  ('intermediate', 'science-technology', 'Trí tuệ nhân tạo đang thay đổi cách chúng ta làm việc.', 'artificial intelligence, change, the way'),
+  ('advanced', 'science-technology', 'Tiến bộ công nghệ chỉ thật sự có ích khi nó đi kèm trách nhiệm đạo đức.', 'technological progress, beneficial, ethical responsibility'),
+  ('beginner', 'culture-society', 'Tết là ngày lễ quan trọng nhất ở Việt Nam.', 'Tet, holiday, important'),
+  ('intermediate', 'culture-society', 'Ở nước tôi, người trẻ thường sống chung với cha mẹ cho đến khi lập gia đình.', 'young people, live with parents, get married'),
+  ('advanced', 'culture-society', 'Sự khác biệt giữa các thế hệ có thể là nguồn xung đột, nhưng cũng là cơ hội để học hỏi.', 'generational differences, conflict, opportunity'),
+  ('beginner', 'government-politics', 'Thị trưởng sống ở thành phố này.', 'mayor, city'),
+  ('intermediate', 'government-politics', 'Công dân từ mười tám tuổi trở lên có quyền bỏ phiếu.', 'citizens, aged eighteen, right to vote'),
+  ('advanced', 'government-politics', 'Một chính phủ minh bạch dễ nhận được sự tin tưởng của người dân hơn.', 'transparent, government, public trust'),
+  ('beginner', 'history-geography', 'Hà Nội là thủ đô của Việt Nam.', 'capital'),
+  ('intermediate', 'history-geography', 'Sông Mê Kông chảy qua nhiều quốc gia trước khi ra biển.', 'Mekong River, flow through, countries, reach the sea'),
+  ('advanced', 'history-geography', 'Hiểu lịch sử giúp chúng ta tránh lặp lại những sai lầm của quá khứ.', 'understanding history, avoid repeating, mistakes'),
+  ('beginner', 'sports-fitness', 'Tôi chạy bộ mỗi buổi sáng.', 'jog, every morning'),
+  ('intermediate', 'sports-fitness', 'Đội của chúng tôi đã thắng trận đấu sau một hiệp phụ căng thẳng.', 'team, win, match, extra time, tense'),
+  ('advanced', 'sports-fitness', 'Tập thể dục đều đặn không chỉ rèn luyện cơ thể mà còn cải thiện tinh thần.', 'regular exercise, improve, mental health'),
+  ('beginner', 'arts-literature', 'Tôi thích đọc truyện ngắn.', 'short stories'),
+  ('intermediate', 'arts-literature', 'Bức tranh này làm tôi nhớ về tuổi thơ ở quê.', 'painting, remind, childhood, hometown'),
+  ('advanced', 'arts-literature', 'Một tác phẩm hay không đưa ra câu trả lời mà khiến người đọc đặt ra câu hỏi.', 'work of art, provide answers, raise questions'),
+  ('beginner', 'religion-spirituality', 'Gia đình tôi đi chùa vào ngày rằm.', 'temple, full moon day'),
+  ('intermediate', 'religion-spirituality', 'Nhiều người tìm đến thiền để giảm căng thẳng và tìm sự bình yên.', 'meditation, reduce stress, inner peace'),
+  ('advanced', 'religion-spirituality', 'Tôn trọng tín ngưỡng của người khác là nền tảng của một xã hội hòa hợp.', 'respect, beliefs, foundation, harmonious society'),
+  ('beginner', 'law-justice', 'Chúng ta phải tuân theo luật.', 'obey, law'),
+  ('intermediate', 'law-justice', 'Người lái xe phải có bằng lái và bảo hiểm hợp lệ.', 'driver, license, valid insurance'),
+  ('advanced', 'law-justice', 'Mọi người đều bình đẳng trước pháp luật, bất kể địa vị hay tài sản.', 'equal before the law, regardless of, status, wealth'),
+  ('beginner', 'philosophy-ethics', 'Nói thật là việc tốt.', 'telling the truth, good'),
+  ('intermediate', 'philosophy-ethics', 'Có lúc chúng ta phải chọn giữa điều đúng và điều dễ dàng.', 'choose between, right, easy'),
+  ('advanced', 'philosophy-ethics', 'Liệu một hành động có thể được coi là đạo đức nếu nó chỉ xuất phát từ nỗi sợ bị trừng phạt?', 'moral, stem from, fear of punishment')
+) as v(level, category, vietnamese, hint)
+where not exists (
+  select 1 from public.prompts p
+  where p.writing_type = 'sentence' and p.difficulty = v.level and p.category = v.category and p.prompt_text = v.vietnamese
+);

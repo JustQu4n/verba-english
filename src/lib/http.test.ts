@@ -1,7 +1,13 @@
 import { redirect } from "next/navigation";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { InfrastructureError, NotFoundError, UnauthorizedError, ValidationError } from "@/core/errors";
+import {
+  ForbiddenError,
+  InfrastructureError,
+  NotFoundError,
+  UnauthorizedError,
+  ValidationError,
+} from "@/core/errors";
 
 import { handle, toErrorResponse } from "./http";
 
@@ -22,6 +28,10 @@ describe("toErrorResponse", () => {
 
   it("CORE-AC-04: UnauthorizedError → 401", () => {
     expect(toErrorResponse(new UnauthorizedError("x")).status).toBe(401);
+  });
+
+  it("CORE-AC-11: ForbiddenError → 403", () => {
+    expect(toErrorResponse(new ForbiddenError("x")).status).toBe(403);
   });
 
   it("CORE-AC-05: NotFoundError → 404", () => {

@@ -34,7 +34,7 @@ beforeEach(() => {
 afterEach(() => vi.unstubAllEnvs());
 
 describe("updateSession — route protection", () => {
-  it.each(["/dashboard", "/dashboard/settings"])(
+  it.each(["/dashboard", "/dashboard/settings", "/admin", "/admin/prompts/new"])(
     "AUTH-AC-12: guest visiting %s is redirected to /login",
     async (path) => {
       mockSupabase(null);

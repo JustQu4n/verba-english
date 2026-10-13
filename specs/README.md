@@ -14,5 +14,7 @@ Mẫu ở `_templates/`. Nguyên tắc ở [constitution.md](./constitution.md).
 | [006-navbar-profile](./006-navbar-profile/spec.md) | Tên, email, ảnh đại diện và menu tài khoản trên thanh điều hướng | `NAV` |
 | [007-i18n](./007-i18n/spec.md) | Đa ngôn ngữ Tiếng Việt / English | `I18N` |
 | [008-email-auth](./008-email-auth/spec.md) | Đăng ký và đăng nhập bằng email + mật khẩu | `EML` |
+| [009-writing-sentence](./009-writing-sentence/spec.md) | Luyện viết câu: chọn trình độ, chủ đề, màn luyện viết | `WSN` |
+| [010-admin-prompts](./010-admin-prompts/spec.md) | Khu Admin: quyền quản trị và CRUD đề bài | `APR` |
 
 Kiểm tra mọi AC đều có test: `npm run specs:check`.

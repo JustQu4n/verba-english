@@ -20,6 +20,7 @@ export default defineConfig({
         "src/lib/profile-display.ts",
         "src/lib/form-errors.ts",
         "src/lib/auth-form.ts",
+        "src/lib/prompt-form.ts",
         "src/i18n/locale-path.ts",
         "src/app/auth/callback/route.ts",
         "src/infrastructure/supabase/proxy.ts",
