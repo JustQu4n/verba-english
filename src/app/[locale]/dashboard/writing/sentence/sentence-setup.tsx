@@ -6,7 +6,8 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { CATEGORIES, LEVELS, type Category, type Level } from "@/modules/writing/domain/sentence-catalog";
-import type { SentenceProgress } from "@/modules/writing/domain/sentence-progress";
+import type { LevelProgress } from "@/modules/writing/application/get-level-progress";
+import { progressPercent } from "@/modules/writing/domain/sentence-progress";
 
 import { CATEGORY_ICONS } from "./category-icons";
 import { ChoiceCard } from "./choice-card";
@@ -18,8 +19,8 @@ interface SentenceSetupProps {
   onCategoryChange: (category: Category) => void;
   onStart: () => void;
   starting: boolean;
-  /** Progress of the chosen pair, once known. */
-  progress: SentenceProgress | null;
+  /** Progress of every category in the chosen level, once known. */
+  progress: LevelProgress | null;
   error: "unauthorized" | "not_found" | "unknown" | null;
 }
 
@@ -47,6 +48,7 @@ export function SentenceSetup({
 }: SentenceSetupProps) {
   const t = useTranslations("Sentence");
   const ready = level !== null && category !== null;
+  const pairProgress = category && progress ? progress[category] : null;
 
   return (
     <>
@@ -98,6 +100,7 @@ export function SentenceSetup({
           >
             {CATEGORIES.map((c) => {
               const Icon = CATEGORY_ICONS[c];
+              const done = progress?.[c];
               return (
                 <ChoiceCard
                   key={c}
@@ -108,7 +111,29 @@ export function SentenceSetup({
                   className="min-h-28 flex-col items-start justify-between gap-4 p-4"
                 >
                   <Icon className="size-6" strokeWidth={1.75} aria-hidden="true" />
-                  <span className="text-sm leading-snug font-semibold">{t(`categories.${c}`)}</span>
+                  <span className="flex w-full flex-col gap-2">
+                    <span className="text-sm leading-snug font-semibold">{t(`categories.${c}`)}</span>
+                    {done && done.completed > 0 && (
+                      <span className="flex items-center gap-2">
+                        <span
+                          role="progressbar"
+                          aria-label={`${t(`categories.${c}`)}: ${t("progressLabel")}`}
+                          aria-valuemin={0}
+                          aria-valuemax={done.total}
+                          aria-valuenow={done.completed}
+                          className="h-1.5 flex-1 overflow-hidden rounded-full bg-current/20"
+                        >
+                          <span
+                            className="block h-full rounded-full bg-current transition-[width] duration-500 motion-reduce:transition-none"
+                            style={{ width: `${progressPercent(done)}%` }}
+                          />
+                        </span>
+                        <span className="shrink-0 text-xs tabular-nums opacity-70">
+                          {done.completed}/{done.total}
+                        </span>
+                      </span>
+                    )}
+                  </span>
                 </ChoiceCard>
               );
             })}
@@ -124,10 +149,10 @@ export function SentenceSetup({
                 <span className="font-semibold text-foreground">{t(`categories.${category}`)}</span>
                 {" · "}
                 {t(`levels.${level}.name`)}
-                {progress && (
+                {pairProgress && (
                   <>
                     {" · "}
-                    {t("progressDone", { completed: progress.completed, total: progress.total })}
+                    {t("progressDone", { completed: pairProgress.completed, total: pairProgress.total })}
                   </>
                 )}
               </>

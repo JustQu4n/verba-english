@@ -13,6 +13,8 @@ Then run `supabase/migrations/0007_points.sql`. It adds `profiles.points` (10 po
 
 Then run `supabase/migrations/0008_accepted_answers.sql`. It adds `prompt_answers` (accepted answers per prompt, readable by admins only). An answer that equals an accepted answer is graded correct without the AI, so it also works when the AI quota is used up. Admins fill them in the prompt form ("Accepted answers"), optionally with the "Suggest with AI" button. Server code reads them with `SUPABASE_SERVICE_ROLE_KEY`; if that read fails, grading falls back to the AI.
 
+Then run `supabase/migrations/0009_sentence_progress_table.sql`. It adds `sentence_progress`, a per-learner counter of completed sentences by level and category that the choose screen reads (it backfills from existing completions, and is rebuilt automatically when an admin deletes, unpublishes or moves a prompt).
+
 ## 2. Gemini key
 1. Create a key at <https://aistudio.google.com/apikey>.
 2. Put it in `.env.local` as `GEMINI_API_KEY=...` and in your hosting provider's environment variables (Vercel: Project → Settings → Environment Variables), then redeploy.

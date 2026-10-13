@@ -18,7 +18,7 @@ beforeEach(() => {
     profiles: { findById: vi.fn() },
     roles: { isAdmin: vi.fn() },
     prompts: fakePromptRepo(),
-    sentencePrompts: { list: vi.fn(), get: vi.fn() },
+    sentencePrompts: { list: vi.fn(), get: vi.fn(), countByCategory: vi.fn() },
     credits: fakeCredits(),
     grader: { grade: vi.fn() },
     gradeCache: { get: vi.fn(), set: vi.fn() },

@@ -6,9 +6,10 @@ import { useCredits } from "@/components/dashboard/credits-context";
 import { DEFAULT_GRADING_MODE, type GradingMode } from "@/modules/writing/domain/grading-mode";
 import { normalizeAnswer } from "@/modules/writing/domain/sentence-answer";
 import type { Category, Level, SentencePrompt } from "@/modules/writing/domain/sentence-catalog";
+import type { LevelProgress } from "@/modules/writing/application/get-level-progress";
 import type { SentenceProgress } from "@/modules/writing/domain/sentence-progress";
 
-import { gradeAnswer, nextSentence, sentenceProgress, type NextSentenceResult } from "./actions";
+import { gradeAnswer, levelProgress, nextSentence, type NextSentenceResult } from "./actions";
 import { hasPassed, type FeedbackState } from "./feedback-state";
 import { SentenceDone } from "./sentence-done";
 import { SentencePractice } from "./sentence-practice";
@@ -23,7 +24,9 @@ export function SentenceWriting() {
   const [level, setLevel] = useState<Level | null>(null);
   const [category, setCategory] = useState<Category | null>(null);
   const [prompt, setPrompt] = useState<SentencePrompt | null>(null);
-  const [seenIds, setSeenIds] = useState<string[]>([]);
+  // Sentences shown so far in this visit and the one on screen, so the learner can step back and forward.
+  const [history, setHistory] = useState<SentencePrompt[]>([]);
+  const [position, setPosition] = useState(0);
   const [answer, setAnswer] = useState("");
   const [hintOpen, setHintOpen] = useState(false);
   const [feedback, setFeedback] = useState<FeedbackState>(IDLE);
@@ -35,8 +38,8 @@ export function SentenceWriting() {
   // Fireworks only when the pair was finished in this visit, not when the learner returns to a finished pair.
   const [celebrate, setCelebrate] = useState(false);
   const completedNow = useRef(false);
-  // Progress shown on the choose screen, tagged with the pair it belongs to so a stale answer is never shown.
-  const [setupProgress, setSetupProgress] = useState<{ key: string; progress: SentenceProgress } | null>(null);
+  // Progress of every category shown on the choose screen, tagged with its level so a stale answer is never shown.
+  const [setupProgress, setSetupProgress] = useState<{ level: Level; progress: LevelProgress } | null>(null);
   const [error, setError] = useState<FailureReason | null>(null);
   const [pending, startTransition] = useTransition();
   // A grade that arrives after the learner left the sentence must not show up on the next one.
@@ -48,6 +51,15 @@ export function SentenceWriting() {
     setFeedback(IDLE);
   }
 
+  function finish(done: SentenceProgress) {
+    currentPromptId.current = null;
+    setPrompt(null);
+    setProgress(done);
+    setAllDone(true);
+    setCelebrate(completedNow.current);
+    completedNow.current = false;
+  }
+
   function loadSentence(seen: string[]) {
     if (!level || !category) return;
     setError(null);
@@ -55,25 +67,41 @@ export function SentenceWriting() {
       const result = await nextSentence({ level, category, seenIds: seen });
       if (result.status === "error") return setError(result.reason);
       setProgress(result.progress);
-      if (!result.prompt) {
-        currentPromptId.current = null;
-        setPrompt(null);
-        setAllDone(true);
-        setCelebrate(completedNow.current);
-        completedNow.current = false;
-        return;
-      }
-      currentPromptId.current = result.prompt.id;
-      setPrompt(result.prompt);
-      setSeenIds([...seen, result.prompt.id]);
+      if (!result.prompt) return finish(result.progress);
+      const next = result.prompt;
+      currentPromptId.current = next.id;
+      setPrompt(next);
+      setHistory((previous) => [...previous.slice(0, seen.length), next]);
+      setPosition(seen.length);
       resetSentence();
     });
+  }
+
+  function showFromHistory(index: number) {
+    const target = history[index];
+    if (!target) return;
+    setError(null);
+    currentPromptId.current = target.id;
+    setPrompt(target);
+    setPosition(index);
+    resetSentence();
+  }
+
+  function goBack() {
+    if (position > 0) showFromHistory(position - 1);
+  }
+
+  /** Forward through sentences already seen, then on to a new one. */
+  function goNext() {
+    if (position < history.length - 1) showFromHistory(position + 1);
+    else loadSentence(history.map((item) => item.id));
   }
 
   function quit() {
     currentPromptId.current = null;
     setPrompt(null);
-    setSeenIds([]);
+    setHistory([]);
+    setPosition(0);
     setAllDone(false);
     setCelebrate(false);
     completedNow.current = false;
@@ -95,23 +123,27 @@ export function SentenceWriting() {
       if (result.points) {
         setPoints(result.points.total);
         completedNow.current = true;
+        // The last sentence of the pair: go straight to the finish page, no extra click.
+        if (result.progress && result.progress.total > 0 && result.progress.completed >= result.progress.total) {
+          return finish(result.progress);
+        }
       }
       setFeedback({ status: "graded", grade: result.grade, answer: normalizeAnswer(answer), earned: result.points?.earned ?? 0, mode, source: result.source });
     });
   }
 
-  // On the choose screen, look up how far the learner is in the chosen pair.
-  const pairKey = level && category && !prompt && !allDone ? `${level}/${category}` : null;
+  // On the choose screen, look up how far the learner is in each category of the chosen level.
+  const setupLevel = level && !prompt && !allDone ? level : null;
   useEffect(() => {
-    if (!pairKey || !level || !category) return;
+    if (!setupLevel) return;
     let cancelled = false;
-    void sentenceProgress({ level, category }).then((result) => {
-      if (!cancelled && result.status === "ok") setSetupProgress({ key: pairKey, progress: result.progress });
+    void levelProgress({ level: setupLevel }).then((result) => {
+      if (!cancelled && result.status === "ok") setSetupProgress({ level: setupLevel, progress: result.progress });
     });
     return () => {
       cancelled = true;
     };
-  }, [pairKey, level, category]);
+  }, [setupLevel]);
 
   if (allDone && level && category && progress) {
     return <SentenceDone level={level} category={category} progress={progress} celebrate={celebrate} onBack={quit} />;
@@ -134,8 +166,9 @@ export function SentenceWriting() {
         mode={mode}
         onModeChange={setMode}
         onSubmit={submit}
-        onSkip={() => loadSentence(seenIds)}
-        onNext={() => loadSentence(seenIds)}
+        canGoBack={position > 0}
+        onBack={goBack}
+        onNext={goNext}
         onQuit={quit}
         loading={pending && feedback.status !== "grading"}
         error={error}
@@ -151,7 +184,7 @@ export function SentenceWriting() {
       onCategoryChange={setCategory}
       onStart={() => loadSentence([])}
       starting={pending}
-      progress={setupProgress && setupProgress.key === pairKey ? setupProgress.progress : null}
+      progress={setupProgress && setupProgress.level === level ? setupProgress.progress : null}
       error={error}
     />
   );

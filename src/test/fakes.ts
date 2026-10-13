@@ -88,6 +88,7 @@ export function fakeGrader(grade: SentenceGrade = sampleGrade()): SentenceGrader
 export function fakeProgress(done: string[] = [], overrides: Partial<SentenceProgressStore> = {}): SentenceProgressStore {
   return {
     completedIds: vi.fn().mockResolvedValue(new Set(done)),
+    completedByCategory: vi.fn().mockResolvedValue({}),
     markCompleted: vi.fn().mockResolvedValue({ awarded: 10, totalPoints: 10 }),
     ...overrides,
   };

@@ -83,4 +83,18 @@ describe("SupabaseSentencePromptSource", () => {
     await expect(promise).rejects.toBeInstanceOf(InfrastructureError);
     await expect(promise).rejects.not.toThrow(/relation/);
   });
+
+  it("SPG-AC-14: counts published sentence prompts per category of a level", async () => {
+    const { source, calls } = sourceReturning({
+      data: [{ category: "food-drink" }, { category: "food-drink" }, { category: "everyday-life" }, { category: null }],
+      error: null,
+    });
+    await expect(source.countByCategory("beginner")).resolves.toEqual({ "food-drink": 2, "everyday-life": 1 });
+    const eq = calls.filter(([n]) => n === "eq").map(([, a]) => a);
+    expect(eq).toEqual(expect.arrayContaining([["writing_type", "sentence"], ["is_published", true], ["difficulty", "beginner"]]));
+  });
+
+  it("SPG-AC-14: a failing count is an infrastructure error", async () => {
+    await expect(sourceReturning({ data: null, error: { message: "boom" } }).source.countByCategory("beginner")).rejects.toBeInstanceOf(InfrastructureError);
+  });
 });

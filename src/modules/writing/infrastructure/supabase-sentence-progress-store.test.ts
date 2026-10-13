@@ -46,6 +46,20 @@ describe("SupabaseSentenceProgressStore", () => {
     await expect(readStore({ data: null, error: null }).store.completedIds("u1", selection)).resolves.toEqual(new Set());
   });
 
+  it("SPG-AC-14: reads the stored counters of the level, keeping only known categories", async () => {
+    const { store, from, calls } = readStore({
+      data: [{ category: "food-drink", completed: 2 }, { category: "unknown", completed: 9 }],
+      error: null,
+    });
+    await expect(store.completedByCategory("u1", "beginner")).resolves.toEqual({ "food-drink": 2 });
+    expect(from).toHaveBeenCalledWith("sentence_progress");
+    expect(calls.filter(([n]) => n === "eq").map(([, a]) => a)).toEqual([["user_id", "u1"], ["difficulty", "beginner"]]);
+  });
+
+  it("SPG-AC-14: a failing counter read is an infrastructure error", async () => {
+    await expect(readStore({ data: null, error: { message: "boom" } }).store.completedByCategory("u1", "beginner")).rejects.toBeInstanceOf(InfrastructureError);
+  });
+
   function writerStore(result: unknown) {
     const rpc = vi.fn().mockResolvedValue(result);
     const store = new SupabaseSentenceProgressStore({} as SupabaseClient, () => ({ rpc }) as unknown as SupabaseClient);

@@ -3,10 +3,10 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { InfrastructureError } from "@/core/errors";
 
 import type { CompletionResult, SentenceProgressStore } from "../application/sentence-progress-store";
-import type { SentenceSelection } from "../domain/sentence-catalog";
+import { CATEGORIES, type Category, type Level, type SentenceSelection } from "../domain/sentence-catalog";
 
 /**
- * Completions live in `sentence_completions`. Reads use the user's session (row level security keeps each user to
+ * Completions live in `sentence_completions`; per-category counters, kept up to date by the database, live in `sentence_progress`. Reads use the user's session (row level security keeps each user to
  * their own rows). Writes go through the database function complete_sentence with a privileged client that is
  * created only when a write happens: users cannot write completions or points themselves.
  */
@@ -37,6 +37,22 @@ export class SupabaseSentenceProgressStore implements SentenceProgressStore {
       .returns<{ prompt_id: string }[]>();
     if (error) throw new InfrastructureError("Could not read completed sentences", { cause: error });
     return new Set((data ?? []).map((row) => row.prompt_id));
+  }
+
+  async completedByCategory(userId: string, level: Level): Promise<Partial<Record<Category, number>>> {
+    const { data, error } = await this.client
+      .from("sentence_progress")
+      .select("category, completed")
+      .eq("user_id", userId)
+      .eq("difficulty", level)
+      .returns<{ category: string; completed: number }[]>();
+    if (error) throw new InfrastructureError("Could not read sentence progress", { cause: error });
+    const counts: Partial<Record<Category, number>> = {};
+    for (const row of data ?? []) {
+      const known = CATEGORIES.find((c) => c === row.category);
+      if (known) counts[known] = row.completed;
+    }
+    return counts;
   }
 
   async markCompleted(userId: string, promptId: string): Promise<CompletionResult> {
