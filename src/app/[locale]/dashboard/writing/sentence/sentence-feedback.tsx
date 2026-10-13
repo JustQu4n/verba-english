@@ -3,7 +3,6 @@
 import { Check, Loader2, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 import type { FeedbackState } from "./feedback-state";
@@ -11,13 +10,10 @@ import type { FeedbackState } from "./feedback-state";
 interface SentenceFeedbackProps {
   feedback: FeedbackState;
   /** The answer was graded correct and is unchanged: the learner may continue. */
-  passed: boolean;
-  onNext: () => void;
-  loading: boolean;
 }
 
 /** AI feedback for the last submitted answer. Wrong answers keep the learner here until they are right. */
-export function SentenceFeedback({ feedback, passed, onNext, loading }: SentenceFeedbackProps) {
+export function SentenceFeedback({ feedback }: SentenceFeedbackProps) {
   const t = useTranslations("Sentence");
 
   return (
@@ -100,11 +96,6 @@ export function SentenceFeedback({ feedback, passed, onNext, loading }: Sentence
         )}
       </div>
 
-      {passed && (
-        <Button className="mt-5" onClick={onNext} disabled={loading}>
-          {t("next")}
-        </Button>
-      )}
     </section>
   );
 }

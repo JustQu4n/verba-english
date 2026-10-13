@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, Lightbulb, Send, SkipForward } from "lucide-react";
+import { ArrowLeft, ChevronLeft, ChevronRight, Lightbulb, Send } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState, type KeyboardEvent } from "react";
 
@@ -32,7 +32,8 @@ interface SentencePracticeProps {
   mode: GradingMode;
   onModeChange: (mode: GradingMode) => void;
   onSubmit: () => void;
-  onSkip: () => void;
+  canGoBack: boolean;
+  onBack: () => void;
   onNext: () => void;
   onQuit: () => void;
   loading: boolean;
@@ -55,7 +56,8 @@ export function SentencePractice({
   mode,
   onModeChange,
   onSubmit,
-  onSkip,
+  canGoBack,
+  onBack,
   onNext,
   onQuit,
   loading,
@@ -144,26 +146,28 @@ export function SentencePractice({
       </div>
 
       <fieldset className="mt-4" disabled={grading || passed}>
-        <legend className="text-sm font-medium">{t("gradeMode.label")}</legend>
-        <div className="mt-2 grid gap-2 sm:grid-cols-2">
-          {GRADING_MODES.map((option) => (
-            <label
-              key={option}
-              className="flex cursor-pointer flex-col gap-0.5 rounded-lg border px-4 py-3 transition-colors hover:border-foreground has-[:checked]:border-foreground has-[:checked]:bg-foreground has-[:checked]:text-background has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-60 has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2"
-            >
-              <input
-                type="radio"
-                name="grading-mode"
-                value={option}
-                checked={mode === option}
-                onChange={() => onModeChange(option)}
-                className="sr-only"
-              />
-              <span className="text-sm font-semibold">{t(`gradeMode.${option}`)}</span>
-              <span className="text-xs opacity-80">{t(`gradeMode.${option}Help`)}</span>
-            </label>
-          ))}
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+          <legend className="float-left text-sm font-medium">{t("gradeMode.label")}</legend>
+          <div className="inline-flex rounded-full border bg-muted p-1">
+            {GRADING_MODES.map((option) => (
+              <label
+                key={option}
+                className="cursor-pointer rounded-full px-4 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground has-[:checked]:bg-foreground has-[:checked]:text-background has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-60 has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2"
+              >
+                <input
+                  type="radio"
+                  name="grading-mode"
+                  value={option}
+                  checked={mode === option}
+                  onChange={() => onModeChange(option)}
+                  className="sr-only"
+                />
+                {t(`gradeMode.${option}`)}
+              </label>
+            ))}
+          </div>
         </div>
+        <p className="mt-2 text-xs text-muted-foreground">{t(`gradeMode.${mode}Help`)}</p>
       </fieldset>
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
@@ -172,15 +176,19 @@ export function SentencePractice({
           {t("quit")}
         </Button>
         <div className="flex flex-wrap items-center gap-2">
-          <Button variant="outline" onClick={onSkip} disabled={loading || grading}>
-            <SkipForward aria-hidden="true" />
-            {t("skip")}
+          <Button variant="outline" onClick={onBack} disabled={!canGoBack || loading || grading}>
+            <ChevronLeft aria-hidden="true" />
+            {t("previous")}
+          </Button>
+          <Button variant={passed ? "default" : "outline"} onClick={onNext} disabled={loading || grading}>
+            {t("next")}
+            <ChevronRight aria-hidden="true" />
           </Button>
           <Button variant="outline" onClick={onToggleHint} aria-pressed={hintOpen}>
             <Lightbulb aria-hidden="true" />
             {hintOpen ? t("hideHint") : t("hint")}
           </Button>
-          <Button onClick={onSubmit} disabled={!canSubmit}>
+          <Button variant={passed ? "outline" : "default"} onClick={onSubmit} disabled={!canSubmit}>
             <Send aria-hidden="true" />
             {grading ? t("grading") : t("submit")}
           </Button>
@@ -204,12 +212,7 @@ export function SentencePractice({
         </p>
       )}
 
-      <SentenceFeedback
-        feedback={feedback}
-        passed={passed}
-        onNext={onNext}
-        loading={loading}
-      />
+<SentenceFeedback feedback={feedback} />
     </div>
   );
 }

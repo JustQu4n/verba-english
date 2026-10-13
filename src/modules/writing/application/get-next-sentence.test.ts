@@ -19,7 +19,7 @@ const user = { id: "u1", email: "a@b.co" };
 const selection = { level: "beginner", category: "food-drink" };
 
 function setup(prompts: SentencePrompt[] = [prompt("a"), prompt("b"), prompt("c")], signedIn = true, done: string[] = []) {
-  const source: SentencePromptSource = { list: vi.fn().mockResolvedValue(prompts), get: vi.fn() };
+  const source: SentencePromptSource = { list: vi.fn().mockResolvedValue(prompts), get: vi.fn(), countByCategory: vi.fn() };
   const progress = fakeProgress(done);
   const auth = fakeAuth({ getCurrentUser: vi.fn().mockResolvedValue(signedIn ? user : null) });
   return { source, progress, deps: { auth, prompts: source, progress, random: () => 0 } };

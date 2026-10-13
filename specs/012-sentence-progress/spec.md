@@ -38,6 +38,9 @@ Người học chỉ sang được câu tiếp theo khi đã viết đúng câu 
 - **SPG-AC-11** `manual` Làm xong mọi câu của một cặp thì hiện màn chúc mừng với nút quay lại chọn chủ đề khác.
 - **SPG-AC-12** `manual` Dùng được ở 390px không cuộn ngang, đủ chữ Tiếng Việt và English, thanh tiến độ có nhãn cho trình đọc màn hình.
 - **SPG-AC-13** `manual` Given người học, when thử xóa hoặc sửa lịch sử bằng phiên của mình, or tự ghi một câu bằng phiên của mình, then bị từ chối (chỉ máy chủ ghi được). *Kiểm tra:* lệnh SQL trong `docs/ai-grading-setup.md`.
+- **SPG-AC-14** Given người học đã đăng nhập, when lấy tiến độ theo trình độ, then nhận tiến độ (đã làm/tổng) của từng chủ đề trong trình độ đó, đọc từ bảng đếm `sentence_progress` (mỗi người chỉ đọc được của mình) và số đề đã đăng, đã làm không vượt tổng; khách bị từ chối và trình độ sai bị loại trước khi đọc dữ liệu.
+- **SPG-AC-15** `manual` Ở màn chọn, sau khi chọn trình độ, mỗi thẻ chủ đề đã có ít nhất một câu hoàn thành hiện thanh tiến độ nhỏ và số "đã làm/tổng" ở cuối thẻ; chủ đề chưa làm không có thanh; thanh đọc được trên thẻ đang chọn (nền đen) và ở 390px. *Kiểm tra:* làm vài câu ở hai chủ đề rồi quay lại màn chọn, đổi trình độ.
+- **SPG-AC-16** `manual` Bảng `sentence_progress` luôn khớp dữ liệu thật: hoàn thành câu mới thì tăng 1 trong cùng giao dịch với `sentence_completions`; làm lại câu cũ không tăng; admin xóa, gỡ đăng hoặc đổi chủ đề/trình độ của đề thì bảng được dựng lại; người học không ghi được vào bảng. *Kiểm tra:* chạy migration 0009 (có backfill), làm một câu, rồi xóa/gỡ đăng một đề đã làm và xem bảng.
 
 ## 6. Ràng buộc phi chức năng & bảo mật
 - Người học chỉ thấy và ghi được lịch sử của chính mình (RLS); không có quyền sửa hoặc xóa.

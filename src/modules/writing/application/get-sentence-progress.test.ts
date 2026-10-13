@@ -11,7 +11,7 @@ const p = (id: string): SentencePrompt => ({ id, level: "beginner", category: "f
 const selection = { level: "beginner", category: "food-drink" };
 
 function deps(done: string[], signedIn = true) {
-  const prompts = { list: vi.fn().mockResolvedValue([p("a"), p("b"), p("c"), p("d")]), get: vi.fn() };
+  const prompts = { list: vi.fn().mockResolvedValue([p("a"), p("b"), p("c"), p("d")]), get: vi.fn(), countByCategory: vi.fn() };
   const progress = fakeProgress(done);
   const auth = fakeAuth({ getCurrentUser: vi.fn().mockResolvedValue(signedIn ? ADMIN_USER : null) });
   return { auth, prompts, progress };

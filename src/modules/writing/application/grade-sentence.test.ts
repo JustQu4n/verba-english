@@ -18,7 +18,7 @@ const prompt: SentencePrompt = {
 };
 
 function deps(overrides: Partial<GradeSentenceDeps> = {}): GradeSentenceDeps {
-  const prompts: SentencePromptSource = { list: vi.fn().mockResolvedValue([prompt]), get: vi.fn().mockResolvedValue(prompt) };
+  const prompts: SentencePromptSource = { list: vi.fn().mockResolvedValue([prompt]), get: vi.fn().mockResolvedValue(prompt), countByCategory: vi.fn() };
   return {
     auth: fakeAuth({ getCurrentUser: vi.fn().mockResolvedValue(ADMIN_USER) }),
     prompts,
@@ -55,7 +55,7 @@ describe("gradeSentence", () => {
   });
 
   it("AIG-AC-04: an unknown or unpublished prompt is not found and costs nothing", async () => {
-    const d = deps({ prompts: { list: vi.fn(), get: vi.fn().mockResolvedValue(null) } });
+    const d = deps({ prompts: { list: vi.fn(), get: vi.fn().mockResolvedValue(null), countByCategory: vi.fn() } });
     await expect(gradeSentence(d, { promptId: ID, answer: "I want" }, "vi")).rejects.toBeInstanceOf(NotFoundError);
     expect(d.grader.grade).not.toHaveBeenCalled();
     expect(d.credits.spend).not.toHaveBeenCalled();
@@ -93,7 +93,7 @@ describe("gradeSentence", () => {
   it("SPG-AC-06: a correct answer is recorded as completed and the new progress is returned", async () => {
     const progress = fakeProgress();
     vi.mocked(progress.completedIds).mockResolvedValueOnce(new Set([ID]));
-    const prompts: SentencePromptSource = { list: vi.fn().mockResolvedValue([prompt, { ...prompt, id: "other" }]), get: vi.fn().mockResolvedValue(prompt) };
+    const prompts: SentencePromptSource = { list: vi.fn().mockResolvedValue([prompt, { ...prompt, id: "other" }]), get: vi.fn().mockResolvedValue(prompt), countByCategory: vi.fn() };
     const d = deps({ grader: fakeGrader(sampleGrade({ correct: true, improvements: [] })), progress, prompts });
     const result = await gradeSentence(d, { promptId: ID, answer: "I want to go to the beach." }, "vi");
     expect(progress.markCompleted).toHaveBeenCalledWith(ADMIN_USER.id, ID);

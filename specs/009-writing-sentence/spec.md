@@ -38,11 +38,12 @@ Người học muốn luyện viết từng câu tiếng Anh: đọc một câu 
 - **WSN-AC-10** Given bài viết, when kiểm tra khả năng gửi, then bài dài hơn 300 ký tự (sau khi bỏ khoảng trắng hai đầu) không gửi được, đúng 300 ký tự thì gửi được.
 - **WSN-AC-11** `manual` Mục Writing → Sentence có trên dashboard và dẫn tới màn chọn; mục Paragraph hiện nhãn "Sắp có" và không bấm được; người chưa đăng nhập vào đường dẫn này bị chuyển về trang đăng nhập. *Kiểm tra:* mở `/dashboard` khi đã đăng nhập và khi chưa đăng nhập.
 - **WSN-AC-12** `manual` Màn chọn có ba thẻ trình độ và hai mươi thẻ chủ đề; chọn được bằng chuột hoặc bàn phím (Tab, Enter/Space); thẻ đang chọn đảo màu (nền đen chữ trắng) và có dấu tích; nút "Bắt đầu" bị vô hiệu cho tới khi chọn đủ cả hai. *Kiểm tra:* thử từng thẻ, thử chỉ chọn một mục.
-- **WSN-AC-13** `manual` Màn luyện hiển thị chủ đề và trình độ đang chọn, tiến độ của cặp đang chọn, câu tiếng Việt cỡ lớn, ô nhập có bộ đếm ký tự, và các nút Thoát, Bỏ qua, Gợi ý, Gửi; nút Gửi bị vô hiệu khi bài không gửi được. *Kiểm tra:* bắt đầu một phiên và thử ô nhập rỗng, có chữ, vượt giới hạn.
-- **WSN-AC-14** `manual` Bỏ qua chuyển sang câu mới và xóa ô nhập; Gợi ý bật/tắt phần từ khóa tiếng Anh dưới câu; Thoát về màn chọn và giữ nguyên lựa chọn trước đó. *Kiểm tra:* bấm từng nút.
-- **WSN-AC-15** `manual` Bấm Gửi thì khung phản hồi hiện kết quả chấm của AI (xem spec 011); chỉ khi đúng mới có nút sang câu tiếp theo. *Kiểm tra:* gửi một bài sai rồi một bài đúng.
+- **WSN-AC-13** `manual` Màn luyện hiển thị chủ đề và trình độ đang chọn, tiến độ của cặp đang chọn, câu tiếng Việt cỡ lớn, ô nhập có bộ đếm ký tự, và một hàng nút: Thoát, Câu trước, Câu sau, Gợi ý, Gửi; nút Gửi bị vô hiệu khi bài không gửi được. *Kiểm tra:* bắt đầu một phiên và thử ô nhập rỗng, có chữ, vượt giới hạn.
+- **WSN-AC-14** `manual` Câu sau chuyển sang câu mới (hoặc câu đã xem nếu đang ở giữa) và xóa ô nhập, Câu trước quay lại câu đã xem (vô hiệu ở câu đầu); Gợi ý bật/tắt phần từ khóa tiếng Anh dưới câu; Thoát về màn chọn và giữ nguyên lựa chọn trước đó. *Kiểm tra:* bấm từng nút.
+- **WSN-AC-15** `manual` Bấm Gửi thì khung phản hồi hiện kết quả chấm của AI (xem spec 011); nút Câu sau luôn bấm được và nổi bật khi đã đúng. *Kiểm tra:* gửi một bài sai rồi một bài đúng.
 - **WSN-AC-16** `manual` Giao diện đen trắng (nền trắng, chữ đen, thẻ đang chọn nền đen), dùng được ở chiều rộng 390px không cuộn ngang, có viền focus nhìn rõ khi dùng bàn phím, và đủ chữ ở cả Tiếng Việt lẫn English. *Kiểm tra:* thu hẹp cửa sổ, dùng Tab, đổi ngôn ngữ.
 - **WSN-AC-17** `manual` Trong ô nhập, Enter gửi bài, Shift+Enter xuống dòng, Enter khi đang gõ bộ gõ (IME) không gửi; sau khi làm đúng, Enter sang câu tiếp theo; dưới ô nhập có dòng gợi ý phím. *Kiểm tra:* thử từng phím.
+- **WSN-AC-18** `manual` Làm đúng câu cuối cùng của cặp (tiến độ 100%) thì tự chuyển sang trang hoàn thành, không cần bấm Câu sau; làm lại câu đã đúng không kích hoạt lại. *Kiểm tra:* hoàn thành câu cuối của một cặp.
 
 ## 6. Ràng buộc phi chức năng & bảo mật
 - Bài viết của người học không được ghi log và chưa được lưu ở phạm vi này.

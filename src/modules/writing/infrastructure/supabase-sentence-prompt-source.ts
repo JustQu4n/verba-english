@@ -3,7 +3,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { InfrastructureError } from "@/core/errors";
 
 import type { SentencePromptSource } from "../application/sentence-prompt-source";
-import type { SentencePrompt, SentenceSelection } from "../domain/sentence-catalog";
+import { CATEGORIES, type Category, type Level, type SentencePrompt, type SentenceSelection } from "../domain/sentence-catalog";
 import type { PromptRow } from "./prompt-rows";
 import { toPrompt } from "./prompt-rows";
 
@@ -33,6 +33,23 @@ export class SupabaseSentencePromptSource implements SentencePromptSource {
       .map((row) => toPrompt({ ...row, is_published: true, created_at: "", updated_at: "" }))
       .filter((p): p is NonNullable<typeof p> => p !== null)
       .map(({ id, level: l, category: c, vietnamese, hint }) => ({ id, level: l, category: c, vietnamese, hint }));
+  }
+
+  async countByCategory(level: Level): Promise<Partial<Record<Category, number>>> {
+    const { data, error } = await this.client
+      .from("prompts")
+      .select("category")
+      .eq("writing_type", "sentence")
+      .eq("is_published", true)
+      .eq("difficulty", level)
+      .returns<{ category: string | null }[]>();
+    if (error) throw new InfrastructureError("Could not count sentence prompts", { cause: error });
+    const counts: Partial<Record<Category, number>> = {};
+    for (const { category } of data ?? []) {
+      const known = CATEGORIES.find((c) => c === category);
+      if (known) counts[known] = (counts[known] ?? 0) + 1;
+    }
+    return counts;
   }
 
   async get(id: string): Promise<SentencePrompt | null> {

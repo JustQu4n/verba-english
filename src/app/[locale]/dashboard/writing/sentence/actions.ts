@@ -11,6 +11,7 @@ import {
   ValidationError,
 } from "@/core/errors";
 import { gradeSentence } from "@/modules/writing/application/grade-sentence";
+import { getLevelProgress, type LevelProgress } from "@/modules/writing/application/get-level-progress";
 import { getSentenceProgress } from "@/modules/writing/application/get-sentence-progress";
 import { getNextSentence } from "@/modules/writing/application/get-next-sentence";
 import type { SentencePrompt } from "@/modules/writing/domain/sentence-catalog";
@@ -53,6 +54,21 @@ export async function sentenceProgress(input: unknown): Promise<SentenceProgress
   } catch (error) {
     unstable_rethrow(error);
     // The bar is a nicety: a failure just hides it.
+    if (!(error instanceof UnauthorizedError || error instanceof ValidationError)) console.error(error);
+    return { status: "error" };
+  }
+}
+
+export type LevelProgressResult = { status: "ok"; progress: LevelProgress } | { status: "error" };
+
+/** Progress of the signed-in user in every category of one level (for the choose screen). */
+export async function levelProgress(input: unknown): Promise<LevelProgressResult> {
+  try {
+    const { auth, sentencePrompts, sentenceProgress: store } = await getContainer();
+    return { status: "ok", progress: await getLevelProgress({ auth, prompts: sentencePrompts, progress: store }, input) };
+  } catch (error) {
+    unstable_rethrow(error);
+    // The bars are a nicety: a failure just hides them.
     if (!(error instanceof UnauthorizedError || error instanceof ValidationError)) console.error(error);
     return { status: "error" };
   }
