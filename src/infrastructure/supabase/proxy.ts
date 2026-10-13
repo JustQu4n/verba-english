@@ -5,7 +5,7 @@ import { localizePath, splitLocale } from "@/i18n/locale-path";
 
 import { getSupabaseEnv } from "./env";
 
-const PROTECTED_PREFIXES = ["/dashboard"];
+const PROTECTED_PREFIXES = ["/dashboard", "/admin"];
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });

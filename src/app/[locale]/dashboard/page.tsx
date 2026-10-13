@@ -1,15 +1,15 @@
-import { getFormatter, getLocale, getTranslations, setRequestLocale } from "next-intl/server";
+import { ArrowUpRight } from "lucide-react";
+import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { connection } from "next/server";
 import { Suspense } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { redirect } from "@/i18n/navigation";
 import { UnauthorizedError } from "@/core/errors";
+import { Link, redirect } from "@/i18n/navigation";
+import { toDisplayProfile } from "@/lib/profile-display";
 import { getMyProfile } from "@/modules/profile/application/get-my-profile";
 import { getContainer } from "@/server/container";
 
-async function UserCard() {
+async function Greeting() {
   // Opt in to request-time rendering before anything reads the clock (next-intl does).
   await connection();
   const { auth, profiles } = await getContainer();
@@ -17,33 +17,15 @@ async function UserCard() {
     if (error instanceof UnauthorizedError) return null;
     throw error;
   });
-  const [t, tCommon, format, locale] = await Promise.all([
+  const [t, tProfile, locale] = await Promise.all([
     getTranslations("Dashboard"),
-    getTranslations("Common"),
-    getFormatter(),
+    getTranslations("Profile"),
     getLocale(),
   ]);
   if (!me) return redirect({ href: "/login", locale });
 
-  return (
-    <>
-      <CardHeader>
-        <CardTitle>{t("title")}</CardTitle>
-        <CardDescription>{me.user.email}</CardDescription>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-3">
-        <p className="text-sm text-muted-foreground">
-          {t("joined", {
-            name: me.profile?.fullName ?? t("noName"),
-            date: me.profile ? format.dateTime(me.profile.createdAt, { dateStyle: "medium" }) : "—",
-          })}
-        </p>
-        <form action="/auth/signout" method="post">
-          <Button variant="outline" type="submit">{tCommon("signOut")}</Button>
-        </form>
-      </CardContent>
-    </>
-  );
+  const { name } = toDisplayProfile(me.user, me.profile, tProfile("anonymous"));
+  return <>{t("greeting", { name })}</>;
 }
 
 // The locale param is only known per request; these routes are prerendered for every
@@ -54,13 +36,44 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]/das
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("Dashboard");
+
   return (
-    <main className="flex min-h-screen items-center justify-center p-6">
-      <Card className="w-full max-w-md">
-        <Suspense fallback={<CardContent>{t("loading")}</CardContent>}>
-          <UserCard />
+    <div className="mx-auto w-full max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
+      <h1 className="text-4xl font-extrabold tracking-tighter text-balance italic sm:text-6xl">
+        <Suspense fallback={t("loading")}>
+          <Greeting />
         </Suspense>
-      </Card>
-    </main>
+      </h1>
+      <p className="mt-4 max-w-xl text-lg text-muted-foreground">{t("intro")}</p>
+
+      <section aria-labelledby="writing-heading" className="mt-14">
+        <h2 id="writing-heading" className="text-xl font-semibold tracking-tight">
+          {t("writing")}
+        </h2>
+        <div className="mt-5 grid gap-4 sm:grid-cols-2">
+          <Link
+            href="/dashboard/writing/sentence"
+            className="group flex min-h-48 flex-col justify-between rounded-2xl bg-foreground p-6 text-background transition-transform hover:-translate-y-0.5 focus-visible:outline-offset-4 sm:p-8"
+          >
+            <span className="flex items-start justify-between gap-4">
+              <span className="text-3xl font-extrabold tracking-tighter italic">{t("sentenceTitle")}</span>
+              <ArrowUpRight className="size-6 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+            </span>
+            <span className="max-w-xs text-base/relaxed text-background/75">{t("sentenceBody")}</span>
+          </Link>
+
+          <div
+            aria-disabled="true"
+            className="flex min-h-48 flex-col justify-between rounded-2xl border border-dashed p-6 text-muted-foreground sm:p-8"
+          >
+            <span className="flex items-start justify-between gap-4">
+              <span className="text-3xl font-extrabold tracking-tighter italic">{t("paragraphTitle")}</span>
+              <span className="rounded-full border px-3 py-1 text-xs font-medium">{t("soon")}</span>
+            </span>
+            <span className="max-w-xs text-base/relaxed">{t("paragraphBody")}</span>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }

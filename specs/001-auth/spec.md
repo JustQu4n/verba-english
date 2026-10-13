@@ -32,7 +32,7 @@ Người dùng cần tạo tài khoản và đăng nhập bằng email + mật k
 - **AUTH-AC-09** Given liên kết xác nhận có mã hợp lệ, when hoàn tất đăng nhập, then phiên được tạo; với mã không hợp lệ thì báo lỗi chưa xác thực.
 - **AUTH-AC-10** Given có phiên, when lấy người dùng hiện tại, then trả `{ id, email }`; không có phiên thì trả `null`.
 - **AUTH-AC-11** Given người dùng đã đăng nhập, when đăng xuất, then phiên bị hủy.
-- **AUTH-AC-12** Given khách chưa đăng nhập, when mở khu vực riêng tư (`/dashboard` và các đường dẫn con), then được chuyển về `/login`; người đã đăng nhập và các trang công khai thì đi tiếp bình thường.
+- **AUTH-AC-12** Given khách chưa đăng nhập, when mở khu vực riêng tư (`/dashboard`, `/admin` và các đường dẫn con), then được chuyển về `/login`; người đã đăng nhập và các trang công khai thì đi tiếp bình thường.
 - **AUTH-AC-13** `manual` Given đăng nhập thất bại, when gửi form, then thấy thông báo lỗi bằng ngôn ngữ đang dùng ngay trên form. *Kiểm tra:* nhập sai mật khẩu ở `/login`.
 
 ## 6. Ràng buộc phi chức năng & bảo mật

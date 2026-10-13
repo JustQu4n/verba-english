@@ -113,9 +113,181 @@
     }
   },
   "Dashboard": {
-    "title": "Dashboard",
-    "loading": "Loading...",
-    "noName": "No name set",
-    "joined": "{name} · joined {date}"
+    "loading": "Loading…",
+    "greeting": "Hello, {name}",
+    "intro": "Pick an exercise to start writing today.",
+    "writing": "Writing",
+    "sentenceTitle": "Sentence",
+    "sentenceBody": "Read a Vietnamese sentence and write it in English. One at a time.",
+    "paragraphTitle": "Paragraph",
+    "paragraphBody": "Write a full paragraph and get detailed feedback.",
+    "soon": "Coming soon"
+  },
+  "Sentence": {
+    "back": "Dashboard",
+    "title": "Sentence",
+    "intro": "Read a Vietnamese sentence and write it in English.",
+    "levelHeading": "Choose your level",
+    "categoryHeading": "Choose a category",
+    "levels": {
+      "beginner": {
+        "name": "Beginner",
+        "description": "Just starting out. Short sentences and familiar words."
+      },
+      "intermediate": {
+        "name": "Intermediate",
+        "description": "Longer sentences with more structures and varied vocabulary."
+      },
+      "advanced": {
+        "name": "Advanced",
+        "description": "Complex sentences, subtle phrasing and specialised vocabulary."
+      }
+    },
+    "categories": {
+      "personal-communication": "Personal & Communication",
+      "everyday-life": "Everyday Life",
+      "transportation-travel": "Transportation & Travel",
+      "school-education": "School & Education",
+      "work-business": "Work & Business",
+      "public-services": "Public Services",
+      "health-medicine": "Health & Medicine",
+      "shopping-money": "Shopping & Money",
+      "food-drink": "Food & Drink",
+      "entertainment-leisure": "Entertainment & Leisure",
+      "nature-environment": "Nature & Environment",
+      "science-technology": "Science & Technology",
+      "culture-society": "Culture & Society",
+      "government-politics": "Government & Politics",
+      "history-geography": "History & Geography",
+      "sports-fitness": "Sports & Fitness",
+      "arts-literature": "Arts & Literature",
+      "religion-spirituality": "Religion & Spirituality",
+      "law-justice": "Law & Justice",
+      "philosophy-ethics": "Philosophy & Ethics"
+    },
+    "chooseBoth": "Choose a level and a category to start.",
+    "start": "Start",
+    "sentenceNumber": "Sentence {n}",
+    "translateLabel": "Translate into English",
+    "answerLabel": "Your English translation",
+    "placeholder": "Enter your English translation here…",
+    "count": "{count}/{max}",
+    "quit": "Quit",
+    "skip": "Skip",
+    "hint": "Hint",
+    "hideHint": "Hide hint",
+    "hintLabel": "Key words",
+    "submit": "Submit",
+    "next": "Next sentence",
+    "feedbackTitle": "Feedback",
+    "feedbackIdle": "Write your translation and press Submit. Feedback will appear here.",
+    "feedbackUnavailable": "AI feedback isn't available yet. Your translation stays above, so you can edit it or move on to the next sentence.",
+    "signInAgain": "Sign in again",
+    "errors": {
+      "unauthorized": "Your session has expired.",
+      "not_found": "There are no sentences for this choice yet.",
+      "unknown": "Something went wrong. Please try again."
+    }
+  },
+  "Admin": {
+    "badge": "Admin",
+    "navLabel": "Admin navigation",
+    "nav": {
+      "prompts": "Prompts",
+      "dashboard": "Back to dashboard"
+    },
+    "notFound": {
+      "title": "Page not found",
+      "body": "The page you are looking for doesn't exist, or you don't have access to it.",
+      "home": "Back to dashboard"
+    },
+    "prompts": {
+      "title": "Prompts",
+      "subtitle": "Manage the sentence writing prompts.",
+      "add": "Add prompt",
+      "count": "Total: {count}",
+      "filters": {
+        "search": "Search the Vietnamese sentence",
+        "level": "Level",
+        "category": "Category",
+        "status": "Status",
+        "allLevels": "All levels",
+        "allCategories": "All categories",
+        "allStatuses": "All statuses",
+        "apply": "Filter",
+        "reset": "Clear filters"
+      },
+      "published": "Published",
+      "draft": "Draft",
+      "columns": {
+        "sentence": "Vietnamese sentence",
+        "level": "Level",
+        "category": "Category",
+        "status": "Status",
+        "updated": "Updated",
+        "actions": "Actions"
+      },
+      "edit": "Edit",
+      "empty": "No prompts yet",
+      "emptyBody": "Add the first prompt so learners have sentences to practise. Until then, sentence practice uses the sample set.",
+      "emptyFiltered": "No matching prompts",
+      "emptyFilteredBody": "Try changing or clearing the filters.",
+      "pagination": "Pagination",
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {page} of {pageCount}",
+      "flash": {
+        "created": "Prompt added.",
+        "updated": "Changes saved.",
+        "deleted": "Prompt deleted.",
+        "error": "That didn't work. {reason}"
+      },
+      "errors": {
+        "unauthorized": "Your session has expired.",
+        "forbidden": "You don't have permission to do this.",
+        "not_found": "This prompt no longer exists.",
+        "unknown": "Something went wrong. Please try again."
+      },
+      "delete": {
+        "open": "Delete",
+        "title": "Delete this prompt?",
+        "body": "The prompt will be deleted permanently. This can't be undone.",
+        "cancel": "Cancel",
+        "confirm": "Delete"
+      }
+    },
+    "form": {
+      "back": "Prompts",
+      "newTitle": "Add a prompt",
+      "editTitle": "Edit prompt",
+      "vietnamese": "Vietnamese sentence",
+      "vietnameseHelp": "The sentence learners will translate into English.",
+      "hint": "Key-word hint",
+      "hintHelp": "English key words, separated by commas.",
+      "level": "Level",
+      "category": "Category",
+      "categoryPlaceholder": "Choose a category",
+      "publish": "Publish",
+      "publishHelp": "Learners only see published prompts. Untick to save a draft.",
+      "create": "Add prompt",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "cancel": "Cancel",
+      "count": "{count}/{max}",
+      "errors": {
+        "vietnamese_required": "Enter the Vietnamese sentence.",
+        "vietnamese_too_long": "The sentence can be at most 300 characters.",
+        "hint_required": "Enter a key-word hint.",
+        "hint_too_long": "The hint can be at most 200 characters.",
+        "level_invalid": "Choose a level.",
+        "category_invalid": "Choose a category."
+      },
+      "formErrors": {
+        "unauthorized": "Your session has expired. Please sign in again.",
+        "forbidden": "You don't have permission to do this.",
+        "not_found": "This prompt no longer exists.",
+        "unknown": "Something went wrong. Please try again."
+      }
+    }
   }
 }

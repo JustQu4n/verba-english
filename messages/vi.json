@@ -113,9 +113,181 @@
     }
   },
   "Dashboard": {
-    "title": "Dashboard",
-    "loading": "Đang tải...",
-    "noName": "Chưa đặt tên",
-    "joined": "{name} · tham gia {date}"
+    "loading": "Đang tải…",
+    "greeting": "Xin chào, {name}",
+    "intro": "Chọn một bài luyện để bắt đầu viết hôm nay.",
+    "writing": "Writing",
+    "sentenceTitle": "Sentence",
+    "sentenceBody": "Đọc câu tiếng Việt, viết lại bằng tiếng Anh. Mỗi lần một câu.",
+    "paragraphTitle": "Paragraph",
+    "paragraphBody": "Viết cả đoạn văn và nhận phản hồi chi tiết.",
+    "soon": "Sắp có"
+  },
+  "Sentence": {
+    "back": "Dashboard",
+    "title": "Sentence",
+    "intro": "Đọc câu tiếng Việt và viết lại bằng tiếng Anh.",
+    "levelHeading": "Chọn trình độ",
+    "categoryHeading": "Chọn chủ đề",
+    "levels": {
+      "beginner": {
+        "name": "Cơ bản",
+        "description": "Mới bắt đầu. Câu ngắn, từ vựng quen thuộc."
+      },
+      "intermediate": {
+        "name": "Trung cấp",
+        "description": "Câu dài hơn, nhiều cấu trúc và từ vựng đa dạng."
+      },
+      "advanced": {
+        "name": "Nâng cao",
+        "description": "Câu phức, diễn đạt tinh tế và từ vựng chuyên sâu."
+      }
+    },
+    "categories": {
+      "personal-communication": "Cá nhân & giao tiếp",
+      "everyday-life": "Đời sống hằng ngày",
+      "transportation-travel": "Giao thông & du lịch",
+      "school-education": "Trường học & giáo dục",
+      "work-business": "Công việc & kinh doanh",
+      "public-services": "Dịch vụ công",
+      "health-medicine": "Sức khỏe & y tế",
+      "shopping-money": "Mua sắm & tiền bạc",
+      "food-drink": "Ăn uống",
+      "entertainment-leisure": "Giải trí & thư giãn",
+      "nature-environment": "Thiên nhiên & môi trường",
+      "science-technology": "Khoa học & công nghệ",
+      "culture-society": "Văn hóa & xã hội",
+      "government-politics": "Chính phủ & chính trị",
+      "history-geography": "Lịch sử & địa lý",
+      "sports-fitness": "Thể thao & thể hình",
+      "arts-literature": "Nghệ thuật & văn học",
+      "religion-spirituality": "Tôn giáo & tâm linh",
+      "law-justice": "Luật pháp & công lý",
+      "philosophy-ethics": "Triết học & đạo đức"
+    },
+    "chooseBoth": "Chọn trình độ và chủ đề để bắt đầu.",
+    "start": "Bắt đầu",
+    "sentenceNumber": "Câu {n}",
+    "translateLabel": "Dịch sang tiếng Anh",
+    "answerLabel": "Bản dịch tiếng Anh của bạn",
+    "placeholder": "Nhập bản dịch tiếng Anh vào đây…",
+    "count": "{count}/{max}",
+    "quit": "Thoát",
+    "skip": "Bỏ qua",
+    "hint": "Gợi ý",
+    "hideHint": "Ẩn gợi ý",
+    "hintLabel": "Từ khóa",
+    "submit": "Gửi",
+    "next": "Câu tiếp theo",
+    "feedbackTitle": "Phản hồi",
+    "feedbackIdle": "Viết bản dịch rồi bấm Gửi. Phản hồi sẽ xuất hiện ở đây.",
+    "feedbackUnavailable": "Chấm bài bằng AI chưa khả dụng. Bản dịch của bạn vẫn được giữ ở trên, bạn có thể sửa hoặc sang câu tiếp theo.",
+    "signInAgain": "Đăng nhập lại",
+    "errors": {
+      "unauthorized": "Phiên đăng nhập đã hết hạn.",
+      "not_found": "Chưa có câu cho lựa chọn này.",
+      "unknown": "Có lỗi xảy ra. Vui lòng thử lại."
+    }
+  },
+  "Admin": {
+    "badge": "Admin",
+    "navLabel": "Điều hướng quản trị",
+    "nav": {
+      "prompts": "Prompts",
+      "dashboard": "Về dashboard"
+    },
+    "notFound": {
+      "title": "Không tìm thấy trang",
+      "body": "Trang bạn tìm không tồn tại hoặc bạn không có quyền xem.",
+      "home": "Về dashboard"
+    },
+    "prompts": {
+      "title": "Prompts",
+      "subtitle": "Quản lý đề luyện viết câu.",
+      "add": "Thêm đề",
+      "count": "Tổng cộng: {count} đề",
+      "filters": {
+        "search": "Tìm theo câu tiếng Việt",
+        "level": "Trình độ",
+        "category": "Chủ đề",
+        "status": "Trạng thái",
+        "allLevels": "Mọi trình độ",
+        "allCategories": "Mọi chủ đề",
+        "allStatuses": "Mọi trạng thái",
+        "apply": "Lọc",
+        "reset": "Xóa lọc"
+      },
+      "published": "Đã xuất bản",
+      "draft": "Bản nháp",
+      "columns": {
+        "sentence": "Câu tiếng Việt",
+        "level": "Trình độ",
+        "category": "Chủ đề",
+        "status": "Trạng thái",
+        "updated": "Cập nhật",
+        "actions": "Thao tác"
+      },
+      "edit": "Sửa",
+      "empty": "Chưa có đề nào",
+      "emptyBody": "Thêm đề đầu tiên để người học có câu luyện. Trong lúc chưa có đề, luyện câu dùng bộ câu mẫu.",
+      "emptyFiltered": "Không có đề phù hợp",
+      "emptyFilteredBody": "Thử đổi hoặc xóa bộ lọc.",
+      "pagination": "Phân trang",
+      "previous": "Trước",
+      "next": "Sau",
+      "page": "Trang {page}/{pageCount}",
+      "flash": {
+        "created": "Đã thêm đề.",
+        "updated": "Đã lưu thay đổi.",
+        "deleted": "Đã xóa đề.",
+        "error": "Không thực hiện được. {reason}"
+      },
+      "errors": {
+        "unauthorized": "Phiên đăng nhập đã hết hạn.",
+        "forbidden": "Bạn không có quyền thực hiện thao tác này.",
+        "not_found": "Đề này không còn tồn tại.",
+        "unknown": "Có lỗi xảy ra. Vui lòng thử lại."
+      },
+      "delete": {
+        "open": "Xóa",
+        "title": "Xóa đề này?",
+        "body": "Đề sẽ bị xóa vĩnh viễn và không thể hoàn tác.",
+        "cancel": "Hủy",
+        "confirm": "Xóa"
+      }
+    },
+    "form": {
+      "back": "Prompts",
+      "newTitle": "Thêm đề mới",
+      "editTitle": "Sửa đề",
+      "vietnamese": "Câu tiếng Việt",
+      "vietnameseHelp": "Câu người học sẽ dịch sang tiếng Anh.",
+      "hint": "Gợi ý từ khóa",
+      "hintHelp": "Từ khóa tiếng Anh, cách nhau bằng dấu phẩy.",
+      "level": "Trình độ",
+      "category": "Chủ đề",
+      "categoryPlaceholder": "Chọn chủ đề",
+      "publish": "Xuất bản",
+      "publishHelp": "Người học chỉ thấy các đề đã xuất bản. Bỏ chọn để lưu nháp.",
+      "create": "Thêm đề",
+      "save": "Lưu thay đổi",
+      "saving": "Đang lưu…",
+      "cancel": "Hủy",
+      "count": "{count}/{max}",
+      "errors": {
+        "vietnamese_required": "Nhập câu tiếng Việt.",
+        "vietnamese_too_long": "Câu tiếng Việt tối đa 300 ký tự.",
+        "hint_required": "Nhập gợi ý từ khóa.",
+        "hint_too_long": "Gợi ý tối đa 200 ký tự.",
+        "level_invalid": "Chọn một trình độ.",
+        "category_invalid": "Chọn một chủ đề."
+      },
+      "formErrors": {
+        "unauthorized": "Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại.",
+        "forbidden": "Bạn không có quyền thực hiện thao tác này.",
+        "not_found": "Đề này không còn tồn tại.",
+        "unknown": "Có lỗi xảy ra. Vui lòng thử lại."
+      }
+    }
   }
 }
