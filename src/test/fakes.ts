@@ -8,6 +8,8 @@ import type { SentenceProgressStore } from "@/modules/writing/application/senten
 import type { SentenceGrader } from "@/modules/writing/application/sentence-grader";
 import type { SentenceGrade } from "@/modules/writing/domain/sentence-grade";
 import type { PromptRepository } from "@/modules/writing/application/prompt-repository";
+import type { ReferenceAnswerSource } from "@/modules/writing/application/reference-answer-source";
+import type { AcceptedAnswer } from "@/modules/writing/domain/accepted-answer";
 import type { Prompt } from "@/modules/writing/domain/prompt";
 
 /** Fake AuthService: every method is vi.fn(), overridden per test. */
@@ -39,6 +41,7 @@ export function samplePrompt(overrides: Partial<Prompt> = {}): Prompt {
     vietnamese: "Tôi thích ăn phở.",
     hint: "like, pho",
     published: false,
+    answers: [],
     createdAt: new Date("2026-01-01T00:00:00.000Z"),
     updatedAt: new Date("2026-01-02T00:00:00.000Z"),
     ...overrides,
@@ -93,4 +96,9 @@ export function fakeProgress(done: string[] = [], overrides: Partial<SentencePro
 /** Fake PointsStore with a fixed total. */
 export function fakePoints(total = 0): PointsStore {
   return { total: vi.fn().mockResolvedValue(total) };
+}
+
+/** Fake ReferenceAnswerSource returning the same accepted answers for every prompt. */
+export function fakeReferences(answers: AcceptedAnswer[] = []): ReferenceAnswerSource {
+  return { find: vi.fn().mockResolvedValue(answers) };
 }

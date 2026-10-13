@@ -40,7 +40,9 @@ export function SentenceFeedback({ feedback, passed, onNext, loading }: Sentence
 
         {feedback.status === "error" && (
           <p role="alert" className="rounded-lg bg-muted px-4 py-3 font-medium">
-            {t(`gradeErrors.${feedback.reason}`)}
+            {feedback.mode === "reference" && feedback.reason === "unavailable"
+              ? t("gradeErrors.referenceUnavailable")
+              : t(`gradeErrors.${feedback.reason}`)}
           </p>
         )}
 
@@ -65,17 +67,19 @@ export function SentenceFeedback({ feedback, passed, onNext, loading }: Sentence
               </p>
             )}
 
-            <p>
-              <span className="font-semibold">{t("feedbackSuggestion")}:</span>{" "}
-              <span lang="en" className="text-base font-medium">
-                {feedback.grade.suggestion}
-              </span>
-            </p>
+            {feedback.grade.suggestion && (
+              <p>
+                <span className="font-semibold">{t("feedbackSuggestion")}:</span>{" "}
+                <span lang="en" className="text-base font-medium">
+                  {feedback.grade.suggestion}
+                </span>
+              </p>
+            )}
 
             {feedback.grade.improvements.length > 0 && (
               <div>
-                <p className="font-semibold">{t("feedbackImprovements")}:</p>
-                <ul lang="vi" className="mt-1.5 list-disc space-y-1.5 pl-5">
+                <p className="font-semibold">{t(feedback.grade.correct || feedback.source === "reference" ? "feedbackStructure" : "feedbackImprovements")}:</p>
+                <ul className="mt-1.5 list-disc space-y-1.5 pl-5">
                   {feedback.grade.improvements.map((note) => (
                     <li key={note}>{note}</li>
                   ))}
@@ -89,7 +93,9 @@ export function SentenceFeedback({ feedback, passed, onNext, loading }: Sentence
               </p>
             )}
 
-            {!feedback.grade.correct && <p className="text-muted-foreground">{t("tryAgain")}</p>}
+            {!feedback.grade.correct && (
+              <p className="text-muted-foreground">{t(feedback.source !== "reference" ? "tryAgain" : feedback.grade.suggestion ? "referenceMiss" : "referenceNone")}</p>
+            )}
           </div>
         )}
       </div>

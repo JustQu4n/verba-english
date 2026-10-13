@@ -66,22 +66,22 @@ export interface PointsResult {
 
 export type GradeAnswerResult =
   /** `progress` is set when the answer was correct and has just been recorded. */
-  | { status: "ok"; grade: SentenceGrade; credits: number; progress: SentenceProgress | null; points: PointsResult | null }
+  | { status: "ok"; grade: SentenceGrade; credits: number; progress: SentenceProgress | null; points: PointsResult | null; source: "ai" | "reference" }
   | {
       status: "error";
       reason: "unauthorized" | "not_found" | "invalid" | "no_credits" | "unavailable" | "unknown";
     };
 
-/** Grades the learner's answer to a stored prompt with AI. Costs one credit unless the answer was graded before. */
+/** Grades the learner's answer to a stored prompt, by AI (a wrong answer costs a credit) or against the accepted answers (free). */
 export async function gradeAnswer(input: unknown): Promise<GradeAnswerResult> {
   try {
-    const { auth, sentencePrompts, credits, grader, gradeCache, sentenceProgress: progressStore } = await getContainer();
-    const { grade, credits: remaining, progress, points } = await gradeSentence(
-      { auth, prompts: sentencePrompts, credits, grader, cache: gradeCache, progress: progressStore },
+    const { auth, sentencePrompts, credits, grader, gradeCache, sentenceProgress: progressStore, references } = await getContainer();
+    const { grade, credits: remaining, progress, points, source } = await gradeSentence(
+      { auth, prompts: sentencePrompts, credits, grader, cache: gradeCache, progress: progressStore, references },
       input,
       (await getLocale()) === "en" ? "en" : "vi"
     );
-    return { status: "ok", grade, credits: remaining, progress, points };
+    return { status: "ok", grade, credits: remaining, progress, points, source };
   } catch (error) {
     if (error instanceof UnauthorizedError) return { status: "error", reason: "unauthorized" };
     if (error instanceof NotFoundError) return { status: "error", reason: "not_found" };
@@ -89,7 +89,11 @@ export async function gradeAnswer(input: unknown): Promise<GradeAnswerResult> {
     if (error instanceof InsufficientCreditsError) return { status: "error", reason: "no_credits" };
     if (error instanceof InfrastructureError) {
       // The message is ours and safe (no answer text, no key); the cause is left out of the log on purpose.
-      console.error(`Sentence grading failed: ${error.message}`);
+      // The cause is a connection or configuration message (never the answer text), and it is what tells the owner
+      // what to fix, e.g. a missing service key or a missing table.
+      const cause = error.cause;
+      const detail = typeof cause === "object" && cause !== null && "message" in cause ? String(cause.message) : "";
+      console.error(`Sentence grading failed: ${error.message}${detail ? ` (${detail})` : ""}`);
       return { status: "error", reason: "unavailable" };
     }
     unstable_rethrow(error);

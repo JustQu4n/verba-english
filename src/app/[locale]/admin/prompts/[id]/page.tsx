@@ -36,6 +36,7 @@ async function EditPrompt({ params }: { params: Promise<{ id: string }> }) {
           vietnamese: prompt.vietnamese,
           hint: prompt.hint,
           published: prompt.published,
+          answers: prompt.answers.map((answer) => ({ ...answer })),
         }}
       />
     </>

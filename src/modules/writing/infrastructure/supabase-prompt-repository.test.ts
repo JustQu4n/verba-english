@@ -22,6 +22,7 @@ const PROMPT = {
   vietnamese: "Tôi đi làm.",
   hint: "go to work",
   published: true,
+  answers: [],
   createdAt: new Date("2026-01-01T00:00:00.000Z"),
   updatedAt: new Date("2026-01-02T00:00:00.000Z"),
 };
@@ -102,7 +103,7 @@ describe("SupabasePromptRepository", () => {
   it("APR-AC-11: create stores a sentence row with a title taken from the sentence", async () => {
     const { repo, b } = repoWith({ data: ROW, error: null });
     const long = "a".repeat(120);
-    await repo.create({ level: "beginner", category: "food-drink", vietnamese: long, hint: "h", published: false });
+    await repo.create({ level: "beginner", category: "food-drink", vietnamese: long, hint: "h", published: false, answers: [] });
     expect(b.called("insert")[0][0]).toEqual({
       title: "a".repeat(80),
       writing_type: "sentence",
@@ -114,10 +115,46 @@ describe("SupabasePromptRepository", () => {
     });
   });
 
+  const ANSWERS = [{ text: "I go to work.", structureVi: "go to + nơi chốn", structureEn: "go to + place" }];
+
+  it("ANS-AC-07: reads the embedded accepted answers with the prompt", async () => {
+    const row = { ...ROW, prompt_answers: { answers: [...ANSWERS, { text: "  " }, "bad", { text: "I work.", structureVi: 5 }] } };
+    const { repo, b } = repoWith({ data: row, error: null });
+    const prompt = await repo.findById(ROW.id);
+    expect(prompt?.answers).toEqual([...ANSWERS, { text: "I work.", structureVi: "", structureEn: "" }]);
+    expect(b.called("select")[0][0]).toContain("prompt_answers(answers)");
+  });
+
+  it("ANS-AC-07: a prompt without accepted answers has an empty list", async () => {
+    const { repo } = repoWith({ data: { ...ROW, prompt_answers: null }, error: null });
+    await expect(repo.findById(ROW.id)).resolves.toMatchObject({ answers: [] });
+  });
+
+  it("ANS-AC-07: create and update write the answers to prompt_answers", async () => {
+    const draft = { level: "beginner", category: "food-drink", vietnamese: "a", hint: "b", published: false, answers: ANSWERS } as const;
+    for (const run of [(r: SupabasePromptRepository) => r.create(draft), (r: SupabasePromptRepository) => r.update(ROW.id, draft)]) {
+      const { repo, from, b } = repoWith({ data: ROW, error: null });
+      const saved = await run(repo);
+      expect(from).toHaveBeenCalledWith("prompt_answers");
+      expect(b.called("upsert")).toEqual([[{ prompt_id: ROW.id, answers: ANSWERS }, { onConflict: "prompt_id" }]]);
+      expect(saved?.answers).toEqual(ANSWERS);
+    }
+  });
+
+  it("ANS-AC-07: a failure saving the answers is an infrastructure error without the original message", async () => {
+    const rows = vi.fn((table: string) =>
+      table === "prompt_answers" ? builder({ error: { message: "policy violation on prompt_answers" } }).proxy : builder({ data: ROW, error: null }).proxy
+    );
+    const repo = new SupabasePromptRepository({ from: rows } as unknown as SupabaseClient);
+    const promise = repo.create({ level: "beginner", category: "food-drink", vietnamese: "a", hint: "b", published: false, answers: ANSWERS });
+    await expect(promise).rejects.toBeInstanceOf(InfrastructureError);
+    await expect(promise).rejects.not.toThrow(/policy violation/);
+  });
+
   it("APR-AC-11: update returns null when no row matched", async () => {
     const { repo, b } = repoWith({ data: null, error: null });
     await expect(
-      repo.update(ROW.id, { level: "beginner", category: "food-drink", vietnamese: "Xin chào.", hint: "h", published: true })
+      repo.update(ROW.id, { level: "beginner", category: "food-drink", vietnamese: "Xin chào.", hint: "h", published: true, answers: [] })
     ).resolves.toBeNull();
     expect(b.called("update")[0][0]).toMatchObject({ prompt_text: "Xin chào.", title: "Xin chào.", is_published: true });
     expect(b.called("eq")).toEqual(expect.arrayContaining([["id", ROW.id], ["writing_type", "sentence"]]));
@@ -133,8 +170,8 @@ describe("SupabasePromptRepository", () => {
     for (const run of [
       (r: SupabasePromptRepository) => r.list(filter),
       (r: SupabasePromptRepository) => r.findById(ROW.id),
-      (r: SupabasePromptRepository) => r.create({ level: "beginner", category: "food-drink", vietnamese: "a", hint: "b", published: false }),
-      (r: SupabasePromptRepository) => r.update(ROW.id, { level: "beginner", category: "food-drink", vietnamese: "a", hint: "b", published: false }),
+      (r: SupabasePromptRepository) => r.create({ level: "beginner", category: "food-drink", vietnamese: "a", hint: "b", published: false, answers: [] }),
+      (r: SupabasePromptRepository) => r.update(ROW.id, { level: "beginner", category: "food-drink", vietnamese: "a", hint: "b", published: false, answers: [] }),
       (r: SupabasePromptRepository) => r.remove(ROW.id),
     ]) {
       const promise = run(repoWith({ data: null, count: null, error }).repo);

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import { InfrastructureError, InsufficientCreditsError, NotFoundError, UnauthorizedError, ValidationError } from "@/core/errors";
-import { ADMIN_USER, fakeAuth, fakeCredits, fakeGrader, fakeProgress, sampleGrade } from "@/test/fakes";
+import { ADMIN_USER, fakeAuth, fakeCredits, fakeGrader, fakeProgress, fakeReferences, sampleGrade } from "@/test/fakes";
 
 import type { SentencePrompt } from "../domain/sentence-catalog";
 import { MemoryGradeCache } from "../infrastructure/memory-grade-cache";
@@ -26,6 +26,7 @@ function deps(overrides: Partial<GradeSentenceDeps> = {}): GradeSentenceDeps {
     grader: fakeGrader(),
     cache: new MemoryGradeCache(),
     progress: fakeProgress(),
+    references: fakeReferences(),
     ...overrides,
   };
 }
@@ -71,7 +72,7 @@ describe("gradeSentence", () => {
     const grade = sampleGrade();
     const d = deps({ grader: fakeGrader(grade) });
     const result = await gradeSentence(d, { promptId: ID, answer: "  I want   to the beach " }, "vi");
-    expect(result).toEqual({ grade, credits: 99, progress: null, points: null });
+    expect(result).toEqual({ grade, credits: 99, progress: null, points: null, source: "ai" });
     expect(d.grader.grade).toHaveBeenCalledWith({
       vietnamese: "Tôi muốn đi biển.",
       level: "beginner",
@@ -187,5 +188,105 @@ describe("gradeSentence", () => {
     await expect(gradeSentence(deps({ credits }), { promptId: ID, answer: "I want" }, "vi")).rejects.toBeInstanceOf(
       InsufficientCreditsError
     );
+  });
+
+  const REFERENCE = {
+    text: "I want to go to the beach.",
+    structureVi: "want to + V: muốn làm gì\ngo to + nơi chốn",
+    structureEn: "want to + verb",
+  };
+
+  it("ANS-AC-04: an accepted answer is correct without the AI, free, completed and worth points", async () => {
+    const progress = fakeProgress();
+    const d = deps({ references: fakeReferences([REFERENCE]), progress });
+    const result = await gradeSentence(d, { promptId: ID, answer: "  i WANT to go to the beach " }, "vi");
+    expect(result.grade).toEqual({
+      correct: true,
+      suggestion: "I want to go to the beach.",
+      improvements: ["want to + V: muốn làm gì", "go to + nơi chốn"],
+      comment: "",
+    });
+    expect(d.grader.grade).not.toHaveBeenCalled();
+    expect(d.credits.spend).not.toHaveBeenCalled();
+    expect(progress.markCompleted).toHaveBeenCalledWith(ADMIN_USER.id, ID);
+    expect(result.points).toEqual({ earned: 10, total: 10 });
+    expect(result.credits).toBe(100);
+  });
+
+  it("ANS-AC-04: the notes follow the interface language", async () => {
+    const d = deps({ references: fakeReferences([REFERENCE]) });
+    const result = await gradeSentence(d, { promptId: ID, answer: "I want to go to the beach" }, "en");
+    expect(result.grade.improvements).toEqual(["want to + verb"]);
+  });
+
+  it("ANS-AC-05: an accepted answer is graded even with no credits, a different one is not", async () => {
+    const d = deps({ references: fakeReferences([REFERENCE]), credits: fakeCredits(0) });
+    await expect(gradeSentence(d, { promptId: ID, answer: "I want to go to the beach." }, "vi")).resolves.toMatchObject({
+      grade: { correct: true },
+      credits: 0,
+    });
+    await expect(gradeSentence(d, { promptId: ID, answer: "I want the beach" }, "vi")).rejects.toBeInstanceOf(
+      InsufficientCreditsError
+    );
+  });
+
+  it("ANS-AC-06: an answer that matches nothing, or a prompt without accepted answers, goes to the AI", async () => {
+    for (const references of [fakeReferences([REFERENCE]), fakeReferences([])]) {
+      const d = deps({ references });
+      await gradeSentence(d, { promptId: ID, answer: "I want the beach" }, "vi");
+      expect(d.grader.grade).toHaveBeenCalledTimes(1);
+    }
+  });
+
+  it("ANS-AC-06: when the accepted answers cannot be read, the AI still grades", async () => {
+    const references = { find: vi.fn().mockRejectedValue(new InfrastructureError("down")) };
+    const d = deps({ references });
+    await expect(gradeSentence(d, { promptId: ID, answer: "I want the beach" }, "vi")).resolves.toMatchObject({ credits: 99 });
+    expect(d.grader.grade).toHaveBeenCalledTimes(1);
+  });
+
+  it("ANS-AC-18: in reference mode an accepted answer is correct, free and completed, even with no credits", async () => {
+    const progress = fakeProgress();
+    const d = deps({ references: fakeReferences([REFERENCE]), credits: fakeCredits(0), progress });
+    const result = await gradeSentence(d, { promptId: ID, answer: "I want to go to the beach", mode: "reference" }, "vi");
+    expect(result).toMatchObject({ grade: { correct: true, suggestion: REFERENCE.text }, source: "reference", points: { earned: 10, total: 10 } });
+    expect(progress.markCompleted).toHaveBeenCalledWith(ADMIN_USER.id, ID);
+    expect(d.grader.grade).not.toHaveBeenCalled();
+    expect(d.credits.spend).not.toHaveBeenCalled();
+  });
+
+  it("ANS-AC-19: in reference mode a miss is not correct, shows the closest answer with its notes, and costs nothing", async () => {
+    const progress = fakeProgress();
+    const other = { text: "I would like a beach holiday.", structureVi: "would like + danh từ", structureEn: "would like + noun" };
+    const d = deps({ references: fakeReferences([other, REFERENCE]), progress });
+    const result = await gradeSentence(d, { promptId: ID, answer: "I want to the beach", mode: "reference" }, "en");
+    expect(result.grade).toEqual({ correct: false, suggestion: REFERENCE.text, improvements: ["want to + verb"], comment: "" });
+    expect(result).toMatchObject({ credits: 100, progress: null, points: null, source: "reference" });
+    expect(d.grader.grade).not.toHaveBeenCalled();
+    expect(d.credits.spend).not.toHaveBeenCalled();
+    expect(progress.markCompleted).not.toHaveBeenCalled();
+  });
+
+  it("ANS-AC-19: in reference mode a prompt without accepted answers gives nothing to show", async () => {
+    const d = deps({ references: fakeReferences([]) });
+    const result = await gradeSentence(d, { promptId: ID, answer: "I want the beach", mode: "reference" }, "vi");
+    expect(result.grade).toEqual({ correct: false, suggestion: "", improvements: [], comment: "" });
+    expect(d.grader.grade).not.toHaveBeenCalled();
+  });
+
+  it("ANS-AC-20: in reference mode a failing read is an error and the AI is not used instead", async () => {
+    const references = { find: vi.fn().mockRejectedValue(new InfrastructureError("down")) };
+    const d = deps({ references });
+    await expect(gradeSentence(d, { promptId: ID, answer: "I want the beach", mode: "reference" }, "vi")).rejects.toBeInstanceOf(
+      InfrastructureError
+    );
+    expect(d.grader.grade).not.toHaveBeenCalled();
+  });
+
+  it("ANS-AC-21: the mode defaults to AI and an unknown mode is rejected", async () => {
+    const d = deps();
+    await gradeSentence(d, { promptId: ID, answer: "I want the beach" }, "vi");
+    expect(d.grader.grade).toHaveBeenCalledTimes(1);
+    await expect(gradeSentence(deps(), { promptId: ID, answer: "I want", mode: "free" }, "vi")).rejects.toBeInstanceOf(ValidationError);
   });
 });

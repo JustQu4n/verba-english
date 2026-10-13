@@ -2,10 +2,14 @@
 
 import { getLocale } from "next-intl/server";
 
+import { ForbiddenError, InfrastructureError, UnauthorizedError, ValidationError } from "@/core/errors";
 import { redirect } from "@/i18n/navigation";
-import { type PromptFormState, readPromptForm, toPromptFormErrors } from "@/lib/prompt-form";
+import { type AnswerFormValues, type PromptFormState, readPromptForm, toPromptFormErrors } from "@/lib/prompt-form";
 import { createPrompt } from "@/modules/writing/application/create-prompt";
+import { unstable_rethrow } from "next/navigation";
+
 import { deletePrompt } from "@/modules/writing/application/delete-prompt";
+import { suggestAnswers } from "@/modules/writing/application/suggest-answers";
 import { updatePrompt } from "@/modules/writing/application/update-prompt";
 import { getContainer } from "@/server/container";
 
@@ -49,4 +53,28 @@ export async function deletePromptAction(id: string): Promise<void> {
     return backToList({ error: toPromptFormErrors(error).formError ?? "unknown" });
   }
   return backToList({ saved: "deleted" });
+}
+
+export type SuggestAnswersResult =
+  | { status: "ok"; answers: AnswerFormValues[] }
+  | { status: "error"; reason: "unauthorized" | "forbidden" | "invalid" | "unavailable" | "unknown" };
+
+/** Asks the AI to draft accepted answers for the sentence in the form. Nothing is saved: the admin reviews first. */
+export async function suggestAnswersAction(input: unknown): Promise<SuggestAnswersResult> {
+  try {
+    const { auth, roles, prompts, suggester } = await getContainer();
+    const answers = await suggestAnswers({ auth, roles, prompts, suggester }, input);
+    return { status: "ok", answers: [...answers] };
+  } catch (error) {
+    if (error instanceof UnauthorizedError) return { status: "error", reason: "unauthorized" };
+    if (error instanceof ForbiddenError) return { status: "error", reason: "forbidden" };
+    if (error instanceof ValidationError) return { status: "error", reason: "invalid" };
+    if (error instanceof InfrastructureError) {
+      console.error(`Answer suggestion failed: ${error.message}`);
+      return { status: "error", reason: "unavailable" };
+    }
+    unstable_rethrow(error);
+    console.error(error);
+    return { status: "error", reason: "unknown" };
+  }
 }

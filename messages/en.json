@@ -190,7 +190,7 @@
     "next": "Next sentence",
     "feedbackTitle": "Feedback",
     "feedbackIdle": "Write your translation and press Submit. Feedback will appear here.",
-    "noCredits": "You've used all your free credits. Buying more credits is coming soon.",
+    "noCredits": "You've used all your free credits. Buying more credits is coming soon. Answers that match an accepted answer are still graded for free.",
     "grading": "Grading…",
     "correct": "Correct",
     "incorrect": "Not quite yet",
@@ -204,14 +204,25 @@
       "invalid": "Write between 1 and 300 characters.",
       "no_credits": "You're out of credits. Buying more is coming soon.",
       "unavailable": "AI grading is unavailable right now. Please try again in a moment.",
-      "unknown": "Something went wrong. Please try again."
+      "unknown": "Something went wrong. Please try again.",
+      "referenceUnavailable": "Can't read the accepted answers right now. Please try again, or switch to AI feedback."
     },
     "signInAgain": "Sign in again",
     "errors": {
       "unauthorized": "Your session has expired.",
       "not_found": "There are no sentences for this choice yet.",
       "unknown": "Something went wrong. Please try again."
-    }
+    },
+    "feedbackStructure": "Grammar structure",
+    "gradeMode": {
+      "label": "Check my answer with",
+      "ai": "AI feedback",
+      "aiHelp": "Detailed feedback on any wording. A wrong answer costs 1 credit.",
+      "reference": "Accepted answers",
+      "referenceHelp": "Free. Compares with the saved answers and gives grammar hints."
+    },
+    "referenceMiss": "This is the closest accepted answer. Edit your answer and submit again, or switch to AI feedback to check other wording.",
+    "referenceNone": "This sentence has no accepted answers yet. Switch to AI feedback to check your answer."
   },
   "Admin": {
     "badge": "Admin",
@@ -304,13 +315,36 @@
         "hint_required": "Enter a key-word hint.",
         "hint_too_long": "The hint can be at most 200 characters.",
         "level_invalid": "Choose a level.",
-        "category_invalid": "Choose a category."
+        "category_invalid": "Choose a category.",
+        "answer_required": "Each accepted answer needs its English text.",
+        "answer_too_long": "An answer can be at most 300 characters.",
+        "structure_too_long": "A grammar note can be at most 500 characters.",
+        "answers_too_many": "Add at most 5 accepted answers."
       },
       "formErrors": {
         "unauthorized": "Your session has expired. Please sign in again.",
         "forbidden": "You don't have permission to do this.",
         "not_found": "This prompt no longer exists.",
         "unknown": "Something went wrong. Please try again."
+      },
+      "answers": {
+        "title": "Accepted answers",
+        "help": "Correct translations. A learner who writes one of these (ignoring capitals and punctuation) is marked correct right away, without AI, and sees the grammar notes. Optional.",
+        "answer": "Answer {number}",
+        "remove": "Remove answer {number}",
+        "structureVi": "Grammar notes (Vietnamese)",
+        "structureEn": "Grammar notes (English)",
+        "add": "Add answer",
+        "suggest": "Suggest with AI",
+        "suggesting": "Writing suggestions…",
+        "suggested": "Suggestions added: {count}. Review them before saving.",
+        "suggestErrors": {
+          "unauthorized": "Your session has expired.",
+          "forbidden": "You don't have permission to do this.",
+          "invalid": "Enter the Vietnamese sentence first.",
+          "unavailable": "AI is unavailable right now. Try again in a moment.",
+          "unknown": "Something went wrong. Please try again."
+        }
       }
     }
   }

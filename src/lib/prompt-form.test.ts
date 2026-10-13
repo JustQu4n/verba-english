@@ -17,13 +17,53 @@ describe("readPromptForm", () => {
     const { input, values } = readPromptForm(
       form({ level: "advanced", category: "law-justice", vietnamese: " Câu. ", hint: " h ", published: "on" })
     );
-    expect(input).toEqual({ level: "advanced", category: "law-justice", vietnamese: " Câu. ", hint: " h ", published: true });
-    expect(values).toEqual({ level: "advanced", category: "law-justice", vietnamese: " Câu. ", hint: " h ", published: true });
+    expect(input).toEqual({ level: "advanced", category: "law-justice", vietnamese: " Câu. ", hint: " h ", published: true, answers: [] });
+    expect(values).toEqual({ level: "advanced", category: "law-justice", vietnamese: " Câu. ", hint: " h ", published: true, answers: [] });
   });
 
   it("APR-AC-13: a missing checkbox means draft and missing fields become empty strings", () => {
     const { input } = readPromptForm(form({}));
-    expect(input).toEqual({ level: "", category: "", vietnamese: "", hint: "", published: false });
+    expect(input).toEqual({ level: "", category: "", vietnamese: "", hint: "", published: false, answers: [] });
+  });
+});
+
+describe("readPromptForm answers", () => {
+  const withAnswers = (rows: [string, string, string][]) => {
+    const data = form({ level: "beginner" });
+    for (const [text, vi, en] of rows) {
+      data.append("answerText", text);
+      data.append("answerStructureVi", vi);
+      data.append("answerStructureEn", en);
+    }
+    return data;
+  };
+
+  it("ANS-AC-10: zips the repeated fields into answers and drops completely blank rows", () => {
+    const { input } = readPromptForm(
+      withAnswers([
+        ["I go.", "go + nơi chốn", "go + place"],
+        ["  ", "", " "],
+        ["I went.", "", ""],
+      ])
+    );
+    expect(input.answers).toEqual([
+      { text: "I go.", structureVi: "go + nơi chốn", structureEn: "go + place" },
+      { text: "I went.", structureVi: "", structureEn: "" },
+    ]);
+  });
+
+  it("ANS-AC-10: a row with notes but no answer is kept so validation can report it", () => {
+    expect(readPromptForm(withAnswers([["", "ghi chú", ""]])).input.answers).toHaveLength(1);
+  });
+
+  it("ANS-AC-10: the values to show again equal what was typed", () => {
+    const { input, values } = readPromptForm(withAnswers([["I go.", "a", "b"]]));
+    expect(values.answers).toEqual(input.answers);
+  });
+
+  it("ANS-AC-10: answer errors map to the answers field", () => {
+    const error = new ValidationError("x", [{ path: ["answers", 0, "text"], message: "answer_required" }]);
+    expect(toPromptFormErrors(error)).toEqual({ fieldErrors: { answers: "answer_required" } });
   });
 });
 

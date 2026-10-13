@@ -19,5 +19,6 @@ Mẫu ở `_templates/`. Nguyên tắc ở [constitution.md](./constitution.md).
 | [011-ai-grading](./011-ai-grading/spec.md) | Chấm câu bằng AI (Gemini) và credit | `AIG` |
 | [012-sentence-progress](./012-sentence-progress/spec.md) | Lịch sử làm bài và tiến độ luyện câu | `SPG` |
 | [013-points](./013-points/spec.md) | Điểm thưởng mỗi câu, pháo hoa chúc mừng, phím Enter | `PTS` |
+| [014-accepted-answers](./014-accepted-answers/spec.md) | Đáp án chuẩn có cấu trúc ngữ pháp, chấm không cần AI, AI soạn sẵn cho admin | `ANS` |
 
 Kiểm tra mọi AC đều có test: `npm run specs:check`.
