@@ -223,7 +223,31 @@
       "referenceHelp": "Free. Compares with the saved answers and gives grammar hints."
     },
     "referenceMiss": "This is the closest accepted answer. Edit your answer and submit again, or switch to AI feedback to check other wording.",
-    "referenceNone": "This sentence has no accepted answers yet. Switch to AI feedback to check your answer."
+    "referenceNone": "This sentence has no accepted answers yet. Switch to AI feedback to check your answer.",
+    "history": {
+      "link": "My attempts",
+      "back": "Sentence",
+      "title": "My attempts",
+      "intro": "Correct answers you wrote, with the feedback you got.",
+      "count": "{count} correct answers",
+      "empty": "No correct answers yet",
+      "emptyBody": "Get a sentence right in Sentence practice and it will show up here.",
+      "startPractice": "Start practising",
+      "yourAnswer": "Your answer",
+      "suggestion": "Suggestion",
+      "correct": "Correct",
+      "incorrect": "Not quite yet",
+      "mode": {
+        "ai": "AI feedback",
+        "reference": "Accepted answers"
+      },
+      "removed": "This sentence is no longer available.",
+      "pagination": "Pages",
+      "previous": "Previous",
+      "next": "Next",
+      "pageOf": "Page {page} of {pageCount}",
+      "tries": "Sent {count} times"
+    }
   },
   "Admin": {
     "badge": "Admin",

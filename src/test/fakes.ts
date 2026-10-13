@@ -4,6 +4,7 @@ import type { RoleReader } from "@/modules/admin/application/role-reader";
 import type { AuthService } from "@/modules/auth/application/auth-service";
 import type { CreditStore } from "@/modules/credits/application/credit-store";
 import type { PointsStore } from "@/modules/points/application/points-store";
+import type { AttemptStore } from "@/modules/writing/application/attempt-store";
 import type { SentenceProgressStore } from "@/modules/writing/application/sentence-progress-store";
 import type { SentenceGrader } from "@/modules/writing/application/sentence-grader";
 import type { SentenceGrade } from "@/modules/writing/domain/sentence-grade";
@@ -102,4 +103,13 @@ export function fakePoints(total = 0): PointsStore {
 /** Fake ReferenceAnswerSource returning the same accepted answers for every prompt. */
 export function fakeReferences(answers: AcceptedAnswer[] = []): ReferenceAnswerSource {
   return { find: vi.fn().mockResolvedValue(answers) };
+}
+
+/** Fake AttemptStore that records nothing and lists nothing. */
+export function fakeAttempts(overrides: Partial<AttemptStore> = {}): AttemptStore {
+  return {
+    record: vi.fn().mockResolvedValue(undefined),
+    list: vi.fn().mockResolvedValue({ items: [], total: 0 }),
+    ...overrides,
+  };
 }

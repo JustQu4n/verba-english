@@ -46,7 +46,7 @@ Người học muốn luyện viết từng câu tiếng Anh: đọc một câu 
 - **WSN-AC-18** `manual` Làm đúng câu cuối cùng của cặp (tiến độ 100%) thì tự chuyển sang trang hoàn thành, không cần bấm Câu sau; làm lại câu đã đúng không kích hoạt lại. *Kiểm tra:* hoàn thành câu cuối của một cặp.
 
 ## 6. Ràng buộc phi chức năng & bảo mật
-- Bài viết của người học không được ghi log và chưa được lưu ở phạm vi này.
+- Bài viết của người học không được ghi log. Từ spec 015, mỗi lần gửi bài đã chấm được lưu vào cơ sở dữ liệu và chỉ chủ sở hữu đọc được.
 - Câu luyện lấy qua máy chủ để sau này đổi nguồn (cơ sở dữ liệu) mà giao diện không đổi.
 - Tôn trọng tùy chọn giảm chuyển động của hệ điều hành.
 

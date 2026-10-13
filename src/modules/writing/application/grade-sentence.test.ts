@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import { InfrastructureError, InsufficientCreditsError, NotFoundError, UnauthorizedError, ValidationError } from "@/core/errors";
-import { ADMIN_USER, fakeAuth, fakeCredits, fakeGrader, fakeProgress, fakeReferences, sampleGrade } from "@/test/fakes";
+import { ADMIN_USER, fakeAuth, fakeAttempts, fakeCredits, fakeGrader, fakeProgress, fakeReferences, sampleGrade } from "@/test/fakes";
 
 import type { SentencePrompt } from "../domain/sentence-catalog";
 import { MemoryGradeCache } from "../infrastructure/memory-grade-cache";
@@ -288,5 +288,64 @@ describe("gradeSentence", () => {
     await gradeSentence(d, { promptId: ID, answer: "I want the beach" }, "vi");
     expect(d.grader.grade).toHaveBeenCalledTimes(1);
     await expect(gradeSentence(deps(), { promptId: ID, answer: "I want", mode: "free" }, "vi")).rejects.toBeInstanceOf(ValidationError);
+  });
+
+  it("ATT-AC-01: a correct answer is saved once, with the trimmed answer and the grade", async () => {
+    const attempts = fakeAttempts();
+    const d = deps({ attempts, grader: fakeGrader(sampleGrade({ correct: true, suggestion: "I want to go to the beach.", improvements: [] })) });
+    await gradeSentence(d, { promptId: ID, answer: "  I want to go to the beach  " }, "vi");
+    expect(attempts.record).toHaveBeenCalledTimes(1);
+    expect(attempts.record).toHaveBeenCalledWith(
+      expect.objectContaining({
+        userId: ADMIN_USER.id,
+        promptId: ID,
+        mode: "ai",
+        correct: true,
+        answer: "I want to go to the beach",
+        answerKey: "i want to go to the beach",
+        source: "ai",
+        language: "vi",
+        suggestion: "I want to go to the beach.",
+      })
+    );
+  });
+
+  it("ATT-AC-01: a wrong answer is not saved, in either way of checking", async () => {
+    const attempts = fakeAttempts();
+    await gradeSentence(deps({ attempts }), { promptId: ID, answer: "I want go beach" }, "vi");
+    await gradeSentence(deps({ attempts }), { promptId: ID, answer: "nothing like it", mode: "reference" }, "en");
+    expect(attempts.record).not.toHaveBeenCalled();
+  });
+
+  it("ATT-AC-01: a correct answer found in the accepted answers is saved with the reference source", async () => {
+    const attempts = fakeAttempts();
+    const references = fakeReferences([{ text: "I want to go to the beach.", structureVi: "", structureEn: "" }]);
+    await gradeSentence(deps({ attempts, references }), { promptId: ID, answer: "i want to go to the beach", mode: "reference" }, "en");
+    expect(attempts.record).toHaveBeenCalledWith(expect.objectContaining({ correct: true, mode: "reference", source: "reference", language: "en" }));
+  });
+
+  it("ATT-AC-02: when saving the history fails the learner still gets the grade", async () => {
+    const attempts = fakeAttempts({ record: vi.fn().mockRejectedValue(new InfrastructureError("Could not save the attempt")) });
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
+    const result = await gradeSentence(deps({ attempts, grader: fakeGrader(sampleGrade({ correct: true })) }), { promptId: ID, answer: "I want to go to the beach" }, "vi");
+    expect(result.grade.correct).toBe(true);
+    expect(JSON.stringify(log.mock.calls)).not.toContain("beach");
+    log.mockRestore();
+  });
+
+  it("ATT-AC-03: nothing is saved when grading fails", async () => {
+    const attempts = fakeAttempts();
+    await expect(gradeSentence(deps({ attempts, credits: fakeCredits(0) }), { promptId: ID, answer: "I want" }, "vi")).rejects.toBeInstanceOf(InsufficientCreditsError);
+    await expect(gradeSentence(deps({ attempts, grader: { grade: vi.fn().mockRejectedValue(new InfrastructureError("down")) } }), { promptId: ID, answer: "I want" }, "vi")).rejects.toBeInstanceOf(InfrastructureError);
+    expect(attempts.record).not.toHaveBeenCalled();
+  });
+
+  it("ATT-AC-08: the saved key ignores case, punctuation and spacing so repeats can be merged", async () => {
+    const attempts = fakeAttempts();
+    const grader = fakeGrader(sampleGrade({ correct: true }));
+    await gradeSentence(deps({ attempts, grader }), { promptId: ID, answer: "  I  Want to go, to the Beach!  " }, "vi");
+    await gradeSentence(deps({ attempts, grader }), { promptId: ID, answer: "i want to go to the beach" }, "vi");
+    const keys = (attempts.record as ReturnType<typeof vi.fn>).mock.calls.map(([a]) => a.answerKey);
+    expect(keys).toEqual(["i want to go to the beach", "i want to go to the beach"]);
   });
 });

@@ -15,6 +15,10 @@ Then run `supabase/migrations/0008_accepted_answers.sql`. It adds `prompt_answer
 
 Then run `supabase/migrations/0009_sentence_progress_table.sql`. It adds `sentence_progress`, a per-learner counter of completed sentences by level and category that the choose screen reads (it backfills from existing completions, and is rebuilt automatically when an admin deletes, unpublishes or moves a prompt).
 
+Then run `supabase/migrations/0010_attempt_history.sql`. It creates `practice_attempts`, `submissions` and `evaluations`, which keep every correct answer (what the learner wrote and the feedback) for the "My attempts" page. It replaces older tables with the same names only if they are empty, and stops otherwise. Like completions, history is written by the server with `SUPABASE_SERVICE_ROLE_KEY`; if saving fails, grading still works.
+
+Then run `supabase/migrations/0011_attempt_history_limits.sql`. It keeps the history small: wrong answers are removed, sending the same answer again updates one row (with a counter) and only the 5 newest different correct answers per learner and sentence are kept.
+
 ## 2. Gemini key
 1. Create a key at <https://aistudio.google.com/apikey>.
 2. Put it in `.env.local` as `GEMINI_API_KEY=...` and in your hosting provider's environment variables (Vercel: Project → Settings → Environment Variables), then redeploy.

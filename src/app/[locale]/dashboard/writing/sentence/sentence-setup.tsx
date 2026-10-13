@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, History } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
@@ -53,13 +53,21 @@ export function SentenceSetup({
   return (
     <>
       <div className="mx-auto w-full max-w-6xl px-5 pt-8 pb-8 sm:px-8 sm:pt-10">
-        <Link
-          href="/dashboard"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <ArrowLeft className="size-4" aria-hidden="true" />
-          {t("back")}
-        </Link>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ArrowLeft className="size-4" aria-hidden="true" />
+            {t("back")}
+          </Link>
+          <Button asChild variant="outline" size="sm">
+            <Link href="/dashboard/writing/sentence/history">
+              <History aria-hidden="true" />
+              {t("history.link")}
+            </Link>
+          </Button>
+        </div>
         <h1 className="mt-6 text-5xl font-extrabold tracking-tighter italic sm:text-6xl">{t("title")}</h1>
         <p className="mt-3 max-w-xl text-lg text-muted-foreground">{t("intro")}</p>
 

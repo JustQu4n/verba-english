@@ -32,7 +32,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
   setRequestLocale(locale);
 
   return (
-    <html lang={locale} className="h-full">
+    <html lang={locale} className="h-full" data-scroll-behavior="smooth">
       <body className="min-h-full flex flex-col">
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>

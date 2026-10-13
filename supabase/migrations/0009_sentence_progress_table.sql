@@ -109,3 +109,6 @@ grant execute on function public.complete_sentence(uuid, uuid) to service_role;
 
 -- Backfill from the completions that already exist.
 select public.rebuild_sentence_progress();
+
+-- Make the API pick up the new tables right away.
+notify pgrst, 'reload schema';

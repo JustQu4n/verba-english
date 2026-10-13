@@ -91,9 +91,9 @@ export type GradeAnswerResult =
 /** Grades the learner's answer to a stored prompt, by AI (a wrong answer costs a credit) or against the accepted answers (free). */
 export async function gradeAnswer(input: unknown): Promise<GradeAnswerResult> {
   try {
-    const { auth, sentencePrompts, credits, grader, gradeCache, sentenceProgress: progressStore, references } = await getContainer();
+    const { auth, sentencePrompts, credits, grader, gradeCache, sentenceProgress: progressStore, references, attempts } = await getContainer();
     const { grade, credits: remaining, progress, points, source } = await gradeSentence(
-      { auth, prompts: sentencePrompts, credits, grader, cache: gradeCache, progress: progressStore, references },
+      { auth, prompts: sentencePrompts, credits, grader, cache: gradeCache, progress: progressStore, references, attempts },
       input,
       (await getLocale()) === "en" ? "en" : "vi"
     );
