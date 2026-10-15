@@ -33,3 +33,7 @@ Non-admins get a 404 on `/admin/*`, and guests are sent to `/login`.
   To check, from a normal user's session run `supabase.from("profiles").update({ role: "admin" }).eq("id", me)`; it must fail.
 - Admin writes use the admin's own session and Row Level Security (`public.is_admin()`); the service role key is not used.
 - Demote an admin by setting `role = 'user'` the same way.
+
+## Dữ liệu thử cho bảng xếp hạng (chỉ môi trường dev)
+
+Chạy `supabase/seed-leaderboard.sql` trong SQL Editor (sau migration 0012). Script tạo 12 tài khoản giả `seed-NN@verba.test` có điểm cao hơn mọi người học thật, nên tài khoản của bạn nằm ngoài top 10. Chạy lại an toàn. Xóa dữ liệu thử: `delete from auth.users where email like 'seed-%@verba.test';`

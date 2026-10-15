@@ -19,7 +19,8 @@
     "features": "Features",
     "modes": "How it's checked",
     "topics": "Topics",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "leaderboardLink": "View the leaderboard"
   },
   "Hero": {
     "title1": "Write one sentence.",
@@ -73,7 +74,10 @@
   },
   "UserMenu": {
     "account": "{name}'s account",
-    "dashboard": "Go to dashboard"
+    "dashboard": "Go to dashboard",
+    "leaderboard": "Leaderboard",
+    "dashboardHint": "Practice and your progress",
+    "leaderboardHint": "See the top 10 learners"
   },
   "Profile": {
     "anonymous": "User"
@@ -427,5 +431,19 @@
     "a4": "Only your correct answers are saved, so you can review them, and only you can see them. Wrong answers are not kept.",
     "q5": "Is the site available in English?",
     "a5": "Yes. Switch between Vietnamese and English at the top, and the feedback follows the language you choose."
+  },
+  "Leaderboard": {
+    "back": "Dashboard",
+    "title": "Leaderboard",
+    "intro": "The top 10 learners by points. Every correct sentence earns 10.",
+    "podium": "Top three",
+    "list": "Ranks 4 to 10",
+    "you": "You",
+    "points": "{count} pts",
+    "yourStanding": "{points} pts. Keep writing to climb into the top 10.",
+    "noPointsYet": "You have no points yet. Get a sentence right to join the ranking.",
+    "empty": "Nobody is on the board yet",
+    "emptyBody": "Get a sentence right and you will be the first.",
+    "startPractice": "Start practicing"
   }
 }

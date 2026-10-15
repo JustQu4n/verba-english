@@ -3,6 +3,8 @@ import { vi } from "vitest";
 import type { RoleReader } from "@/modules/admin/application/role-reader";
 import type { AuthService } from "@/modules/auth/application/auth-service";
 import type { CreditStore } from "@/modules/credits/application/credit-store";
+import type { LeaderboardSource } from "@/modules/leaderboard/application/leaderboard-source";
+import type { RankedLearner } from "@/modules/leaderboard/domain/leaderboard";
 import type { PointsStore } from "@/modules/points/application/points-store";
 import type { AttemptStore } from "@/modules/writing/application/attempt-store";
 import type { SentenceProgressStore } from "@/modules/writing/application/sentence-progress-store";
@@ -112,4 +114,12 @@ export function fakeAttempts(overrides: Partial<AttemptStore> = {}): AttemptStor
     list: vi.fn().mockResolvedValue({ items: [], total: 0 }),
     ...overrides,
   };
+}
+
+/** Fake LeaderboardSource with a fixed ranking. */
+export function fakeLeaderboard(
+  top: RankedLearner[] = [],
+  standing: { rank: number; points: number } | null = null
+): LeaderboardSource {
+  return { top: vi.fn().mockResolvedValue(top), standing: vi.fn().mockResolvedValue(standing) };
 }

@@ -6,10 +6,9 @@ import { useCredits } from "@/components/dashboard/credits-context";
 import { DEFAULT_GRADING_MODE, type GradingMode } from "@/modules/writing/domain/grading-mode";
 import { normalizeAnswer } from "@/modules/writing/domain/sentence-answer";
 import type { Category, Level, SentencePrompt } from "@/modules/writing/domain/sentence-catalog";
-import type { LevelProgress } from "@/modules/writing/application/get-level-progress";
-import type { SentenceProgress } from "@/modules/writing/domain/sentence-progress";
+import { withCategoryProgress, type AllLevelsProgress, type SentenceProgress } from "@/modules/writing/domain/sentence-progress";
 
-import { gradeAnswer, levelProgress, nextSentence, type NextSentenceResult } from "./actions";
+import { allLevelsProgress, gradeAnswer, nextSentence, type NextSentenceResult } from "./actions";
 import { hasPassed, type FeedbackState } from "./feedback-state";
 import { SentenceDone } from "./sentence-done";
 import { SentencePractice } from "./sentence-practice";
@@ -38,8 +37,8 @@ export function SentenceWriting() {
   // Fireworks only when the pair was finished in this visit, not when the learner returns to a finished pair.
   const [celebrate, setCelebrate] = useState(false);
   const completedNow = useRef(false);
-  // Progress of every category shown on the choose screen, tagged with its level so a stale answer is never shown.
-  const [setupProgress, setSetupProgress] = useState<{ level: Level; progress: LevelProgress } | null>(null);
+  // Progress of every category in every level, loaded once so switching level is instant. Null until the first load.
+  const [allProgress, setAllProgress] = useState<AllLevelsProgress | null>(null);
   const [error, setError] = useState<FailureReason | null>(null);
   const [pending, startTransition] = useTransition();
   // A grade that arrives after the learner left the sentence must not show up on the next one.
@@ -49,6 +48,11 @@ export function SentenceWriting() {
     setAnswer("");
     setHintOpen(false);
     setFeedback(IDLE);
+  }
+
+  /** The server just told us the pair's progress: show it on the choose screen right away. */
+  function rememberProgress(pair: SentenceProgress) {
+    if (level && category) setAllProgress((all) => withCategoryProgress(all, level, category, pair));
   }
 
   function finish(done: SentenceProgress) {
@@ -67,6 +71,7 @@ export function SentenceWriting() {
       const result = await nextSentence({ level, category, seenIds: seen });
       if (result.status === "error") return setError(result.reason);
       setProgress(result.progress);
+      rememberProgress(result.progress);
       if (!result.prompt) return finish(result.progress);
       const next = result.prompt;
       currentPromptId.current = next.id;
@@ -119,7 +124,10 @@ export function SentenceWriting() {
       if (currentPromptId.current !== promptId) return;
       if (result.status === "error") return setFeedback({ status: "error", reason: result.reason, mode });
       setCredits(result.credits);
-      if (result.progress) setProgress(result.progress);
+      if (result.progress) {
+        setProgress(result.progress);
+        rememberProgress(result.progress);
+      }
       if (result.points) {
         setPoints(result.points.total);
         completedNow.current = true;
@@ -132,18 +140,19 @@ export function SentenceWriting() {
     });
   }
 
-  // On the choose screen, look up how far the learner is in each category of the chosen level.
-  const setupLevel = level && !prompt && !allDone ? level : null;
+  // Load every level's progress when the page opens and again whenever the learner comes back to the choose screen.
+  // The numbers already on screen stay until the fresh ones arrive; a failed load just keeps them.
+  const onSetup = !prompt && !allDone;
   useEffect(() => {
-    if (!setupLevel) return;
+    if (!onSetup) return;
     let cancelled = false;
-    void levelProgress({ level: setupLevel }).then((result) => {
-      if (!cancelled && result.status === "ok") setSetupProgress({ level: setupLevel, progress: result.progress });
+    void allLevelsProgress().then((result) => {
+      if (!cancelled && result.status === "ok") setAllProgress(result.progress);
     });
     return () => {
       cancelled = true;
     };
-  }, [setupLevel]);
+  }, [onSetup]);
 
   if (allDone && level && category && progress) {
     return <SentenceDone level={level} category={category} progress={progress} celebrate={celebrate} onBack={quit} />;
@@ -184,7 +193,7 @@ export function SentenceWriting() {
       onCategoryChange={setCategory}
       onStart={() => loadSentence([])}
       starting={pending}
-      progress={setupProgress && setupProgress.level === level ? setupProgress.progress : null}
+      progress={level && allProgress ? allProgress[level] : null}
       error={error}
     />
   );

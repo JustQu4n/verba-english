@@ -18,7 +18,7 @@ function pickName(user: User, profile: Profile | null, anonymousName: string): s
 }
 
 /** First letters of the first and last words, keeping Vietnamese diacritics (NFC-normalized so marks are not split). */
-function pickInitials(name: string): string {
+export function pickInitials(name: string): string {
   const words = name.normalize("NFC").split(/\s+/).filter(Boolean);
   const first = words[0];
   const last = words.length > 1 ? words[words.length - 1] : undefined;
@@ -27,7 +27,7 @@ function pickInitials(name: string): string {
 }
 
 /** Only accepts https images: blocks `javascript:`, `data:`, `http:` and malformed URLs. */
-function safeAvatarUrl(url: string | null | undefined): string | null {
+export function safeAvatarUrl(url: string | null | undefined): string | null {
   if (!url) return null;
   try {
     return new URL(url).protocol === "https:" ? url : null;

@@ -19,7 +19,8 @@
     "features": "Tính năng",
     "modes": "Cách chấm",
     "topics": "Chủ đề",
-    "faq": "Hỏi đáp"
+    "faq": "Hỏi đáp",
+    "leaderboardLink": "Xem bảng xếp hạng"
   },
   "Hero": {
     "title1": "Viết một câu.",
@@ -73,7 +74,10 @@
   },
   "UserMenu": {
     "account": "Tài khoản của {name}",
-    "dashboard": "Vào dashboard"
+    "dashboard": "Vào dashboard",
+    "leaderboard": "Bảng xếp hạng",
+    "dashboardHint": "Luyện tập và tiến độ của bạn",
+    "leaderboardHint": "Xem top 10 người học"
   },
   "Profile": {
     "anonymous": "Người dùng"
@@ -427,5 +431,19 @@
     "a4": "Chỉ các đáp án đúng được lưu để bạn xem lại, và chỉ bạn xem được. Câu sai không được giữ lại.",
     "q5": "Có giao diện tiếng Anh không?",
     "a5": "Có. Bạn chuyển giữa Tiếng Việt và English ở đầu trang, nhận xét sẽ theo ngôn ngữ bạn chọn."
+  },
+  "Leaderboard": {
+    "back": "Dashboard",
+    "title": "Bảng xếp hạng",
+    "intro": "Top 10 người học nhiều điểm nhất. Mỗi câu đúng được 10 điểm.",
+    "podium": "Ba người dẫn đầu",
+    "list": "Hạng 4 đến 10",
+    "you": "Bạn",
+    "points": "{count} điểm",
+    "yourStanding": "{points} điểm. Viết thêm để vào top 10.",
+    "noPointsYet": "Bạn chưa có điểm. Làm đúng một câu để vào bảng xếp hạng.",
+    "empty": "Chưa có ai trên bảng",
+    "emptyBody": "Làm đúng một câu và bạn sẽ là người đầu tiên.",
+    "startPractice": "Bắt đầu luyện tập"
   }
 }

@@ -9,6 +9,8 @@ import { SupabaseAuthService } from "@/modules/auth/infrastructure/supabase-auth
 import type { CreditStore } from "@/modules/credits/application/credit-store";
 import { createAdminClient } from "@/infrastructure/supabase/admin";
 import { SupabaseCreditStore } from "@/modules/credits/infrastructure/supabase-credit-store";
+import type { LeaderboardSource } from "@/modules/leaderboard/application/leaderboard-source";
+import { SupabaseLeaderboardSource } from "@/modules/leaderboard/infrastructure/supabase-leaderboard-source";
 import type { PointsStore } from "@/modules/points/application/points-store";
 import { SupabasePointsStore } from "@/modules/points/infrastructure/supabase-points-store";
 import type { ProfileRepository } from "@/modules/profile/application/profile-repository";
@@ -55,6 +57,8 @@ export interface Container {
   /** Which sentences each learner completed. */
   sentenceProgress: SentenceProgressStore;
   points: PointsStore;
+  /** Ranking of learners by points, read by trusted server code. */
+  leaderboard: LeaderboardSource;
   /** Every graded attempt, written by trusted server code. */
   attempts: AttemptStore;
 }
@@ -88,6 +92,7 @@ export const getContainer = cache(async (): Promise<Container> => {
     // Completions award points, so they are written by trusted server code with the service role, never by the user's session.
     sentenceProgress: new SupabaseSentenceProgressStore(supabase, createAdminClient),
     points: new SupabasePointsStore(supabase),
+    leaderboard: new SupabaseLeaderboardSource(createAdminClient),
     attempts: new SupabaseAttemptStore(supabase, createAdminClient),
   };
 });
