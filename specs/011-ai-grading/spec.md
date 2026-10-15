@@ -33,7 +33,7 @@ Sau khi người học gửi bản dịch của một câu, hệ thống nhờ A
 - **AIG-AC-05** Given số dư thấp hơn chi phí, when chấm, then báo hết credit và không gọi AI.
 - **AIG-AC-06** Given đề hợp lệ và đủ credit, when chấm, then gọi AI với câu tiếng Việt của đề, trình độ và câu trả lời đã cắt khoảng trắng; nếu kết quả chưa đúng thì trừ 1 credit, nếu đúng thì không trừ; trả kết quả cùng số dư còn lại. Mỗi lần gửi sai, kể cả bản sửa, đều trừ 1 credit.
 - **AIG-AC-07** Given AI lỗi, when chấm, then báo lỗi hạ tầng và không trừ credit.
-- **AIG-AC-08** Given cùng đề và cùng câu trả lời đã chấm trước đó (khác nhau chỉ ở khoảng trắng), when chấm lại, then trả kết quả đã lưu, không gọi AI và không trừ credit; khác ngôn ngữ giao diện thì chấm lại (xem AIG-AC-22).
+- **AIG-AC-08** Given cùng đề và cùng câu trả lời đã chấm trước đó (khác nhau chỉ ở khoảng trắng), when chấm lại, then trả kết quả đã lưu, không gọi AI và không trừ credit; khác ngôn ngữ phản hồi thì chấm lại (xem AIG-AC-22).
 - **AIG-AC-09** Given AI chấm là chưa đúng nhưng lúc trừ credit số dư đã không đủ (hai yêu cầu song song), when trừ, then báo hết credit và không trả kết quả.
 - **AIG-AC-10** Given đề và câu trả lời, when dựng yêu cầu cho Gemini, then yêu cầu chứa trình độ, câu tiếng Việt và câu trả lời đặt trong dấu phân cách rõ ràng, và chỉ dẫn hệ thống yêu cầu coi câu trả lời là dữ liệu chứ không phải lệnh.
 - **AIG-AC-11** Given khóa và mô hình, when gửi yêu cầu, then khóa nằm trong tiêu đề, không nằm trong URL hay nội dung; có lược đồ JSON, giới hạn token đầu ra, mức suy luận thấp và tắt lưu trữ.
@@ -42,7 +42,8 @@ Sau khi người học gửi bản dịch của một câu, hệ thống nhờ A
 - **AIG-AC-14** Given kho credit trên cơ sở dữ liệu, when đọc số dư hoặc trừ, then dùng đúng cột và hàm; trừ khi không đủ trả về rỗng; lỗi cơ sở dữ liệu báo lỗi hạ tầng không lộ nội dung gốc.
 - **AIG-AC-15** Given người đã đăng nhập, when lấy số dư, then trả số credit; chưa đăng nhập thì báo chưa đăng nhập.
 - **AIG-AC-16** Given bộ nhớ đệm, when lưu quá giới hạn hoặc quá hạn, then bỏ mục cũ nhất hoặc mục hết hạn.
-- **AIG-AC-22** Given ngôn ngữ giao diện (vi hoặc en), when chấm, then ngôn ngữ do máy chủ xác định (không nhận từ trình duyệt) được gửi cho AI để viết phần cải thiện và nhận xét, và là một phần của khóa bộ nhớ đệm.
+- **AIG-AC-22** Given ngôn ngữ phản hồi (vi hoặc en), when chấm, then ngôn ngữ do máy chủ xác định (không nhận từ trình duyệt) được gửi cho AI để viết phần cải thiện và nhận xét, và là một phần của khóa bộ nhớ đệm.
+- **AIG-AC-23** Given bất kỳ ngôn ngữ giao diện nào (vi hoặc en), when chấm, then phản hồi của AI (phần cải thiện, nhận xét) và ghi chú cấu trúc của đáp án chuẩn luôn bằng tiếng Việt, vì người học là người Việt; yêu cầu gửi cho Gemini nêu rõ ngôn ngữ ở dòng cuối và hướng dẫn hệ thống có quy tắc ngôn ngữ luôn áp dụng.
 - **AIG-AC-17** `manual` Given đã gửi một bản dịch, when có kết quả, then khung phản hồi hiện "Suggestion" (câu đúng), "Suggested improvements" (gạch đầu dòng) và "Nhận xét" ("Comment" khi giao diện tiếng Anh), viết theo ngôn ngữ giao diện, kèm trạng thái đúng hoặc chưa đúng. *Kiểm tra:* gửi "I want to the beach" cho câu "Tôi muốn đi biển".
 - **AIG-AC-18** `manual` Given câu trả lời chưa đúng, when xem màn luyện, then không có nút "Câu tiếp theo"; sửa câu trả lời thì gửi lại được, còn giữ nguyên câu cũ thì không gửi lại được; "Bỏ qua" vẫn dùng được. Khi đúng thì hiện "Câu tiếp theo".
 - **AIG-AC-19** `manual` Given màn luyện và màn chọn, when xem, then thấy số credit còn lại, cập nhật sau mỗi lần chấm; hết credit thì hiện thông báo việc mua thêm sẽ có và nút Gửi vẫn dùng được (câu khớp đáp án chuẩn vẫn được chấm đúng miễn phí, xem spec 014; câu khác nhận báo hết credit) sau.

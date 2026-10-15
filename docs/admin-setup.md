@@ -37,3 +37,7 @@ Non-admins get a 404 on `/admin/*`, and guests are sent to `/login`.
 ## Dữ liệu thử cho bảng xếp hạng (chỉ môi trường dev)
 
 Chạy `supabase/seed-leaderboard.sql` trong SQL Editor (sau migration 0012). Script tạo 12 tài khoản giả `seed-NN@verba.test` có điểm cao hơn mọi người học thật, nên tài khoản của bạn nằm ngoài top 10. Chạy lại an toàn. Xóa dữ liệu thử: `delete from auth.users where email like 'seed-%@verba.test';`
+
+## Dữ liệu mẫu trình độ beginner
+
+Chạy lần lượt trong SQL Editor: `supabase/seed-beginner.sql` (200 câu, 10 câu mỗi chủ đề) rồi `supabase/seed-beginner-answers.sql` (mỗi câu 2 đáp án chuẩn kèm ghi chú ngữ pháp Vi/En, cần migration 0008). Cả hai chạy lại an toàn: đề đã có thì bỏ qua, đề đã có đáp án thì giữ nguyên bản admin đã sửa.
