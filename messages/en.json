@@ -8,46 +8,62 @@
     "signIn": "Sign in",
     "signOut": "Sign out",
     "startWithGoogle": "Start with Google",
-    "language": "Language"
+    "language": "Language",
+    "toggleTheme": "Switch between light and dark"
   },
   "Header": {
     "navLabel": "Main navigation",
     "credits": "Credits: {count}",
     "points": "Points: {count}",
     "howItWorks": "How it works",
-    "features": "Features"
+    "features": "Features",
+    "modes": "How it's checked",
+    "topics": "Topics",
+    "faq": "FAQ",
+    "leaderboardLink": "View the leaderboard"
   },
   "Hero": {
-    "title": "Practice writing English, corrected sentence by sentence",
-    "subtitle": "Pick a prompt, write a few paragraphs and get your text back corrected, with the reason for each mistake so you don't repeat it.",
+    "title1": "Write one sentence.",
+    "title2": "Fix it until it's right.",
+    "subtitle": "Read a Vietnamese sentence, write it in English and get it corrected on the spot: what is wrong, why, and how a native speaker would say it.",
     "seeHow": "See how it works",
-    "note": "Sign in once with your Google account. No password to remember."
+    "note": "Sign in with Google or email and start practising right away."
   },
   "Demo": {
-    "label": "An example of a corrected text",
-    "prompt": "Prompt: Tell us about your weekend",
+    "label": "An example of a corrected sentence",
+    "tag": "Sentence",
+    "level": "Beginner",
+    "yourAnswer": "Your answer",
     "fixedTo": "corrected to",
-    "comment": "Almost there! Watch your past simple."
+    "comment": "Almost there! Watch your past simple.",
+    "structureLabel": "Grammar structure",
+    "structure": "S + V2 (past simple) + to + place",
+    "correct": "Correct",
+    "points": "+10 points"
   },
   "HowItWorks": {
-    "title": "From prompt to corrected text in three steps",
-    "step1Title": "Pick a prompt",
-    "step1Body": "Choose a topic and length that suit your level, from a short email to a full paragraph.",
-    "step2Title": "Write in English",
-    "step2Body": "Write freely, it doesn't have to be perfect. Your text is saved so you can continue later.",
-    "step3Title": "Read the corrections",
-    "step3Body": "See each mistake, the reason and the fix, then rewrite a better version."
+    "title": "Three steps for every sentence",
+    "step1Title": "Pick a level and a topic",
+    "step1Body": "From short, familiar sentences to complex ones, across 20 topics from daily life to work.",
+    "step2Title": "Translate the sentence",
+    "step2Body": "Write your English version. Open the key-word hint if you need it, press Enter to send.",
+    "step3Title": "Get corrections and points",
+    "step3Body": "If it is wrong you see where and why. If it is right you earn 10 points and move on."
   },
   "Features": {
-    "title": "Corrections that help you understand, not just fix",
-    "grammarTitle": "Grammar and word choice",
-    "grammarBody": "Every mistake is marked, with why it is wrong and how to fix it.",
+    "title": "Made for learning, not just marking",
+    "reasonsTitle": "Know why it is wrong",
+    "reasonsBody": "Every mistake comes with a reason in your language, not only the right answer.",
     "naturalTitle": "More natural phrasing",
-    "naturalBody": "Correct but stiff? See other ways native speakers say the same thing.",
-    "levelTitle": "Prompts for your level",
-    "levelBody": "From a short email to arguing a point in a paragraph, getting harder as you improve.",
-    "memoryTitle": "Remembers your habits",
-    "memoryBody": "Repeated mistakes are tracked so you know what to practise next."
+    "naturalBody": "Correct but stiff? See how native speakers say the same thing.",
+    "structureTitle": "Grammar structures",
+    "structureBody": "Accepted answers come with a structure note you can reuse in other sentences.",
+    "progressTitle": "Progress per topic",
+    "progressBody": "A progress bar on every topic shows exactly how far you have got.",
+    "pointsTitle": "Points and fireworks",
+    "pointsBody": "10 points for the first time you get a sentence right, and fireworks when you finish a topic.",
+    "historyTitle": "Review what you wrote",
+    "historyBody": "Your correct answers are saved so you can look back at them whenever you like."
   },
   "Cta": {
     "title": "Write your first sentence today",
@@ -58,7 +74,10 @@
   },
   "UserMenu": {
     "account": "{name}'s account",
-    "dashboard": "Go to dashboard"
+    "dashboard": "Go to dashboard",
+    "leaderboard": "Leaderboard",
+    "dashboardHint": "Practice and your progress",
+    "leaderboardHint": "See the top 10 learners"
   },
   "Profile": {
     "anonymous": "User"
@@ -223,7 +242,31 @@
       "referenceHelp": "Free. Compares with the saved answers and gives grammar hints."
     },
     "referenceMiss": "This is the closest accepted answer. Edit your answer and submit again, or switch to AI feedback to check other wording.",
-    "referenceNone": "This sentence has no accepted answers yet. Switch to AI feedback to check your answer."
+    "referenceNone": "This sentence has no accepted answers yet. Switch to AI feedback to check your answer.",
+    "history": {
+      "link": "My attempts",
+      "back": "Sentence",
+      "title": "My attempts",
+      "intro": "Correct answers you wrote, with the feedback you got.",
+      "count": "{count} correct answers",
+      "empty": "No correct answers yet",
+      "emptyBody": "Get a sentence right in Sentence practice and it will show up here.",
+      "startPractice": "Start practising",
+      "yourAnswer": "Your answer",
+      "suggestion": "Suggestion",
+      "correct": "Correct",
+      "incorrect": "Not quite yet",
+      "mode": {
+        "ai": "AI feedback",
+        "reference": "Accepted answers"
+      },
+      "removed": "This sentence is no longer available.",
+      "pagination": "Pages",
+      "previous": "Previous",
+      "next": "Next",
+      "pageOf": "Page {page} of {pageCount}",
+      "tries": "Sent {count} times"
+    }
   },
   "Admin": {
     "badge": "Admin",
@@ -348,5 +391,59 @@
         }
       }
     }
+  },
+  "Stats": {
+    "levelsValue": "3",
+    "levelsLabel": "levels, from beginner to advanced",
+    "topicsValue": "20",
+    "topicsLabel": "everyday and work topics",
+    "modesValue": "2",
+    "modesLabel": "ways to be checked",
+    "pointsValue": "+10",
+    "pointsLabel": "points for every sentence you get right"
+  },
+  "Modes": {
+    "title": "Pick how you want to be checked",
+    "intro": "Switch between the two with one tap, even in the middle of a sentence.",
+    "aiTitle": "AI feedback",
+    "aiBody": "Checks any wording you come up with, explains each mistake in plain language and suggests a more natural sentence.",
+    "aiPoint1": "Understands your own way of saying it",
+    "aiPoint2": "A wrong answer costs 1 credit, a right one is free",
+    "refTitle": "Accepted answers",
+    "refBody": "Compares your sentence with the saved answers and shows the grammar structure behind them.",
+    "refPoint1": "Always free",
+    "refPoint2": "Works even when your AI credits are used up"
+  },
+  "Levels": {
+    "title": "Start where you are",
+    "topicsTitle": "Twenty topics to choose from",
+    "topicsBody": "Pick what you actually talk and write about."
+  },
+  "Faq": {
+    "title": "Questions, answered",
+    "q1": "Do I need to sign in?",
+    "a1": "Yes. You sign in with Google or email so your progress, points and correct answers are saved to you.",
+    "q2": "What are credits?",
+    "a2": "When the AI marks an answer wrong it costs 1 credit. Right answers are free, and so is checking against the accepted answers.",
+    "q3": "What happens when my credits run out?",
+    "a3": "You can keep practising by switching to Accepted answers. A sentence that matches a saved answer is also marked right for free.",
+    "q4": "Is what I write saved?",
+    "a4": "Only your correct answers are saved, so you can review them, and only you can see them. Wrong answers are not kept.",
+    "q5": "Is the site available in English?",
+    "a5": "Yes. Switch between Vietnamese and English at the top, and the feedback follows the language you choose."
+  },
+  "Leaderboard": {
+    "back": "Dashboard",
+    "title": "Leaderboard",
+    "intro": "The top 10 learners by points. Every correct sentence earns 10.",
+    "podium": "Top three",
+    "list": "Ranks 4 to 10",
+    "you": "You",
+    "points": "{count} pts",
+    "yourStanding": "{points} pts. Keep writing to climb into the top 10.",
+    "noPointsYet": "You have no points yet. Get a sentence right to join the ranking.",
+    "empty": "Nobody is on the board yet",
+    "emptyBody": "Get a sentence right and you will be the first.",
+    "startPractice": "Start practicing"
   }
 }

@@ -2,10 +2,11 @@
 
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useActionState } from "react";
+import { Suspense, useActionState, type CSSProperties } from "react";
 
 import { GoogleIcon } from "@/components/landing/google-icon";
 import { LanguageSwitcher } from "@/components/landing/language-switcher";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Logo } from "@/components/landing/logo";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
@@ -18,27 +19,26 @@ const CALLBACK_ERRORS = ["oauth_failed", "missing_code", "auth_failed"] as const
 function BrandPanel() {
   const t = useTranslations("Login");
   return (
-    <aside className="notebook relative hidden overflow-hidden bg-navy lg:block" aria-hidden="true">
-      <div className="absolute inset-0 bg-navy" />
-      <div
-        className="absolute inset-0 opacity-25"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(to bottom, transparent 0, transparent 55px, #9db4ff 55px, #9db4ff 56px)",
-        }}
-      />
-      <div className="absolute inset-y-0 left-20 w-0.5 bg-margin/70" />
-      <div className="relative flex h-full flex-col justify-between py-12 pl-28 pr-12 text-white">
-        <Logo className="text-xl text-white" />
+    <aside className="relative hidden overflow-hidden bg-inverse text-inverse-foreground lg:block" aria-hidden="true">
+      <div className="flex h-full flex-col justify-between p-12 xl:p-16">
+        <Logo className="text-xl" />
         <div>
-          <p className="font-hand text-5xl leading-[1.2]">
-            Today I will write
+          <p className="display text-[clamp(3rem,5vw,4.5rem)] text-balance">
+            Write it.
             <br />
-            one more sentence.
+            Fix it.
+            <br />
+            Own it.
           </p>
-          <p className="mt-6 max-w-[34ch] text-white/70">
-            {t("brandLine")}
+          <p lang="en" className="mt-10 text-xl/9 text-inverse-foreground/90">
+            Last weekend I{" "}
+            <span className="relative inline-block" style={{ "--d": "0.8s" } as CSSProperties}>
+              <span className="lp-strike">have went</span>
+              <span className="lp-fix">went</span>
+            </span>{" "}
+            to my grandma&apos;s house.
           </p>
+          <p className="mt-6 max-w-[34ch] text-inverse-foreground/60">{t("brandLine")}</p>
         </div>
       </div>
     </aside>
@@ -57,13 +57,14 @@ function LoginPanel() {
 
   return (
     <div className="mx-auto flex w-full max-w-sm flex-col px-5 py-10 sm:px-0">
+      <Logo className="mb-6 text-lg lg:hidden" />
       <Link
         href="/"
-        className="mb-10 w-fit rounded-md text-sm font-medium text-muted-foreground transition-colors hover:text-foreground lg:hidden"
+        className="mb-10 w-fit rounded-md text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
       >
         {t("backHome")}
       </Link>
-      <h1 className="text-3xl font-bold tracking-tight">{t("welcome")}</h1>
+      <h1 className="display text-5xl">{t("welcome")}</h1>
       <p className="mt-3 leading-relaxed text-muted-foreground">
         {t("intro")}
       </p>
@@ -80,7 +81,7 @@ function LoginPanel() {
           variant="outline"
           size="lg"
           disabled={googlePending}
-          className="h-12 w-full gap-3 border-input bg-white text-base font-semibold shadow-sm hover:bg-secondary"
+          className="h-12 w-full gap-3 rounded-full border-input bg-white text-base font-semibold text-neutral-900 shadow-sm hover:bg-neutral-100 hover:text-neutral-900"
         >
           <GoogleIcon className="size-5" />
           {googlePending ? t("redirecting") : t("continueWithGoogle")}
@@ -91,9 +92,9 @@ function LoginPanel() {
       </p>
 
       <div className="my-8 flex items-center gap-4 text-sm text-muted-foreground" role="separator">
-        <span className="h-px flex-1 bg-rule" />
+        <span className="h-px flex-1 bg-border" />
         {t("orUseEmail")}
-        <span className="h-px flex-1 bg-rule" />
+        <span className="h-px flex-1 bg-border" />
       </div>
 
       <EmailAuthForms initialMode={initialMode} />
@@ -103,10 +104,13 @@ function LoginPanel() {
 
 export function LoginView() {
   return (
-    <main className="grid min-h-screen lg:grid-cols-[1fr_1.1fr]">
+    <main className="theme-mono landing grid min-h-screen bg-background text-foreground lg:grid-cols-[1fr_1.1fr]">
       <BrandPanel />
       <div className="relative flex items-center">
-        <LanguageSwitcher className="absolute right-4 top-4" />
+        <div className="absolute right-4 top-4 flex items-center gap-1">
+          <ThemeToggle />
+          <LanguageSwitcher />
+        </div>
         <Suspense>
           <LoginPanel />
         </Suspense>

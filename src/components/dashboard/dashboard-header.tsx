@@ -3,6 +3,7 @@ import { Suspense } from "react";
 
 import { AuthButton, AuthButtonFallback } from "@/components/landing/auth-button";
 import { LanguageSwitcher } from "@/components/landing/language-switcher";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Logo } from "@/components/landing/logo";
 
 import { HeaderCredits, HeaderPoints } from "./credits-context";
@@ -15,6 +16,7 @@ export function DashboardHeader() {
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-2 px-4 sm:px-8">
         <Logo className="text-lg" />
         <nav aria-label={t("navLabel")} className="flex items-center gap-0.5 sm:gap-3">
+          <ThemeToggle />
           <LanguageSwitcher />
           <HeaderPoints />
           <HeaderCredits />

@@ -1,14 +1,14 @@
 "use client";
 
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, History } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { CATEGORIES, LEVELS, type Category, type Level } from "@/modules/writing/domain/sentence-catalog";
-import type { LevelProgress } from "@/modules/writing/application/get-level-progress";
-import { progressPercent } from "@/modules/writing/domain/sentence-progress";
+import type { LevelProgress } from "@/modules/writing/domain/sentence-progress";
 
+import { CategoryProgress } from "./category-progress";
 import { CATEGORY_ICONS } from "./category-icons";
 import { ChoiceCard } from "./choice-card";
 
@@ -19,7 +19,7 @@ interface SentenceSetupProps {
   onCategoryChange: (category: Category) => void;
   onStart: () => void;
   starting: boolean;
-  /** Progress of every category in the chosen level, once known. */
+  /** Progress of every category in the chosen level; null until it has been loaded. */
   progress: LevelProgress | null;
   error: "unauthorized" | "not_found" | "unknown" | null;
 }
@@ -53,13 +53,21 @@ export function SentenceSetup({
   return (
     <>
       <div className="mx-auto w-full max-w-6xl px-5 pt-8 pb-8 sm:px-8 sm:pt-10">
-        <Link
-          href="/dashboard"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <ArrowLeft className="size-4" aria-hidden="true" />
-          {t("back")}
-        </Link>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ArrowLeft className="size-4" aria-hidden="true" />
+            {t("back")}
+          </Link>
+          <Button asChild variant="outline" size="sm">
+            <Link href="/dashboard/writing/sentence/history">
+              <History aria-hidden="true" />
+              {t("history.link")}
+            </Link>
+          </Button>
+        </div>
         <h1 className="mt-6 text-5xl font-extrabold tracking-tighter italic sm:text-6xl">{t("title")}</h1>
         <p className="mt-3 max-w-xl text-lg text-muted-foreground">{t("intro")}</p>
 
@@ -113,25 +121,11 @@ export function SentenceSetup({
                   <Icon className="size-6" strokeWidth={1.75} aria-hidden="true" />
                   <span className="flex w-full flex-col gap-2">
                     <span className="text-sm leading-snug font-semibold">{t(`categories.${c}`)}</span>
-                    {done && done.completed > 0 && (
-                      <span className="flex items-center gap-2">
-                        <span
-                          role="progressbar"
-                          aria-label={`${t(`categories.${c}`)}: ${t("progressLabel")}`}
-                          aria-valuemin={0}
-                          aria-valuemax={done.total}
-                          aria-valuenow={done.completed}
-                          className="h-1.5 flex-1 overflow-hidden rounded-full bg-current/20"
-                        >
-                          <span
-                            className="block h-full rounded-full bg-current transition-[width] duration-500 motion-reduce:transition-none"
-                            style={{ width: `${progressPercent(done)}%` }}
-                          />
-                        </span>
-                        <span className="shrink-0 text-xs tabular-nums opacity-70">
-                          {done.completed}/{done.total}
-                        </span>
-                      </span>
+                    {level ? (
+                      <CategoryProgress key={`${level}-${c}`} label={`${t(`categories.${c}`)}: ${t("progressLabel")}`} progress={done ?? null} />
+                    ) : (
+                      // No level yet: keep the line's height so the card does not grow once a level is picked.
+                      <span aria-hidden="true" className="block h-4" />
                     )}
                   </span>
                 </ChoiceCard>

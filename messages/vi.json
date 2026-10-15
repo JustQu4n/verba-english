@@ -8,57 +8,76 @@
     "signIn": "Đăng nhập",
     "signOut": "Đăng xuất",
     "startWithGoogle": "Bắt đầu với Google",
-    "language": "Ngôn ngữ"
+    "language": "Ngôn ngữ",
+    "toggleTheme": "Đổi giao diện sáng/tối"
   },
   "Header": {
     "navLabel": "Điều hướng chính",
     "credits": "Credit: {count}",
     "points": "Điểm: {count}",
     "howItWorks": "Cách hoạt động",
-    "features": "Tính năng"
+    "features": "Tính năng",
+    "modes": "Cách chấm",
+    "topics": "Chủ đề",
+    "faq": "Hỏi đáp",
+    "leaderboardLink": "Xem bảng xếp hạng"
   },
   "Hero": {
-    "title": "Luyện viết tiếng Anh, được chữa bài từng câu",
-    "subtitle": "Chọn một đề, viết vài đoạn và nhận lại bài đã được chữa, kèm lý do cho từng lỗi để lần sau bạn không mắc lại.",
+    "title1": "Viết một câu.",
+    "title2": "Sửa đến khi đúng.",
+    "subtitle": "Đọc câu tiếng Việt, viết lại bằng tiếng Anh và được chữa ngay: sai ở đâu, vì sao sai, và người bản xứ sẽ nói thế nào.",
     "seeHow": "Xem cách hoạt động",
-    "note": "Đăng nhập một lần bằng tài khoản Google, không cần nhớ mật khẩu."
+    "note": "Đăng nhập bằng Google hoặc email, vào luyện ngay."
   },
   "Demo": {
-    "label": "Ví dụ một bài viết được chữa",
-    "prompt": "Đề: Kể về cuối tuần của bạn",
+    "label": "Ví dụ một câu được chữa",
+    "tag": "Sentence",
+    "level": "Beginner",
+    "yourAnswer": "Bài của bạn",
     "fixedTo": "sửa thành",
-    "comment": "Gần đúng rồi! Chú ý thì quá khứ đơn nhé."
+    "comment": "Gần đúng! Chú ý thì quá khứ đơn.",
+    "structureLabel": "Cấu trúc ngữ pháp",
+    "structure": "S + V2 (quá khứ đơn) + to + nơi chốn",
+    "correct": "Chính xác",
+    "points": "+10 điểm"
   },
   "HowItWorks": {
-    "title": "Từ đề bài đến bài đã chữa, trong ba bước",
-    "step1Title": "Chọn một đề bài",
-    "step1Body": "Chọn chủ đề và độ dài hợp với trình độ của bạn, từ một email ngắn đến một đoạn văn.",
-    "step2Title": "Viết bằng tiếng Anh",
-    "step2Body": "Viết thoải mái, không cần hoàn hảo. Bài được lưu lại để bạn viết tiếp lúc khác.",
-    "step3Title": "Đọc bài đã chữa",
-    "step3Body": "Xem từng lỗi, lý do và cách sửa, rồi viết lại một bản tốt hơn."
+    "title": "Ba bước cho mỗi câu",
+    "step1Title": "Chọn trình độ và chủ đề",
+    "step1Body": "Từ câu ngắn quen thuộc đến câu phức tạp, trong 20 chủ đề từ đời sống đến công việc.",
+    "step2Title": "Dịch câu tiếng Việt",
+    "step2Body": "Viết bản tiếng Anh của bạn. Cần thì mở gợi ý từ khóa, nhấn Enter để gửi.",
+    "step3Title": "Nhận chữa bài và điểm",
+    "step3Body": "Sai thì biết sai ở đâu và vì sao. Đúng thì được 10 điểm và sang câu tiếp."
   },
   "Features": {
-    "title": "Chữa bài để bạn hiểu, không chỉ để sửa",
-    "grammarTitle": "Chữa ngữ pháp và dùng từ",
-    "grammarBody": "Mỗi lỗi được đánh dấu, kèm lý do vì sao sai và cách sửa đúng.",
-    "naturalTitle": "Gợi ý cách viết tự nhiên hơn",
-    "naturalBody": "Câu đúng nhưng còn gượng? Xem thêm những cách diễn đạt người bản xứ hay dùng.",
-    "levelTitle": "Đề bài theo trình độ",
-    "levelBody": "Từ viết một email ngắn đến lập luận trong một đoạn văn, tăng dần độ khó.",
-    "memoryTitle": "Nhớ lỗi bạn hay mắc",
-    "memoryBody": "Những lỗi lặp lại được ghi nhớ, để bạn biết cần luyện điểm nào tiếp theo."
+    "title": "Làm ra để học, không chỉ để chấm",
+    "reasonsTitle": "Biết vì sao sai",
+    "reasonsBody": "Mỗi lỗi đi kèm lý do bằng tiếng Việt, không chỉ có đáp án đúng.",
+    "naturalTitle": "Câu tự nhiên hơn",
+    "naturalBody": "Đúng nhưng còn cứng? Xem người bản xứ diễn đạt cùng ý ra sao.",
+    "structureTitle": "Cấu trúc ngữ pháp",
+    "structureBody": "Đáp án chuẩn đi kèm ghi chú cấu trúc để bạn dùng lại cho câu khác.",
+    "progressTitle": "Tiến độ từng chủ đề",
+    "progressBody": "Thanh tiến độ trên mỗi chủ đề cho bạn thấy đã làm đến đâu.",
+    "pointsTitle": "Điểm thưởng và pháo hoa",
+    "pointsBody": "10 điểm cho lần đầu làm đúng một câu, và pháo hoa khi hoàn thành cả chủ đề.",
+    "historyTitle": "Xem lại bài đã làm",
+    "historyBody": "Các đáp án đúng của bạn được lưu lại để xem lại bất cứ lúc nào."
   },
   "Cta": {
     "title": "Viết câu đầu tiên của bạn hôm nay",
-    "body": "Chỉ mất vài giây để đăng nhập. Chúng tôi dùng tên, email và ảnh đại diện Google của bạn để tạo tài khoản."
+    "body": "Đăng nhập chỉ mất vài giây. Chúng tôi dùng tên, email và ảnh Google để tạo tài khoản."
   },
   "Footer": {
     "tagline": "Words That Work."
   },
   "UserMenu": {
     "account": "Tài khoản của {name}",
-    "dashboard": "Vào dashboard"
+    "dashboard": "Vào dashboard",
+    "leaderboard": "Bảng xếp hạng",
+    "dashboardHint": "Luyện tập và tiến độ của bạn",
+    "leaderboardHint": "Xem top 10 người học"
   },
   "Profile": {
     "anonymous": "Người dùng"
@@ -223,7 +242,31 @@
       "referenceHelp": "Miễn phí. Đối chiếu với đáp án có sẵn và gợi ý cấu trúc ngữ pháp."
     },
     "referenceMiss": "Đây là đáp án chuẩn gần nhất với câu của bạn. Hãy sửa lại và gửi tiếp, hoặc chọn chấm bằng AI để kiểm tra cách diễn đạt khác.",
-    "referenceNone": "Câu này chưa có đáp án chuẩn. Hãy chọn chấm bằng AI để kiểm tra câu trả lời."
+    "referenceNone": "Câu này chưa có đáp án chuẩn. Hãy chọn chấm bằng AI để kiểm tra câu trả lời.",
+    "history": {
+      "link": "Bài đã làm",
+      "back": "Sentence",
+      "title": "Bài đã làm",
+      "intro": "Xem lại các đáp án đúng bạn đã viết và nhận xét đã nhận.",
+      "count": "{count} đáp án đúng",
+      "empty": "Chưa có đáp án đúng nào",
+      "emptyBody": "Làm đúng một câu ở phần luyện Sentence, đáp án sẽ hiện ở đây.",
+      "startPractice": "Bắt đầu luyện",
+      "yourAnswer": "Bài của bạn",
+      "suggestion": "Gợi ý",
+      "correct": "Chính xác",
+      "incorrect": "Chưa đúng",
+      "mode": {
+        "ai": "Nhận xét của AI",
+        "reference": "Đáp án chuẩn"
+      },
+      "removed": "Câu này không còn trong danh sách.",
+      "pagination": "Phân trang",
+      "previous": "Trước",
+      "next": "Sau",
+      "pageOf": "Trang {page}/{pageCount}",
+      "tries": "Đã gửi {count} lần"
+    }
   },
   "Admin": {
     "badge": "Admin",
@@ -348,5 +391,59 @@
         }
       }
     }
+  },
+  "Stats": {
+    "levelsValue": "3",
+    "levelsLabel": "trình độ, từ cơ bản đến nâng cao",
+    "topicsValue": "20",
+    "topicsLabel": "chủ đề đời sống và công việc",
+    "modesValue": "2",
+    "modesLabel": "cách chấm bài",
+    "pointsValue": "+10",
+    "pointsLabel": "điểm cho mỗi câu làm đúng"
+  },
+  "Modes": {
+    "title": "Chọn cách chấm hợp với bạn",
+    "intro": "Chuyển qua lại giữa hai cách chỉ bằng một lần chạm, kể cả giữa chừng một câu.",
+    "aiTitle": "Nhận xét của AI",
+    "aiBody": "Chấm mọi cách diễn đạt bạn nghĩ ra, giải thích từng lỗi dễ hiểu và gợi ý câu tự nhiên hơn.",
+    "aiPoint1": "Hiểu cách nói riêng của bạn",
+    "aiPoint2": "Sai thì trừ 1 credit, đúng thì miễn phí",
+    "refTitle": "Đáp án chuẩn",
+    "refBody": "Đối chiếu câu của bạn với các đáp án có sẵn và cho thấy cấu trúc ngữ pháp phía sau.",
+    "refPoint1": "Luôn miễn phí",
+    "refPoint2": "Dùng được cả khi hết credit AI"
+  },
+  "Levels": {
+    "title": "Bắt đầu từ chỗ bạn đang đứng",
+    "topicsTitle": "Hai mươi chủ đề để chọn",
+    "topicsBody": "Chọn đúng thứ bạn thật sự hay nói và viết."
+  },
+  "Faq": {
+    "title": "Câu hỏi thường gặp",
+    "q1": "Tôi có cần đăng nhập không?",
+    "a1": "Có. Bạn đăng nhập bằng Google hoặc email để tiến độ, điểm và các đáp án đúng được lưu cho riêng bạn.",
+    "q2": "Credit là gì?",
+    "a2": "Mỗi lần AI chấm sai tốn 1 credit. Làm đúng thì miễn phí, và chấm bằng Đáp án chuẩn cũng miễn phí.",
+    "q3": "Hết credit thì sao?",
+    "a3": "Bạn vẫn luyện tiếp bằng cách chuyển sang chấm Đáp án chuẩn. Câu trùng với đáp án có sẵn cũng được tính đúng miễn phí.",
+    "q4": "Bài tôi viết có được lưu không?",
+    "a4": "Chỉ các đáp án đúng được lưu để bạn xem lại, và chỉ bạn xem được. Câu sai không được giữ lại.",
+    "q5": "Có giao diện tiếng Anh không?",
+    "a5": "Có. Bạn chuyển giữa Tiếng Việt và English ở đầu trang, nhận xét sẽ theo ngôn ngữ bạn chọn."
+  },
+  "Leaderboard": {
+    "back": "Dashboard",
+    "title": "Bảng xếp hạng",
+    "intro": "Top 10 người học nhiều điểm nhất. Mỗi câu đúng được 10 điểm.",
+    "podium": "Ba người dẫn đầu",
+    "list": "Hạng 4 đến 10",
+    "you": "Bạn",
+    "points": "{count} điểm",
+    "yourStanding": "{points} điểm. Viết thêm để vào top 10.",
+    "noPointsYet": "Bạn chưa có điểm. Làm đúng một câu để vào bảng xếp hạng.",
+    "empty": "Chưa có ai trên bảng",
+    "emptyBody": "Làm đúng một câu và bạn sẽ là người đầu tiên.",
+    "startPractice": "Bắt đầu luyện tập"
   }
 }

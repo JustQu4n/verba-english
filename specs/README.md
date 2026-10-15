@@ -20,5 +20,8 @@ Mẫu ở `_templates/`. Nguyên tắc ở [constitution.md](./constitution.md).
 | [012-sentence-progress](./012-sentence-progress/spec.md) | Lịch sử làm bài và tiến độ luyện câu | `SPG` |
 | [013-points](./013-points/spec.md) | Điểm thưởng mỗi câu, pháo hoa chúc mừng, phím Enter | `PTS` |
 | [014-accepted-answers](./014-accepted-answers/spec.md) | Đáp án chuẩn có cấu trúc ngữ pháp, chấm không cần AI, AI soạn sẵn cho admin | `ANS` |
+| [015-attempt-history](./015-attempt-history/spec.md) | Lưu đáp án đúng đã làm và xem lại | `ATT` |
+| [016-theme](./016-theme/spec.md) | Giao diện sáng / tối | `THM` |
+| [017-leaderboard](./017-leaderboard/spec.md) | Bảng xếp hạng top 10 theo điểm, bục top 3 | `LDB` |
 
 Kiểm tra mọi AC đều có test: `npm run specs:check`.

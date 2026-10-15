@@ -9,12 +9,15 @@ import { SupabaseAuthService } from "@/modules/auth/infrastructure/supabase-auth
 import type { CreditStore } from "@/modules/credits/application/credit-store";
 import { createAdminClient } from "@/infrastructure/supabase/admin";
 import { SupabaseCreditStore } from "@/modules/credits/infrastructure/supabase-credit-store";
+import type { LeaderboardSource } from "@/modules/leaderboard/application/leaderboard-source";
+import { SupabaseLeaderboardSource } from "@/modules/leaderboard/infrastructure/supabase-leaderboard-source";
 import type { PointsStore } from "@/modules/points/application/points-store";
 import { SupabasePointsStore } from "@/modules/points/infrastructure/supabase-points-store";
 import type { ProfileRepository } from "@/modules/profile/application/profile-repository";
 import { SupabaseProfileRepository } from "@/modules/profile/infrastructure/supabase-profile-repository";
 import type { GradeCache } from "@/modules/writing/application/grade-cache";
 import type { PromptRepository } from "@/modules/writing/application/prompt-repository";
+import type { AttemptStore } from "@/modules/writing/application/attempt-store";
 import type { SentenceProgressStore } from "@/modules/writing/application/sentence-progress-store";
 import type { SentenceGrader } from "@/modules/writing/application/sentence-grader";
 import type { SentencePromptSource } from "@/modules/writing/application/sentence-prompt-source";
@@ -23,6 +26,7 @@ import type { ReferenceAnswerSource } from "@/modules/writing/application/refere
 import { GeminiAnswerSuggester } from "@/modules/writing/infrastructure/gemini-answer-suggester";
 import { SupabaseReferenceAnswerSource } from "@/modules/writing/infrastructure/supabase-reference-answer-source";
 import { GeminiSentenceGrader } from "@/modules/writing/infrastructure/gemini-sentence-grader";
+import { SupabaseAttemptStore } from "@/modules/writing/infrastructure/supabase-attempt-store";
 import { SupabaseSentenceProgressStore } from "@/modules/writing/infrastructure/supabase-sentence-progress-store";
 import { MemoryGradeCache } from "@/modules/writing/infrastructure/memory-grade-cache";
 import { SupabasePromptRepository } from "@/modules/writing/infrastructure/supabase-prompt-repository";
@@ -53,6 +57,10 @@ export interface Container {
   /** Which sentences each learner completed. */
   sentenceProgress: SentenceProgressStore;
   points: PointsStore;
+  /** Ranking of learners by points, read by trusted server code. */
+  leaderboard: LeaderboardSource;
+  /** Every graded attempt, written by trusted server code. */
+  attempts: AttemptStore;
 }
 
 // Module level on purpose: the container is rebuilt per request, the cache must outlive it.
@@ -84,5 +92,7 @@ export const getContainer = cache(async (): Promise<Container> => {
     // Completions award points, so they are written by trusted server code with the service role, never by the user's session.
     sentenceProgress: new SupabaseSentenceProgressStore(supabase, createAdminClient),
     points: new SupabasePointsStore(supabase),
+    leaderboard: new SupabaseLeaderboardSource(createAdminClient),
+    attempts: new SupabaseAttemptStore(supabase, createAdminClient),
   };
 });

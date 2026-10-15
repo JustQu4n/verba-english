@@ -1,40 +1,57 @@
+import { Check } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { CSSProperties } from "react";
 
-/** A word struck through in red, with the correction written above (like a teacher marking homework). */
-function Fix({ wrong, right, delay }: { wrong: string; right: string; delay: string }) {
-  const t = useTranslations("Demo");
-  return (
-    <span className="relative inline-block" style={{ "--d": delay } as CSSProperties}>
-      <span className="pen-strike">{wrong}</span>
-      <span className="pen-fix" aria-hidden="true">
-        {right}
-      </span>
-      <span className="sr-only"> ({t("fixedTo")}: {right}) </span>
-    </span>
-  );
-}
+import { LogoMark } from "./logo";
 
+/** A black "practice card": a Vietnamese prompt, a wrong answer marked in red, then the structure and the points. */
 export function WritingDemo() {
   const t = useTranslations("Demo");
   return (
     <figure
-      className="notebook w-full max-w-xl rounded-xl border border-rule shadow-[0_18px_40px_-24px_rgba(20,33,61,0.45)] -rotate-1"
       aria-label={t("label")}
+      className="w-full max-w-md rounded-3xl bg-inverse p-6 text-inverse-foreground shadow-[0_30px_60px_-30px_rgba(0,0,0,0.6)] dark:ring-1 dark:ring-white/10 sm:p-7"
     >
-      <div className="relative z-10 pb-4 pl-[3.75rem] pr-4 sm:pl-[4.25rem] sm:pr-6">
-        <p className="notebook-label text-sm font-medium text-muted-foreground">
-          {t("prompt")}
+      <div className="flex items-center justify-between gap-3">
+        <LogoMark className="size-8 bg-inverse-foreground text-[0.6rem] text-inverse ring-0" />
+        <p className="rounded-full border border-inverse-foreground/25 px-3 py-1 text-xs font-medium text-inverse-foreground/80">
+          {t("tag")} / {t("level")}
         </p>
-        {/* A single paragraph: text wraps naturally but always sits on the ruled lines (line-height = ruled line height). */}
-        <p className="notebook-line">
-          Last weekend I <Fix wrong="have went" right="went" delay="1.2s" /> to my grandma&apos;s
-          house. We cooked a lot of <Fix wrong="foods" right="food" delay="2.6s" /> and talked
-          until night.
+      </div>
+
+      <p lang="vi" className="display mt-8 text-[1.75rem] text-balance sm:text-3xl">
+        Cuối tuần trước, tôi đã đến nhà bà.
+      </p>
+
+      <p className="mt-8 text-xs font-medium text-inverse-foreground/60">{t("yourAnswer")}</p>
+      <p lang="en" className="mt-1 text-lg/9 sm:text-xl/10">
+        Last weekend I{" "}
+        <span className="relative inline-block" style={{ "--d": "1.2s" } as CSSProperties}>
+          <span className="lp-strike">have went</span>
+          <span className="lp-fix" aria-hidden="true">
+            went
+          </span>
+          <span className="sr-only"> ({t("fixedTo")}: went) </span>
+        </span>{" "}
+        to my grandma&apos;s house.
+      </p>
+      <p className="lp-reveal mt-1 font-hand text-2xl text-[color:var(--mark)]" style={{ "--d": "2.3s" } as CSSProperties}>
+        {t("comment")}
+      </p>
+
+      <div className="lp-reveal mt-6 rounded-2xl bg-inverse-foreground/10 px-4 py-3" style={{ "--d": "3.2s" } as CSSProperties}>
+        <p className="text-xs font-medium text-inverse-foreground/60">{t("structureLabel")}</p>
+        <p className="mt-1 text-sm font-medium">{t("structure")}</p>
+      </div>
+
+      <div className="lp-reveal mt-4 flex items-center justify-between gap-3" style={{ "--d": "3.9s" } as CSSProperties}>
+        <p className="inline-flex items-center gap-2 text-sm font-semibold">
+          <span className="grid size-6 place-items-center rounded-full bg-inverse-foreground text-inverse">
+            <Check className="size-4" aria-hidden="true" />
+          </span>
+          {t("correct")}
         </p>
-        <p className="notebook-line pen-note text-[1.45rem]" style={{ "--d": "3.4s" } as CSSProperties}>
-          {t("comment")}
-        </p>
+        <p className="rounded-full bg-inverse-foreground px-3 py-1 text-sm font-bold text-inverse">{t("points")}</p>
       </div>
     </figure>
   );

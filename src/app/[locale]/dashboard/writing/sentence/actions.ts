@@ -11,12 +11,12 @@ import {
   ValidationError,
 } from "@/core/errors";
 import { gradeSentence } from "@/modules/writing/application/grade-sentence";
-import { getLevelProgress, type LevelProgress } from "@/modules/writing/application/get-level-progress";
+import { getAllLevelsProgress } from "@/modules/writing/application/get-all-levels-progress";
 import { getSentenceProgress } from "@/modules/writing/application/get-sentence-progress";
 import { getNextSentence } from "@/modules/writing/application/get-next-sentence";
 import type { SentencePrompt } from "@/modules/writing/domain/sentence-catalog";
 import type { SentenceGrade } from "@/modules/writing/domain/sentence-grade";
-import type { SentenceProgress } from "@/modules/writing/domain/sentence-progress";
+import type { AllLevelsProgress, SentenceProgress } from "@/modules/writing/domain/sentence-progress";
 import { getContainer } from "@/server/container";
 
 export type NextSentenceResult =
@@ -59,17 +59,17 @@ export async function sentenceProgress(input: unknown): Promise<SentenceProgress
   }
 }
 
-export type LevelProgressResult = { status: "ok"; progress: LevelProgress } | { status: "error" };
+export type AllLevelsProgressResult = { status: "ok"; progress: AllLevelsProgress } | { status: "error" };
 
-/** Progress of the signed-in user in every category of one level (for the choose screen). */
-export async function levelProgress(input: unknown): Promise<LevelProgressResult> {
+/** Progress of the signed-in user in every category of every level (for the choose screen), read once. */
+export async function allLevelsProgress(): Promise<AllLevelsProgressResult> {
   try {
     const { auth, sentencePrompts, sentenceProgress: store } = await getContainer();
-    return { status: "ok", progress: await getLevelProgress({ auth, prompts: sentencePrompts, progress: store }, input) };
+    return { status: "ok", progress: await getAllLevelsProgress({ auth, prompts: sentencePrompts, progress: store }) };
   } catch (error) {
     unstable_rethrow(error);
-    // The bars are a nicety: a failure just hides them.
-    if (!(error instanceof UnauthorizedError || error instanceof ValidationError)) console.error(error);
+    // The bars are a nicety: a failure just leaves them as they were.
+    if (!(error instanceof UnauthorizedError)) console.error(error);
     return { status: "error" };
   }
 }
@@ -91,9 +91,9 @@ export type GradeAnswerResult =
 /** Grades the learner's answer to a stored prompt, by AI (a wrong answer costs a credit) or against the accepted answers (free). */
 export async function gradeAnswer(input: unknown): Promise<GradeAnswerResult> {
   try {
-    const { auth, sentencePrompts, credits, grader, gradeCache, sentenceProgress: progressStore, references } = await getContainer();
+    const { auth, sentencePrompts, credits, grader, gradeCache, sentenceProgress: progressStore, references, attempts } = await getContainer();
     const { grade, credits: remaining, progress, points, source } = await gradeSentence(
-      { auth, prompts: sentencePrompts, credits, grader, cache: gradeCache, progress: progressStore, references },
+      { auth, prompts: sentencePrompts, credits, grader, cache: gradeCache, progress: progressStore, references, attempts },
       input,
       (await getLocale()) === "en" ? "en" : "vi"
     );

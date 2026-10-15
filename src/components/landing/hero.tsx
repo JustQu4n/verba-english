@@ -9,16 +9,34 @@ import { WritingDemo } from "./writing-demo";
 export function Hero() {
   const t = useTranslations();
   return (
-    <section className="mx-auto grid w-full max-w-6xl items-center gap-12 px-5 pb-20 pt-12 sm:px-8 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:pb-28 lg:pt-20">
+    <section className="mx-auto grid w-full max-w-6xl items-center gap-14 px-5 pb-20 pt-12 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-12 lg:pb-28 lg:pt-20">
       <div>
-        <h1 className="max-w-[22ch] text-balance text-4xl font-extrabold leading-[1.12] tracking-tight sm:text-5xl lg:text-[3.5rem]">
-          {t("Hero.title")}
+        <h1 className="display text-[2.9rem] sm:text-7xl lg:text-[clamp(3rem,5.2vw,4.4rem)]">
+          <span className="block">{t("Hero.title1")}</span>
+          <span className="relative mt-1 block w-fit">
+            {t("Hero.title2")}
+            {/* A hand-drawn red underline, like a teacher's mark. */}
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 300 14"
+              preserveAspectRatio="none"
+              className="absolute -bottom-3 left-0 h-3 w-full text-pen"
+            >
+              <path
+                d="M2 9 C 40 2, 70 13, 110 7 S 190 2, 230 8 S 280 11, 298 5"
+                pathLength="1"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+                className="lp-draw"
+              />
+            </svg>
+          </span>
         </h1>
-        <p className="mt-6 max-w-[48ch] text-lg leading-relaxed text-muted-foreground">
-          {t("Hero.subtitle")}
-        </p>
+        <p className="mt-10 max-w-[50ch] text-lg leading-relaxed text-muted-foreground">{t("Hero.subtitle")}</p>
         <div className="mt-9 flex flex-wrap items-center gap-3">
-          <Button asChild size="lg" className="h-12 gap-3 bg-navy px-6 text-base text-white hover:bg-navy/90">
+          <Button asChild size="lg" className="h-12 gap-3 rounded-full px-6 text-base">
             <Link href="/login">
               <span className="grid size-6 place-items-center rounded-full bg-white">
                 <GoogleIcon className="size-4" />
@@ -26,7 +44,7 @@ export function Hero() {
               {t("Common.startWithGoogle")}
             </Link>
           </Button>
-          <Button asChild variant="ghost" size="lg" className="h-12 px-5 text-base">
+          <Button asChild variant="outline" size="lg" className="h-12 rounded-full px-6 text-base">
             <Link href="#cach-hoat-dong">{t("Hero.seeHow")}</Link>
           </Button>
         </div>

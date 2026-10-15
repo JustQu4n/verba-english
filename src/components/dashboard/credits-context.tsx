@@ -4,6 +4,7 @@ import { Coins, Trophy } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 interface CreditsValue {
@@ -69,21 +70,30 @@ export function HeaderCredits({ className }: { className?: string }) {
   );
 }
 
-/** Leaderboard points, shown in the navbar. Renders nothing until the total is known. */
+/** Leaderboard points, shown in the navbar; selecting it opens the leaderboard. Renders nothing until the total is known. */
 export function HeaderPoints({ className }: { className?: string }) {
   const t = useTranslations("Header");
   const { points } = useCredits();
   if (points === null) return null;
   return (
-    <p className={cn("inline-flex items-center gap-1.5 rounded-full border px-2 py-1 text-sm font-medium tabular-nums sm:px-3", className)}>
+    <Link
+      href="/dashboard/leaderboard"
+      title={t("leaderboardLink")}
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full border px-2 py-1 text-sm font-medium tabular-nums outline-none transition-colors hover:bg-accent focus-visible:ring-[3px] focus-visible:ring-ring/50 sm:px-3",
+        className
+      )}
+    >
       <Trophy className="size-3.5 shrink-0" aria-hidden="true" />
-      <span className="sr-only">{t("points", { count: points })}</span>
+      <span className="sr-only">
+        {t("points", { count: points })}. {t("leaderboardLink")}
+      </span>
       <span aria-hidden="true" className="hidden sm:inline">
         {t("points", { count: points })}
       </span>
       <span aria-hidden="true" className="sm:hidden">
         {points}
       </span>
-    </p>
+    </Link>
   );
 }
