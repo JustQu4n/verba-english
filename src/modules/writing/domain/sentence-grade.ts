@@ -10,5 +10,8 @@ export interface SentenceGrade {
 
 export const MAX_IMPROVEMENTS = 2;
 
-/** Language of the notes and comment: follows the interface language. */
+/** Language of the notes and comment. */
 export type FeedbackLanguage = "vi" | "en";
+
+/** Feedback is always in Vietnamese, whatever the interface language: the learners are Vietnamese. */
+export const FEEDBACK_LANGUAGE: FeedbackLanguage = "vi";

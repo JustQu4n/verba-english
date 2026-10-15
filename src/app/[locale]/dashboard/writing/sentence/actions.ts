@@ -1,6 +1,5 @@
 "use server";
 
-import { getLocale } from "next-intl/server";
 import { unstable_rethrow } from "next/navigation";
 
 import {
@@ -15,7 +14,7 @@ import { getAllLevelsProgress } from "@/modules/writing/application/get-all-leve
 import { getSentenceProgress } from "@/modules/writing/application/get-sentence-progress";
 import { getNextSentence } from "@/modules/writing/application/get-next-sentence";
 import type { SentencePrompt } from "@/modules/writing/domain/sentence-catalog";
-import type { SentenceGrade } from "@/modules/writing/domain/sentence-grade";
+import { FEEDBACK_LANGUAGE, type SentenceGrade } from "@/modules/writing/domain/sentence-grade";
 import type { AllLevelsProgress, SentenceProgress } from "@/modules/writing/domain/sentence-progress";
 import { getContainer } from "@/server/container";
 
@@ -95,7 +94,7 @@ export async function gradeAnswer(input: unknown): Promise<GradeAnswerResult> {
     const { grade, credits: remaining, progress, points, source } = await gradeSentence(
       { auth, prompts: sentencePrompts, credits, grader, cache: gradeCache, progress: progressStore, references, attempts },
       input,
-      (await getLocale()) === "en" ? "en" : "vi"
+      FEEDBACK_LANGUAGE
     );
     return { status: "ok", grade, credits: remaining, progress, points, source };
   } catch (error) {

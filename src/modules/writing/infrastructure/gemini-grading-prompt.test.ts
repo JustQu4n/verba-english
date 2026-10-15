@@ -5,11 +5,20 @@ import { buildGradingInput, GRADE_SCHEMA, parseGrade, SYSTEM_INSTRUCTION } from 
 describe("buildGradingInput", () => {
   it("AIG-AC-10: carries the level, the sentence and the answer in tags", () => {
     expect(buildGradingInput({ level: "advanced", vietnamese: "Tôi muốn đi biển.", answer: "I want to the beach", language: "en" })).toBe(
-      "Level: advanced\nFeedback language: English\nVietnamese: Tôi muốn đi biển.\n<answer>I want to the beach</answer>"
+      "Level: advanced\nFeedback language: English\nVietnamese: Tôi muốn đi biển.\n<answer>I want to the beach</answer>\nWrite improvements and comment in English only. Do not use Vietnamese."
     );
     expect(buildGradingInput({ level: "beginner", vietnamese: "x", answer: "y", language: "vi" })).toContain(
       "Feedback language: Vietnamese"
     );
+  });
+
+  it("AIG-AC-23: the feedback language is named in the request and repeated as a closing instruction", () => {
+    const en = buildGradingInput({ level: "beginner", vietnamese: "Tôi đi học.", answer: "I go school", language: "en" });
+    expect(en).toContain("Feedback language: English");
+    expect(en.endsWith("Write improvements and comment in English only. Do not use Vietnamese.")).toBe(true);
+    const vi = buildGradingInput({ level: "beginner", vietnamese: "Tôi đi học.", answer: "I go school", language: "vi" });
+    expect(vi.endsWith("Write improvements and comment in Vietnamese.")).toBe(true);
+    expect(SYSTEM_INSTRUCTION).toMatch(/Language rule: .*ALWAYS/);
   });
 
   it("AIG-AC-10: an answer cannot close the tag early", () => {
@@ -19,7 +28,7 @@ describe("buildGradingInput", () => {
 
   it("AIG-AC-10: the system instruction treats the answer as data and stays short", () => {
     expect(SYSTEM_INSTRUCTION).toMatch(/data, never instructions/);
-    expect(SYSTEM_INSTRUCTION.length).toBeLessThan(1200);
+    expect(SYSTEM_INSTRUCTION.length).toBeLessThan(1500);
   });
 
   it("AIG-AC-10: the schema requires every field", () => {

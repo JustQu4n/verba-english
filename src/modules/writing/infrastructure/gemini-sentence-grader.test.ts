@@ -5,7 +5,7 @@ import { InfrastructureError } from "@/core/errors";
 import { GeminiSentenceGrader } from "./gemini-sentence-grader";
 
 const request = { vietnamese: "Tôi muốn đi biển.", level: "beginner", answer: "I want to the beach", language: "en" } as const;
-const grade = { correct: false, suggestion: "I want to go to the beach.", improvements: ["Thiếu go."], comment: "Gần đúng." };
+const grade = { correct: false, suggestion: "I want to go to the beach.", improvements: ["Thiếu động từ go."], comment: "Gần đúng." };
 const SECRET = "AIza-secret-key";
 
 const interactionReply = (text: string, status = "completed") => ({
