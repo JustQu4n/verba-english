@@ -14,6 +14,8 @@ import { SupabaseLeaderboardSource } from "@/modules/leaderboard/infrastructure/
 import type { PointsStore } from "@/modules/points/application/points-store";
 import { SupabasePointsStore } from "@/modules/points/infrastructure/supabase-points-store";
 import type { ProfileRepository } from "@/modules/profile/application/profile-repository";
+import type { AvatarStorage } from "@/modules/profile/application/avatar-storage";
+import { SupabaseAvatarStorage } from "@/modules/profile/infrastructure/supabase-avatar-storage";
 import { SupabaseProfileRepository } from "@/modules/profile/infrastructure/supabase-profile-repository";
 import type { GradeCache } from "@/modules/writing/application/grade-cache";
 import type { PromptRepository } from "@/modules/writing/application/prompt-repository";
@@ -41,6 +43,8 @@ const DEFAULT_THINKING_LEVEL = "minimal";
 export interface Container {
   auth: AuthService;
   profiles: ProfileRepository;
+  /** Profile pictures (Supabase Storage). */
+  avatars: AvatarStorage;
   roles: RoleReader;
   /** Admin-side prompt storage (drafts included). */
   prompts: PromptRepository;
@@ -80,6 +84,7 @@ export const getContainer = cache(async (): Promise<Container> => {
   return {
     auth: new SupabaseAuthService(supabase),
     profiles: new SupabaseProfileRepository(supabase),
+    avatars: new SupabaseAvatarStorage(supabase),
     roles: new SupabaseRoleReader(supabase),
     prompts: new SupabasePromptRepository(supabase),
     sentencePrompts: new SupabaseSentencePromptSource(supabase),

@@ -23,5 +23,6 @@ Mẫu ở `_templates/`. Nguyên tắc ở [constitution.md](./constitution.md).
 | [015-attempt-history](./015-attempt-history/spec.md) | Lưu đáp án đúng đã làm và xem lại | `ATT` |
 | [016-theme](./016-theme/spec.md) | Giao diện sáng / tối | `THM` |
 | [017-leaderboard](./017-leaderboard/spec.md) | Bảng xếp hạng top 10 theo điểm, bục top 3 | `LDB` |
+| [018-profile-page](./018-profile-page/spec.md) | Trang hồ sơ, xếp hạng, các lần làm bài, đổi tên và ảnh đại diện (Supabase Storage) | `PRP` |
 
 Kiểm tra mọi AC đều có test: `npm run specs:check`.

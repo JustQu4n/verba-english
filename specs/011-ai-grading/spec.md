@@ -4,7 +4,7 @@
 - **Tiền tố AC:** AIG
 
 ## 1. Bối cảnh & mục tiêu
-Sau khi người học gửi bản dịch của một câu, hệ thống nhờ AI (Gemini) chấm và phản hồi theo ngôn ngữ giao diện (tiếng Việt hoặc tiếng Anh): câu gợi ý đúng, các điểm cần sửa và nhận xét. Câu chưa đúng thì chưa được sang câu khác; người học sửa và gửi lại cho đến khi đúng. Mỗi lần gửi mà chưa đúng tốn 1 credit, gửi đúng thì miễn phí; mỗi tài khoản có sẵn 100 credit miễn phí. Mua thêm credit làm sau. Mục tiêu phụ: tốn ít hạn mức Gemini nhất có thể khi nhiều người dùng.
+Sau khi người học gửi bản dịch của một câu, hệ thống nhờ AI (Gemini) chấm và phản hồi theo ngôn ngữ giao diện (tiếng Việt hoặc tiếng Anh): câu gợi ý đúng, các điểm cần sửa và nhận xét. Câu chưa đúng thì chưa được sang câu khác; người học sửa và gửi lại cho đến khi đúng. Mỗi lần gửi mà chưa đúng tốn 1 credit, gửi đúng thì miễn phí; mỗi tài khoản có sẵn 10 credit miễn phí. Mua thêm credit làm sau. Mục tiêu phụ: tốn ít hạn mức Gemini nhất có thể khi nhiều người dùng.
 
 ## 2. Phạm vi
 - **Trong phạm vi:** chấm một câu khi gửi; khung phản hồi; chặn sang câu mới khi chưa đúng; số dư credit và trừ credit; bộ nhớ đệm kết quả chấm; cấu hình khóa Gemini.
@@ -17,7 +17,7 @@ Sau khi người học gửi bản dịch của một câu, hệ thống nhờ A
 - Là chủ dự án, tôi muốn mỗi lần chấm dùng ít token và không gọi lại AI cho cùng một câu trả lời.
 
 ## 4. Yêu cầu chức năng
-- **FR-1** Tài khoản mới có 100 credit; mỗi lần gửi mà AI chấm là chưa đúng tốn 1 credit, kể cả khi sửa rồi gửi lại. Chấm là đúng thì không trừ credit.
+- **FR-1** Tài khoản mới có 10 credit; mỗi lần gửi mà AI chấm là chưa đúng tốn 1 credit, kể cả khi sửa rồi gửi lại. Chấm là đúng thì không trừ credit.
 - **FR-2** Chỉ trừ credit khi AI chấm thành công và kết quả là chưa đúng. Lỗi AI không trừ credit.
 - **FR-3** Máy chủ tự tra câu tiếng Việt từ mã đề đã xuất bản; không nhận câu gốc từ trình duyệt.
 - **FR-4** Cùng một đề và cùng một câu trả lời (sau khi gộp khoảng trắng) dùng kết quả đã chấm, không gọi AI và không trừ credit.
@@ -26,7 +26,7 @@ Sau khi người học gửi bản dịch của một câu, hệ thống nhờ A
 - **FR-7** Tiết kiệm hạn mức: mô hình nhẹ, yêu cầu ngắn, kết quả JSON có lược đồ, giới hạn token đầu ra, tắt lưu hội thoại phía Google, và không gửi lại câu trả lời đã chấm.
 
 ## 5. Tiêu chí chấp nhận
-- **AIG-AC-01** Given hằng số credit, when đọc, then tài khoản mới có 100 credit và một lần chấm chưa đúng tốn 1 credit.
+- **AIG-AC-01** Given hằng số credit, when đọc, then tài khoản mới có 10 credit và một lần chấm chưa đúng tốn 1 credit.
 - **AIG-AC-02** Given người chưa đăng nhập, when chấm, then báo chưa đăng nhập và không đọc đề, không gọi AI, không trừ credit.
 - **AIG-AC-03** Given mã đề không hợp lệ, câu trả lời rỗng hoặc dài hơn 300 ký tự, when chấm, then báo lỗi dữ liệu và không đọc đề, không gọi AI, không trừ credit.
 - **AIG-AC-04** Given mã đề không có hoặc chưa xuất bản, when chấm, then báo không tìm thấy và không gọi AI, không trừ credit.

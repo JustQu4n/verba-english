@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { getFormatter, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { connection } from "next/server";
 
 import { UnauthorizedError } from "@/core/errors";
@@ -8,6 +8,8 @@ import { Link } from "@/i18n/navigation";
 import { listAttempts } from "@/modules/writing/application/list-attempts";
 import { getContainer } from "@/server/container";
 
+import { AttemptCard } from "./attempt-card";
+
 const first = (value: string | string[] | undefined) => (Array.isArray(value) ? value[0] : value);
 
 /** The learner's graded attempts, newest first, with what they wrote and the feedback they got. */
@@ -15,7 +17,7 @@ export async function AttemptList({ searchParams }: { searchParams: Promise<Reco
   // Request-time work: the session, the query string and the clock (dates) are all read here.
   await connection();
   const raw = await searchParams;
-  const [t, format] = await Promise.all([getTranslations("Sentence.history"), getFormatter()]);
+  const t = await getTranslations("Sentence.history");
   const { auth, attempts } = await getContainer();
 
   let result;
@@ -51,40 +53,7 @@ export async function AttemptList({ searchParams }: { searchParams: Promise<Reco
       </p>
       <ol className="mt-4 flex flex-col gap-4">
         {result.items.map((item) => (
-          <li key={item.id} className="rounded-2xl border p-5">
-            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-xs text-muted-foreground">
-              <p className="flex flex-wrap items-center gap-2">
-                <span>{t(`mode.${item.mode}`)}</span>
-                {item.tries > 1 && <span>{t("tries", { count: item.tries })}</span>}
-              </p>
-              <time dateTime={item.createdAt.toISOString()}>{format.dateTime(item.createdAt, { dateStyle: "medium", timeStyle: "short" })}</time>
-            </div>
-
-            <p lang="vi" className="mt-3 text-lg/snug font-semibold">
-              {item.vietnamese ?? <span className="font-normal text-muted-foreground">{t("removed")}</span>}
-            </p>
-
-            <p className="mt-3 text-xs text-muted-foreground">{t("yourAnswer")}</p>
-            <p lang="en" className="mt-0.5 whitespace-pre-wrap break-words">{item.answer}</p>
-
-            {(item.suggestion || item.improvements.length > 0 || item.comment) && (
-              <div className="mt-4 space-y-2 rounded-lg bg-muted px-4 py-3 text-sm">
-                {item.suggestion && (
-                  <p>
-                    <span className="font-semibold">{t("suggestion")}:</span> <span lang="en">{item.suggestion}</span>
-                  </p>
-                )}
-                {item.improvements.length > 0 && (
-                  <ul className="list-disc space-y-1 pl-5">
-                    {item.improvements.map((note, index) => (
-                      <li key={index}>{note}</li>
-                    ))}
-                  </ul>
-                )}
-                {item.comment && <p className="text-muted-foreground">{item.comment}</p>}
-              </div>
-            )}
-          </li>
+          <AttemptCard key={item.id} item={item} />
         ))}
       </ol>
 
