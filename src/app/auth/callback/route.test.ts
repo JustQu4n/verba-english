@@ -18,6 +18,7 @@ beforeEach(() => {
     profiles: { findById: vi.fn(), update: vi.fn() },
     avatars: { upload: vi.fn(), remove: vi.fn() },
     roles: { isAdmin: vi.fn() },
+    users: { list: vi.fn(), find: vi.fn(), update: vi.fn(), overview: vi.fn() },
     prompts: fakePromptRepo(),
     sentencePrompts: { list: vi.fn(), get: vi.fn(), countByCategory: vi.fn() },
     credits: fakeCredits(),

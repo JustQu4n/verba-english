@@ -330,7 +330,10 @@
     "navLabel": "Điều hướng quản trị",
     "nav": {
       "prompts": "Prompts",
-      "dashboard": "Về dashboard"
+      "dashboard": "Về dashboard",
+      "overview": "Tổng quan",
+      "users": "Tài khoản",
+      "leaderboard": "Bảng xếp hạng"
     },
     "notFound": {
       "title": "Không tìm thấy trang",
@@ -449,6 +452,123 @@
       },
       "keywordPlaceholder": "Gõ từ khóa rồi nhấn Enter",
       "removeKeyword": "Xóa từ khóa {word}"
+    },
+    "menu": {
+      "open": "Mở menu",
+      "close": "Đóng menu"
+    },
+    "skipToContent": "Bỏ qua đến nội dung",
+    "common": {
+      "pagination": "Phân trang",
+      "previous": "Trước",
+      "next": "Sau",
+      "page": "Trang {page} / {pageCount}",
+      "search": "Tìm theo tên hoặc email",
+      "filter": "Lọc",
+      "reset": "Xóa bộ lọc",
+      "empty": "Không tìm thấy tài khoản",
+      "emptyBody": "Thử tìm từ khóa khác hoặc xóa bộ lọc.",
+      "saved": "Đã lưu thay đổi.",
+      "never": "Chưa từng",
+      "rank": "Hạng {rank}",
+      "unranked": "Chưa có điểm",
+      "roles": {
+        "user": "Người học",
+        "admin": "Quản trị"
+      }
+    },
+    "overview": {
+      "title": "Tổng quan",
+      "subtitle": "Nhìn nhanh người học, đề bài và hoạt động.",
+      "stats": {
+        "users": "Tài khoản",
+        "admins": "Quản trị viên",
+        "prompts": "Đề đã xuất bản",
+        "ranked": "Người học có hạng",
+        "attempts": "Lượt chấm bằng AI",
+        "completions": "Câu đã hoàn thành",
+        "newUsers": "{count} mới trong 7 ngày",
+        "learners": "{count} người học",
+        "drafts": "{count} bản nháp",
+        "points": "Tổng {count} điểm"
+      },
+      "top": "Người học nổi bật",
+      "newest": "Tài khoản mới nhất",
+      "seeAll": "Xem tất cả",
+      "pointsShort": "{count} điểm",
+      "addPrompt": "Thêm đề",
+      "managePrompts": "Quản lý đề",
+      "manageUsers": "Quản lý tài khoản"
+    },
+    "users": {
+      "title": "Tài khoản",
+      "subtitle": "Tìm một tài khoản rồi đổi vai trò, credit hoặc điểm.",
+      "count": "Tổng: {count}",
+      "manage": "Quản lý",
+      "filters": {
+        "role": "Vai trò",
+        "allRoles": "Mọi vai trò",
+        "order": "Sắp xếp",
+        "orders": {
+          "created": "Mới nhất",
+          "points": "Nhiều điểm nhất",
+          "name": "Tên (A–Z)"
+        }
+      },
+      "columns": {
+        "user": "Tài khoản",
+        "role": "Vai trò",
+        "points": "Điểm",
+        "credits": "Credit",
+        "joined": "Ngày tham gia",
+        "lastSignIn": "Đăng nhập gần nhất",
+        "actions": "Thao tác"
+      },
+      "detail": {
+        "title": "Quản lý tài khoản",
+        "subtitle": "Thay đổi có hiệu lực ngay sau khi lưu.",
+        "edit": "Vai trò, credit và điểm",
+        "rank": "Bảng xếp hạng"
+      },
+      "form": {
+        "role": "Vai trò",
+        "roles": {
+          "user": "Người học",
+          "admin": "Quản trị"
+        },
+        "roleHelp": "Quản trị viên vào được trang này và quản lý mọi thứ trong đó.",
+        "roleSelf": "Bạn không thể đổi vai trò của chính mình.",
+        "credits": "Credit AI",
+        "creditsHelp": "Dùng cho chấm điểm bằng AI. Số nguyên từ 0 trở lên.",
+        "points": "Điểm",
+        "pointsHelp": "Quyết định thứ hạng trên bảng xếp hạng. Số nguyên từ 0 trở lên.",
+        "save": "Lưu thay đổi",
+        "saving": "Đang lưu…",
+        "saved": "Đã lưu thay đổi.",
+        "back": "Về danh sách tài khoản",
+        "errors": {
+          "credits_invalid": "Nhập số nguyên từ 0 đến 1.000.000.",
+          "points_invalid": "Nhập số nguyên từ 0 đến 10.000.000.",
+          "role_invalid": "Hãy chọn một vai trò.",
+          "cannot_change_own_role": "Bạn không thể đổi vai trò của chính mình.",
+          "unauthorized": "Phiên đã hết hạn hoặc bạn không có quyền.",
+          "not_found": "Tài khoản này không còn tồn tại.",
+          "unknown": "Đã xảy ra lỗi. Vui lòng thử lại."
+        }
+      }
+    },
+    "leaderboard": {
+      "title": "Bảng xếp hạng",
+      "subtitle": "Toàn bộ tài khoản xếp theo điểm. Tài khoản chưa có điểm nằm cuối.",
+      "count": "Tổng: {count}",
+      "manage": "Sửa",
+      "columns": {
+        "rank": "Hạng",
+        "user": "Tài khoản",
+        "points": "Điểm",
+        "joined": "Ngày tham gia",
+        "actions": "Thao tác"
+      }
     }
   },
   "Stats": {

@@ -330,7 +330,10 @@
     "navLabel": "Admin navigation",
     "nav": {
       "prompts": "Prompts",
-      "dashboard": "Back to dashboard"
+      "dashboard": "Back to dashboard",
+      "overview": "Overview",
+      "users": "Accounts",
+      "leaderboard": "Leaderboard"
     },
     "notFound": {
       "title": "Page not found",
@@ -449,6 +452,123 @@
       },
       "keywordPlaceholder": "Type a key word, then press Enter",
       "removeKeyword": "Remove key word {word}"
+    },
+    "menu": {
+      "open": "Open menu",
+      "close": "Close menu"
+    },
+    "skipToContent": "Skip to content",
+    "common": {
+      "pagination": "Pagination",
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {page} of {pageCount}",
+      "search": "Search by name or email",
+      "filter": "Filter",
+      "reset": "Clear filters",
+      "empty": "No accounts found",
+      "emptyBody": "Try a different search or clear the filters.",
+      "saved": "Changes saved.",
+      "never": "Never",
+      "rank": "Rank {rank}",
+      "unranked": "No points yet",
+      "roles": {
+        "user": "Learner",
+        "admin": "Admin"
+      }
+    },
+    "overview": {
+      "title": "Overview",
+      "subtitle": "A quick look at learners, prompts and activity.",
+      "stats": {
+        "users": "Accounts",
+        "admins": "Admins",
+        "prompts": "Published prompts",
+        "ranked": "Ranked learners",
+        "attempts": "AI-graded attempts",
+        "completions": "Sentences completed",
+        "newUsers": "{count} new in 7 days",
+        "learners": "{count} learners",
+        "drafts": "{count} drafts",
+        "points": "{count} points in total"
+      },
+      "top": "Top learners",
+      "newest": "Newest accounts",
+      "seeAll": "See all",
+      "pointsShort": "{count} pts",
+      "addPrompt": "Add prompt",
+      "managePrompts": "Manage prompts",
+      "manageUsers": "Manage accounts"
+    },
+    "users": {
+      "title": "Accounts",
+      "subtitle": "Find an account, then change its role, credits or points.",
+      "count": "Total: {count}",
+      "manage": "Manage",
+      "filters": {
+        "role": "Role",
+        "allRoles": "All roles",
+        "order": "Sort by",
+        "orders": {
+          "created": "Newest first",
+          "points": "Most points",
+          "name": "Name (A–Z)"
+        }
+      },
+      "columns": {
+        "user": "Account",
+        "role": "Role",
+        "points": "Points",
+        "credits": "Credits",
+        "joined": "Joined",
+        "lastSignIn": "Last sign-in",
+        "actions": "Actions"
+      },
+      "detail": {
+        "title": "Manage account",
+        "subtitle": "Changes apply right after you save.",
+        "edit": "Role, credits and points",
+        "rank": "Leaderboard"
+      },
+      "form": {
+        "role": "Role",
+        "roles": {
+          "user": "Learner",
+          "admin": "Admin"
+        },
+        "roleHelp": "Admins can open this console and manage everything in it.",
+        "roleSelf": "You can't change your own role.",
+        "credits": "AI credits",
+        "creditsHelp": "Used for AI feedback. Whole number, 0 or more.",
+        "points": "Points",
+        "pointsHelp": "Decides the leaderboard position. Whole number, 0 or more.",
+        "save": "Save changes",
+        "saving": "Saving…",
+        "saved": "Changes saved.",
+        "back": "Back to accounts",
+        "errors": {
+          "credits_invalid": "Enter a whole number from 0 to 1,000,000.",
+          "points_invalid": "Enter a whole number from 0 to 10,000,000.",
+          "role_invalid": "Choose a role.",
+          "cannot_change_own_role": "You can't change your own role.",
+          "unauthorized": "Your session has expired or you don't have access.",
+          "not_found": "This account no longer exists.",
+          "unknown": "Something went wrong. Please try again."
+        }
+      }
+    },
+    "leaderboard": {
+      "title": "Leaderboard",
+      "subtitle": "Every account ranked by points. Accounts without points come last.",
+      "count": "Total: {count}",
+      "manage": "Edit",
+      "columns": {
+        "rank": "Rank",
+        "user": "Account",
+        "points": "Points",
+        "joined": "Joined",
+        "actions": "Actions"
+      }
     }
   },
   "Stats": {

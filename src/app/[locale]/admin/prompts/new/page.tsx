@@ -11,7 +11,7 @@ export default async function NewPromptPage({ params }: PageProps<"/[locale]/adm
   setRequestLocale(locale);
   const t = await getTranslations("Admin.form");
   return (
-    <div className="mx-auto w-full max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
+    <div className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-8 sm:py-10">
       <PromptFormHeader title={t("newTitle")} />
       <PromptForm mode="create" action={createPromptAction} />
     </div>

@@ -24,5 +24,6 @@ Mẫu ở `_templates/`. Nguyên tắc ở [constitution.md](./constitution.md).
 | [016-theme](./016-theme/spec.md) | Giao diện sáng / tối | `THM` |
 | [017-leaderboard](./017-leaderboard/spec.md) | Bảng xếp hạng top 10 theo điểm, bục top 3 | `LDB` |
 | [018-profile-page](./018-profile-page/spec.md) | Trang hồ sơ, xếp hạng, các lần làm bài, đổi tên và ảnh đại diện (Supabase Storage) | `PRP` |
+| [019-admin-console](./019-admin-console/spec.md) | Bảng điều khiển Admin: menu trái, tổng quan, quản lý tài khoản, bảng xếp hạng có phân trang | `ADM` |
 
 Kiểm tra mọi AC đều có test: `npm run specs:check`.

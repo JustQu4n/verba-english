@@ -1,6 +1,8 @@
 import { vi } from "vitest";
 
 import type { RoleReader } from "@/modules/admin/application/role-reader";
+import type { UserDirectory } from "@/modules/admin/application/user-directory";
+import type { UserAccount } from "@/modules/admin/domain/user-account";
 import type { AuthService } from "@/modules/auth/application/auth-service";
 import type { CreditStore } from "@/modules/credits/application/credit-store";
 import type { LeaderboardSource } from "@/modules/leaderboard/application/leaderboard-source";
@@ -145,6 +147,35 @@ export function fakeAvatars(overrides: Partial<AvatarStorage> = {}): AvatarStora
   return {
     upload: vi.fn().mockResolvedValue("https://files.test/storage/v1/object/public/avatars/u1/new.webp"),
     remove: vi.fn().mockResolvedValue(undefined),
+    ...overrides,
+  };
+}
+
+export function sampleAccount(overrides: Partial<UserAccount> = {}): UserAccount {
+  return {
+    id: "22222222-2222-4222-8222-222222222222",
+    email: "learner@verba.test",
+    fullName: "Learner",
+    avatarUrl: null,
+    role: "user",
+    points: 40,
+    credits: 10,
+    createdAt: new Date("2026-02-01T00:00:00.000Z"),
+    lastSignInAt: null,
+    rank: 3,
+    ...overrides,
+  };
+}
+
+/** Fake UserDirectory: `update` returns the account with the patch applied. */
+export function fakeUsers(account: UserAccount | null = sampleAccount(), overrides: Partial<UserDirectory> = {}): UserDirectory {
+  return {
+    list: vi.fn().mockResolvedValue({ items: account ? [account] : [], total: account ? 1 : 0 }),
+    find: vi.fn().mockResolvedValue(account),
+    update: vi.fn().mockImplementation(async (_id, patch) => (account ? { ...account, ...patch } : null)),
+    overview: vi.fn().mockResolvedValue({
+      users: 5, admins: 1, newUsers7d: 2, rankedLearners: 3, pointsTotal: 120, promptsPublished: 4, promptsDraft: 1, attempts: 9, completions: 7,
+    }),
     ...overrides,
   };
 }
