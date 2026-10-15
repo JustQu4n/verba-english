@@ -1,10 +1,10 @@
 # AI grading setup
 
-Sentences are graded by Gemini. A wrong answer costs 1 credit each time it is sent (retries included); a correct answer is free. Every account starts with 100. Feedback follows the interface language.
+Sentences are graded by Gemini. A wrong answer costs 1 credit each time it is sent (retries included); a correct answer is free. Every new account starts with 10 (migration `0014_initial_credits_10.sql`; it changes only the default, existing balances stay). Feedback follows the interface language.
 
 ## 1. Database
 Run `supabase/migrations/0005_credits.sql` in the SQL Editor (after 0003 and 0004). It adds `profiles.credits` (default 100, never negative) and the `spend_credits(amount)` function.
-Existing accounts get 100 credits too.
+Existing accounts got 100 credits when it ran. To change one by hand: `update public.profiles set credits = 10 where id = '...';`
 
 Then run `supabase/migrations/0006_sentence_progress.sql`. It adds `sentence_completions` (which sentences each learner finished) so completed sentences are not shown again and progress can be shown.
 

@@ -2,7 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
-import { ChevronDown, ChevronRight, LayoutDashboard, LogOut, Trophy } from "lucide-react";
+import { ChevronDown, ChevronRight, LayoutDashboard, LogOut, Trophy, UserRound } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -28,7 +28,7 @@ function ProfileAvatar({ profile, className }: { profile: DisplayProfile; classN
 const ROW = "gap-3 rounded-xl px-2.5 py-2.5 text-sm";
 const CHIP = "grid size-10 shrink-0 place-items-center rounded-lg bg-muted text-foreground [&_svg]:size-5";
 
-function MenuLink({ href, icon, title, hint }: { href: "/dashboard" | "/dashboard/leaderboard"; icon: ReactNode; title: string; hint: string }) {
+function MenuLink({ href, icon, title, hint }: { href: "/dashboard" | "/dashboard/leaderboard" | "/dashboard/profile"; icon: ReactNode; title: string; hint: string }) {
   return (
     <DropdownMenuItem asChild className={ROW}>
       <Link href={href}>
@@ -73,6 +73,7 @@ export function UserMenu({ profile }: { profile: DisplayProfile }) {
           </DropdownMenuLabel>
           <div className="mt-2 flex flex-col gap-1">
             <MenuLink href="/dashboard" icon={<LayoutDashboard />} title={t("UserMenu.dashboard")} hint={t("UserMenu.dashboardHint")} />
+            <MenuLink href="/dashboard/profile" icon={<UserRound />} title={t("UserMenu.profile")} hint={t("UserMenu.profileHint")} />
             <MenuLink href="/dashboard/leaderboard" icon={<Trophy />} title={t("UserMenu.leaderboard")} hint={t("UserMenu.leaderboardHint")} />
           </div>
           <DropdownMenuSeparator className="my-2" />

@@ -8,7 +8,7 @@ Người dùng đã đăng nhập xem được thông tin hồ sơ của chính 
 
 ## 2. Phạm vi
 - **Trong:** đọc hồ sơ của chính mình.
-- **Ngoài:** sửa hồ sơ, xem hồ sơ người khác, tải ảnh đại diện.
+- **Ngoài:** xem hồ sơ người khác. (Sửa hồ sơ và tải ảnh đại diện: xem `018-profile-page`.)
 
 ## 4. Yêu cầu chức năng
 - **FR-1** Chỉ người đã đăng nhập mới xem được hồ sơ, và chỉ hồ sơ của chính họ.

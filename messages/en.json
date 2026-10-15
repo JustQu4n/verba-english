@@ -77,10 +77,67 @@
     "dashboard": "Go to dashboard",
     "leaderboard": "Leaderboard",
     "dashboardHint": "Practice and your progress",
-    "leaderboardHint": "See the top 10 learners"
+    "leaderboardHint": "See the top 10 learners",
+    "profile": "Profile",
+    "profileHint": "Your details, ranking and attempts"
   },
   "Profile": {
     "anonymous": "User"
+  },
+  "ProfilePage": {
+    "back": "Dashboard",
+    "title": "Profile",
+    "identity": "Your account",
+    "memberSince": "Member since {date}",
+    "stats": "Your numbers",
+    "points": "Points",
+    "credits": "Credits",
+    "attempts": "Correct answers",
+    "ranking": "Ranking",
+    "rankPoints": "{points, plural, one {# point} other {# points}}",
+    "rankHint": "See the top 10 learners",
+    "noRank": "Not ranked yet",
+    "noRankBody": "Get a sentence right to earn your first points and join the leaderboard.",
+    "startPractice": "Start practising",
+    "details": "Account details",
+    "email": "Email",
+    "joined": "Joined",
+    "recentAttempts": "Recent attempts",
+    "viewAll": "View all {count}",
+    "noAttempts": "No correct answers yet",
+    "noAttemptsBody": "Get a sentence right in Sentence practice and it will show up here.",
+    "avatar": {
+      "choose": "Choose a profile picture",
+      "add": "Add photo",
+      "change": "Change photo",
+      "remove": "Use default photo",
+      "uploading": "Uploading…",
+      "saved": "Photo updated.",
+      "removedDone": "Default photo restored.",
+      "hint": "JPG, PNG or WebP. It is cropped to a square.",
+      "errors": {
+        "unreadable": "This file could not be read as a picture.",
+        "avatar_empty": "Choose a picture first.",
+        "avatar_too_large": "This picture is too large.",
+        "avatar_type_invalid": "Use a JPG, PNG or WebP picture.",
+        "unauthorized": "Your session has expired. Please sign in again.",
+        "unavailable": "Could not save the picture. Please try again in a moment.",
+        "unknown": "Something went wrong. Please try again."
+      }
+    },
+    "name": {
+      "label": "Display name",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Name saved.",
+      "errors": {
+        "name_required": "Enter a name.",
+        "name_too_long": "The name can be at most 80 characters.",
+        "unauthorized": "Your session has expired. Please sign in again.",
+        "unavailable": "Could not save the name. Please try again in a moment.",
+        "unknown": "Something went wrong. Please try again."
+      }
+    }
   },
   "Login": {
     "backHome": "← Back to home",
