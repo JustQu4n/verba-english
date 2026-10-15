@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is([data-theme="dark"], [data-theme="dark"] *));
 
 /* "Ruled notebook" palette: blue-white paper, light blue rules, blue ink, red margin and pen. */
 :root {
@@ -29,9 +29,13 @@
   --margin: #e5586b;
   --pen: #d3263f;
   --navy: #0f1b3f;
+  /* Blocks that stay dark in both themes (the landing page's black sections). */
+  --inverse: #0a0a0a;
+  --inverse-foreground: #ffffff;
+  color-scheme: light;
 }
 
-.dark {
+[data-theme="dark"] {
   --background: #0f1b3f;
   --foreground: #eef3fb;
   --card: #16244d;
@@ -50,6 +54,9 @@
   --border: #2a3b70;
   --input: #34467f;
   --ring: #7f9be6;
+  --inverse: #16244d;
+  --inverse-foreground: #eef3fb;
+  color-scheme: dark;
 }
 
 /*
@@ -77,6 +84,30 @@
   --ring: #0a0a0a;
 }
 
+/* The same black-and-white theme in dark mode: near-black paper, near-white ink. */
+:root[data-theme="dark"]:has(.theme-mono) {
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --card: #111113;
+  --card-foreground: #fafafa;
+  --popover: #111113;
+  --popover-foreground: #fafafa;
+  --primary: #fafafa;
+  --primary-foreground: #0a0a0a;
+  --secondary: #1a1a1d;
+  --secondary-foreground: #fafafa;
+  --muted: #18181b;
+  --muted-foreground: #a1a1aa;
+  --accent: #1f1f23;
+  --accent-foreground: #fafafa;
+  --destructive: #f87171;
+  --border: #27272a;
+  --input: #3f3f46;
+  --ring: #fafafa;
+  --inverse: #1c1c1f;
+  --inverse-foreground: #fafafa;
+}
+
 @theme inline {
   --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif;
   --font-hand: "Caveat Variable", "Segoe Print", "Bradley Hand", cursive;
@@ -102,6 +133,8 @@
   --color-margin: var(--margin);
   --color-pen: var(--pen);
   --color-navy: var(--navy);
+  --color-inverse: var(--inverse);
+  --color-inverse-foreground: var(--inverse-foreground);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -215,5 +248,82 @@
   .pen-note {
     animation: none;
     opacity: 1;
+  }
+}
+
+/* ---------- Landing page (black and white, matching the logo) ---------- */
+.landing {
+  /* The grading pen: the only colour on the page, used for corrections. Lighter on black for contrast. */
+  --mark: #ff6b7d;
+}
+.display {
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+
+/* Corrections on the black card appear one after another. */
+.lp-strike {
+  background: linear-gradient(var(--mark), var(--mark)) no-repeat 0 58% / 0% 3px;
+  animation: lp-strike 0.5s ease-out forwards;
+  animation-delay: var(--d, 1s);
+}
+.lp-fix {
+  position: absolute;
+  inset-inline-start: 0;
+  top: -1.55rem;
+  color: var(--mark);
+  font-family: var(--font-hand);
+  font-size: 1.6rem;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0;
+  transform: rotate(-3deg);
+  animation: lp-appear 0.4s ease-out forwards;
+  animation-delay: calc(var(--d, 1s) + 0.45s);
+}
+.lp-reveal {
+  opacity: 0;
+  animation: lp-appear 0.45s ease-out forwards;
+  animation-delay: var(--d, 1s);
+}
+.lp-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: lp-draw 0.9s ease-out 0.5s forwards;
+}
+@keyframes lp-strike {
+  to {
+    background-size: 100% 3px;
+  }
+}
+@keyframes lp-appear {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes lp-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-strike {
+    animation: none;
+    background-size: 100% 3px;
+  }
+  .lp-fix,
+  .lp-reveal {
+    animation: none;
+    opacity: 1;
+  }
+  .lp-draw {
+    animation: none;
+    stroke-dashoffset: 0;
   }
 }

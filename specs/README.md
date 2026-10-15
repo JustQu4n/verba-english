@@ -21,5 +21,6 @@ Mẫu ở `_templates/`. Nguyên tắc ở [constitution.md](./constitution.md).
 | [013-points](./013-points/spec.md) | Điểm thưởng mỗi câu, pháo hoa chúc mừng, phím Enter | `PTS` |
 | [014-accepted-answers](./014-accepted-answers/spec.md) | Đáp án chuẩn có cấu trúc ngữ pháp, chấm không cần AI, AI soạn sẵn cho admin | `ANS` |
 | [015-attempt-history](./015-attempt-history/spec.md) | Lưu đáp án đúng đã làm và xem lại | `ATT` |
+| [016-theme](./016-theme/spec.md) | Giao diện sáng / tối | `THM` |
 
 Kiểm tra mọi AC đều có test: `npm run specs:check`.

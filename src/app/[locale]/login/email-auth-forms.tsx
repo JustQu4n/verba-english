@@ -67,7 +67,7 @@ function SignInForm() {
       <Field id={`${id}-password`} label={t("password")} error={errorText(errors?.fieldErrors?.password)}>
         {(p) => <PasswordInput {...p} name="password" autoComplete="current-password" required />}
       </Field>
-      <Button type="submit" size="lg" disabled={pending} className="h-11 text-base">
+      <Button type="submit" size="lg" disabled={pending} className="h-11 rounded-full text-base">
         {pending ? t("signingIn") : t("signInSubmit")}
       </Button>
       {errors?.formError === "email_not_confirmed" && <ResendButton email={email} />}
@@ -118,7 +118,7 @@ function SignUpForm({ onReset }: { onReset: () => void }) {
       <Field id={`${id}-confirm`} label={t("confirmPassword")} error={errorText(errors?.fieldErrors?.confirmPassword)}>
         {(p) => <PasswordInput {...p} name="confirmPassword" autoComplete="new-password" required />}
       </Field>
-      <Button type="submit" size="lg" disabled={pending} className="h-11 text-base">
+      <Button type="submit" size="lg" disabled={pending} className="h-11 rounded-full text-base">
         {pending ? t("signingUp") : t("signUpSubmit")}
       </Button>
     </form>

@@ -3,6 +3,7 @@ import { Suspense } from "react";
 
 import { AuthButton, AuthButtonFallback } from "@/components/landing/auth-button";
 import { LanguageSwitcher } from "@/components/landing/language-switcher";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Logo } from "@/components/landing/logo";
 import { Link } from "@/i18n/navigation";
 
@@ -29,6 +30,7 @@ export function AdminHeader() {
           >
             {t("nav.dashboard")}
           </Link>
+          <ThemeToggle />
           <LanguageSwitcher />
           <Suspense fallback={<AuthButtonFallback />}>
             <AuthButton />
