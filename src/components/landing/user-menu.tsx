@@ -72,8 +72,8 @@ export function UserMenu({ profile }: { profile: DisplayProfile }) {
             </span>
           </DropdownMenuLabel>
           <div className="mt-2 flex flex-col gap-1">
-            <MenuLink href="/dashboard/profile" icon={<UserRound />} title={t("UserMenu.profile")} hint={t("UserMenu.profileHint")} />
             <MenuLink href="/dashboard" icon={<LayoutDashboard />} title={t("UserMenu.dashboard")} hint={t("UserMenu.dashboardHint")} />
+            <MenuLink href="/dashboard/profile" icon={<UserRound />} title={t("UserMenu.profile")} hint={t("UserMenu.profileHint")} />
             <MenuLink href="/dashboard/leaderboard" icon={<Trophy />} title={t("UserMenu.leaderboard")} hint={t("UserMenu.leaderboardHint")} />
           </div>
           <DropdownMenuSeparator className="my-2" />
