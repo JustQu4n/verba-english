@@ -56,15 +56,15 @@ export async function deletePromptAction(id: string): Promise<void> {
 }
 
 export type SuggestAnswersResult =
-  | { status: "ok"; answers: AnswerFormValues[] }
+  | { status: "ok"; answers: AnswerFormValues[]; keywords: string[] }
   | { status: "error"; reason: "unauthorized" | "forbidden" | "invalid" | "unavailable" | "unknown" };
 
-/** Asks the AI to draft accepted answers for the sentence in the form. Nothing is saved: the admin reviews first. */
+/** Asks the AI to draft accepted answers and key words for the sentence in the form. Nothing is saved: the admin reviews first. */
 export async function suggestAnswersAction(input: unknown): Promise<SuggestAnswersResult> {
   try {
     const { auth, roles, prompts, suggester } = await getContainer();
-    const answers = await suggestAnswers({ auth, roles, prompts, suggester }, input);
-    return { status: "ok", answers: [...answers] };
+    const { answers, keywords } = await suggestAnswers({ auth, roles, prompts, suggester }, input);
+    return { status: "ok", answers: [...answers], keywords };
   } catch (error) {
     if (error instanceof UnauthorizedError) return { status: "error", reason: "unauthorized" };
     if (error instanceof ForbiddenError) return { status: "error", reason: "forbidden" };

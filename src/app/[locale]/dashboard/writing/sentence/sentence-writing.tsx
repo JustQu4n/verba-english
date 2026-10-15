@@ -37,6 +37,8 @@ export function SentenceWriting() {
   // Fireworks only when the pair was finished in this visit, not when the learner returns to a finished pair.
   const [celebrate, setCelebrate] = useState(false);
   const completedNow = useRef(false);
+  // Counts up each time a sentence is completed, so the short fireworks restart for every new one.
+  const [sparkle, setSparkle] = useState(0);
   // Progress of every category in every level, loaded once so switching level is instant. Null until the first load.
   const [allProgress, setAllProgress] = useState<AllLevelsProgress | null>(null);
   const [error, setError] = useState<FailureReason | null>(null);
@@ -45,6 +47,7 @@ export function SentenceWriting() {
   const currentPromptId = useRef<string | null>(null);
 
   function resetSentence() {
+    setSparkle(0);
     setAnswer("");
     setHintOpen(false);
     setFeedback(IDLE);
@@ -135,6 +138,7 @@ export function SentenceWriting() {
         if (result.progress && result.progress.total > 0 && result.progress.completed >= result.progress.total) {
           return finish(result.progress);
         }
+        setSparkle((count) => count + 1);
       }
       setFeedback({ status: "graded", grade: result.grade, answer: normalizeAnswer(answer), earned: result.points?.earned ?? 0, mode, source: result.source });
     });
@@ -179,6 +183,7 @@ export function SentenceWriting() {
         onBack={goBack}
         onNext={goNext}
         onQuit={quit}
+        sparkle={sparkle}
         loading={pending && feedback.status !== "grading"}
         error={error}
       />

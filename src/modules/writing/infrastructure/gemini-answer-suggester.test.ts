@@ -3,6 +3,9 @@ import { describe, expect, it, vi } from "vitest";
 import { InfrastructureError } from "@/core/errors";
 
 import { GeminiAnswerSuggester } from "./gemini-answer-suggester";
+import { SYSTEM_INSTRUCTION } from "./gemini-grading-prompt";
+import { GOOD_ENGLISH, LEVEL_GUIDE } from "./gemini-prompt-parts";
+import { buildSuggestionInput, SUGGESTION_SYSTEM_INSTRUCTION } from "./gemini-suggestion-prompt";
 
 const reply = (text: string) => ({ status: "completed", steps: [{ type: "model_output", content: [{ type: "text", text }] }] });
 const ok = (body: unknown) => new Response(JSON.stringify(body), { status: 200 });
@@ -16,21 +19,32 @@ const ANSWER = { text: "I want to go to the beach.", structureVi: "want to + V",
 
 describe("GeminiAnswerSuggester", () => {
   it("ANS-AC-12: sends the sentence, level and key words and reads the answers from the JSON reply", async () => {
-    const fetch = vi.fn().mockResolvedValue(ok(reply(JSON.stringify({ answers: [ANSWER] }))));
-    await expect(suggester(fetch).suggest(request)).resolves.toEqual([ANSWER]);
+    const fetch = vi.fn().mockResolvedValue(ok(reply(JSON.stringify({ answers: [ANSWER], keywords: ["want", " beach ", "WANT"] }))));
+    await expect(suggester(fetch).suggest(request)).resolves.toEqual({ answers: [ANSWER], keywords: ["want", "beach"] });
     const [, init] = fetch.mock.calls[0];
     const body = JSON.parse(init.body);
     expect(body.input).toContain("Level: beginner");
+    expect(body.input).toContain("Feedback language: Vietnamese");
     expect(body.input).toContain("Vietnamese: Tôi muốn đi biển.");
     expect(body.input).toContain("Key words: want, beach");
     expect(body.store).toBe(false);
     expect(init.headers["x-goog-api-key"]).toBe("key");
-    expect(body.response_format.schema.required).toEqual(["answers"]);
+    expect(body.response_format.schema.required).toEqual(["answers", "keywords"]);
   });
 
-  it("ANS-AC-12: a missing structure becomes empty text", async () => {
+  it("ANS-AC-12: a missing structure becomes empty text and missing key words an empty list", async () => {
     const fetch = vi.fn().mockResolvedValue(ok(reply(JSON.stringify({ answers: [{ text: "I go." }] }))));
-    await expect(suggester(fetch).suggest(request)).resolves.toEqual([{ text: "I go.", structureVi: "", structureEn: "" }]);
+    await expect(suggester(fetch).suggest(request)).resolves.toEqual({ answers: [{ text: "I go.", structureVi: "", structureEn: "" }], keywords: [] });
+  });
+
+  it("ANS-AC-25: the system text shares the grading rules and asks for key words", () => {
+    expect(SUGGESTION_SYSTEM_INSTRUCTION).toContain(GOOD_ENGLISH);
+    expect(SUGGESTION_SYSTEM_INSTRUCTION).toContain(LEVEL_GUIDE);
+    expect(SYSTEM_INSTRUCTION).toContain(GOOD_ENGLISH);
+    expect(SYSTEM_INSTRUCTION).toContain(LEVEL_GUIDE);
+    expect(SUGGESTION_SYSTEM_INSTRUCTION).toContain("keywords:");
+    expect(SUGGESTION_SYSTEM_INSTRUCTION).toContain("structureVi is ALWAYS in Vietnamese");
+    expect(buildSuggestionInput(request)).toMatch(/Write structureVi in Vietnamese\.$/);
   });
 
   it.each([

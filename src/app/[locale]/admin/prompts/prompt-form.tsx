@@ -10,9 +10,11 @@ import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
 import { Link } from "@/i18n/navigation";
 import { suggestAnswersAction } from "./actions";
+import { KeywordInput } from "./keyword-input";
 import type { AnswerFormValues, PromptFormState, PromptFormValues } from "@/lib/prompt-form";
 import { cn } from "@/lib/utils";
 import { answerKey, MAX_ACCEPTED_ANSWERS, MAX_ANSWER_TEXT_LENGTH, MAX_STRUCTURE_LENGTH } from "@/modules/writing/domain/accepted-answer";
+import { mergeKeywords, parseKeywords, joinKeywords } from "@/modules/writing/domain/keywords";
 import { MAX_HINT_LENGTH, MAX_VIETNAMESE_LENGTH } from "@/modules/writing/domain/prompt";
 import { CATEGORIES, LEVELS } from "@/modules/writing/domain/sentence-catalog";
 
@@ -78,12 +80,12 @@ export function PromptForm({ action, initial = EMPTY_PROMPT, mode }: PromptFormP
       <Field id={`${id}-hint`} label={t("hint")} hint={t("hintHelp")} error={fieldError("hint")}>
         {(props) => (
           <>
-            <Input
-              {...props}
-              name="hint"
-              lang="en"
+            <KeywordInput
+              id={props.id}
               value={values.hint}
-              onChange={(event) => set("hint", event.target.value)}
+              onChange={(hint) => set("hint", hint)}
+              invalid={props["aria-invalid"]}
+              describedBy={props["aria-describedby"]}
             />
             <Counter id={`${id}-hint-count`} value={values.hint} max={MAX_HINT_LENGTH} />
           </>
@@ -137,6 +139,7 @@ export function PromptForm({ action, initial = EMPTY_PROMPT, mode }: PromptFormP
         answers={values.answers}
         onChange={(answers) => set("answers", answers)}
         sentence={{ vietnamese: values.vietnamese, level: values.level, hint: values.hint }}
+        onKeywords={(keywords) => set("hint", joinKeywords(mergeKeywords(parseKeywords(values.hint), keywords)))}
         error={fieldError("answers")}
       />
 
@@ -174,14 +177,16 @@ interface AnswersEditorProps {
   answers: AnswerFormValues[];
   onChange: (answers: AnswerFormValues[]) => void;
   sentence: { vietnamese: string; level: string; hint: string };
+  /** Key words the AI drafted; the form adds them to the hint. */
+  onKeywords: (keywords: string[]) => void;
   error?: string;
 }
 
 /**
  * Accepted answers with grammar notes. A learner whose answer equals one of them is graded right away, without the AI.
- * "AI suggestions" only fills rows to review: nothing is saved until the form is.
+ * "AI suggestions" fills answer rows and key words to review: nothing is saved until the form is.
  */
-function AnswersEditor({ answers, onChange, sentence, error }: AnswersEditorProps) {
+function AnswersEditor({ answers, onChange, sentence, onKeywords, error }: AnswersEditorProps) {
   const t = useTranslations("Admin.form.answers");
   const [pending, startTransition] = useTransition();
   const [notice, setNotice] = useState<string | null>(null);
@@ -198,7 +203,8 @@ function AnswersEditor({ answers, onChange, sentence, error }: AnswersEditorProp
       const fresh = result.answers.filter((answer) => !known.has(answerKey(answer.text)));
       const merged = [...answers, ...fresh].slice(0, MAX_ACCEPTED_ANSWERS);
       onChange(merged);
-      setNotice(t("suggested", { count: merged.length - answers.length }));
+      onKeywords(result.keywords);
+      setNotice(t("suggested", { count: merged.length - answers.length, keywords: result.keywords.length }));
     });
   }
 
@@ -283,7 +289,7 @@ function AnswersEditor({ answers, onChange, sentence, error }: AnswersEditorProp
         <Button
           type="button"
           variant="outline"
-          disabled={pending || full || sentence.vietnamese.trim() === ""}
+          disabled={pending || sentence.vietnamese.trim() === ""}
           onClick={suggest}
         >
           <Sparkles aria-hidden="true" />

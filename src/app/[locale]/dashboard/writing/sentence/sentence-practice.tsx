@@ -12,6 +12,7 @@ import { GRADING_MODES, type GradingMode } from "@/modules/writing/domain/gradin
 import type { Category, Level, SentencePrompt } from "@/modules/writing/domain/sentence-catalog";
 import type { SentenceProgress } from "@/modules/writing/domain/sentence-progress";
 
+import { Fireworks } from "./fireworks";
 import { ProgressBar } from "./progress-bar";
 import { isGradedAnswer, type FeedbackState } from "./feedback-state";
 import { SentenceFeedback } from "./sentence-feedback";
@@ -36,11 +37,16 @@ interface SentencePracticeProps {
   onBack: () => void;
   onNext: () => void;
   onQuit: () => void;
+  /** Counts up each time the learner completes a sentence; the short fireworks play once per value. 0 means none. */
+  sparkle: number;
   loading: boolean;
   error: "unauthorized" | "not_found" | "unknown" | null;
 }
 
 /** The practice screen: one Vietnamese sentence, one answer box, and a feedback panel underneath. */
+// Phones: four equal columns, icon over label, so the actions read as one group.
+const ACTION = "max-sm:h-14 max-sm:min-w-0 max-sm:flex-col max-sm:gap-1 max-sm:px-1 max-sm:text-xs";
+
 export function SentencePractice({
   prompt,
   level,
@@ -60,6 +66,7 @@ export function SentencePractice({
   onBack,
   onNext,
   onQuit,
+  sparkle,
   loading,
   error,
 }: SentencePracticeProps) {
@@ -86,6 +93,7 @@ export function SentencePractice({
 
   return (
     <div className="mx-auto w-full max-w-3xl px-5 py-10 sm:px-8 sm:py-14">
+      {sparkle > 0 && <Fireworks key={sparkle} variant="short" />}
       <div className="flex items-center justify-between gap-4 text-sm">
         <p className="inline-flex min-w-0 items-center rounded-full border px-3 py-1 font-medium">
           <span className="truncate">{t(`categories.${category}`)}</span>
@@ -170,25 +178,25 @@ export function SentencePractice({
         <p className="mt-2 text-xs text-muted-foreground">{t(`gradeMode.${mode}Help`)}</p>
       </fieldset>
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-        <Button variant="ghost" onClick={onQuit}>
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+        <Button variant="ghost" onClick={onQuit} className="self-start max-sm:-ml-2">
           <ArrowLeft aria-hidden="true" />
           {t("quit")}
         </Button>
-        <div className="flex flex-wrap items-center gap-2">
-          <Button variant="outline" onClick={onBack} disabled={!canGoBack || loading || grading}>
+        <div className="grid grid-cols-4 gap-2 sm:flex sm:flex-wrap sm:items-center">
+          <Button variant="outline" className={ACTION} onClick={onBack} disabled={!canGoBack || loading || grading}>
             <ChevronLeft aria-hidden="true" />
             {t("previous")}
           </Button>
-          <Button variant={passed ? "default" : "outline"} onClick={onNext} disabled={loading || grading}>
+          <Button variant={passed ? "default" : "outline"} className={`${ACTION} max-sm:flex-col-reverse`} onClick={onNext} disabled={loading || grading}>
             {t("next")}
             <ChevronRight aria-hidden="true" />
           </Button>
-          <Button variant="outline" onClick={onToggleHint} aria-pressed={hintOpen}>
+          <Button variant="outline" className={ACTION} onClick={onToggleHint} aria-pressed={hintOpen}>
             <Lightbulb aria-hidden="true" />
             {hintOpen ? t("hideHint") : t("hint")}
           </Button>
-          <Button variant={passed ? "outline" : "default"} onClick={onSubmit} disabled={!canSubmit}>
+          <Button variant={passed ? "outline" : "default"} className={ACTION} onClick={onSubmit} disabled={!canSubmit}>
             <Send aria-hidden="true" />
             {grading ? t("grading") : t("submit")}
           </Button>

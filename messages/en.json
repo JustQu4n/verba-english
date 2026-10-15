@@ -342,7 +342,7 @@
       "vietnamese": "Vietnamese sentence",
       "vietnameseHelp": "The sentence learners will translate into English.",
       "hint": "Key-word hint",
-      "hintHelp": "English key words, separated by commas.",
+      "hintHelp": "English key words. Press Enter or a comma to separate each word.",
       "level": "Level",
       "category": "Category",
       "categoryPlaceholder": "Choose a category",
@@ -381,7 +381,7 @@
         "add": "Add answer",
         "suggest": "Suggest with AI",
         "suggesting": "Writing suggestions…",
-        "suggested": "Suggestions added: {count}. Review them before saving.",
+        "suggested": "Added {count} answers and {keywords} key words. Review them before saving.",
         "suggestErrors": {
           "unauthorized": "Your session has expired.",
           "forbidden": "You don't have permission to do this.",
@@ -389,7 +389,9 @@
           "unavailable": "AI is unavailable right now. Try again in a moment.",
           "unknown": "Something went wrong. Please try again."
         }
-      }
+      },
+      "keywordPlaceholder": "Type a key word, then press Enter",
+      "removeKeyword": "Remove key word {word}"
     }
   },
   "Stats": {

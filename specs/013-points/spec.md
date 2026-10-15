@@ -20,6 +20,7 @@ Mỗi câu làm đúng cho người học 10 điểm. Tổng điểm được l�
 - **FR-1** Điểm mỗi câu là hằng số 10, chỉ cộng khi câu được ghi "đã xong" lần đầu.
 - **FR-2** Ghi "đã xong" và cộng điểm là một thao tác nguyên tử, chỉ do máy chủ thực hiện; người học không tự ghi hay sửa điểm được bằng phiên của mình.
 - **FR-3** Tổng điểm nằm ở cột `points` trong hồ sơ, mặc định 0.
+- **FR-5** Mỗi câu vừa được hoàn thành (đúng lần đầu, có cộng điểm) có một đợt pháo hoa ngắn khoảng hai giây, nhẹ hơn pháo hoa của cả cặp. Câu cuối của một cặp không chạy đợt ngắn mà đi thẳng đến trang hoàn thành với pháo hoa dài; câu đã làm đúng trước đó (không cộng điểm) và câu trả lời sai không có pháo hoa. Đợt ngắn dừng khi chuyển câu và tắt khi người dùng chọn giảm chuyển động.
 - **FR-4** Pháo hoa chỉ chạy khi cặp vừa được hoàn thành trong lần luyện này, không chạy lại khi vào lại cặp đã xong; tắt khi người dùng chọn giảm chuyển động.
 
 ## 5. Tiêu chí chấp nhận
@@ -30,6 +31,7 @@ Mỗi câu làm đúng cho người học 10 điểm. Tổng điểm được l�
 - **PTS-AC-05** Given kho điểm trên cơ sở dữ liệu, when đọc, then lấy cột `points` của hồ sơ theo người dùng; không có hồ sơ là 0; lỗi báo lỗi hạ tầng không lộ nội dung gốc.
 - **PTS-AC-06** `manual` Thanh điều hướng có huy hiệu điểm (cạnh credit), cập nhật ngay khi làm đúng; phản hồi đúng có "+10 điểm" ở lần đầu và không có ở lần lặp lại.
 - **PTS-AC-07** `manual` Làm đúng câu cuối của một cặp thì pháo hoa phủ toàn màn hình vài giây, không chặn thao tác; vào lại cặp đã xong thì không có pháo hoa.
+- **PTS-AC-10** `manual` Làm đúng một câu (không phải câu cuối của cặp) lần đầu thì có đợt pháo hoa ngắn khoảng hai giây, không chặn thao tác; làm sai, hoặc chuyển sang câu khác thì không có (hoặc dừng ngay); chọn giảm chuyển động thì không có pháo hoa. *Kiểm tra:* làm đúng vài câu liên tiếp, thử cả chế độ sáng và tối.
 - **PTS-AC-08** `manual` Dùng được ở 390px không cuộn ngang, đủ chữ Tiếng Việt và English; người chọn giảm chuyển động không thấy pháo hoa.
 - **PTS-AC-09** `manual` Given người học, when tự cộng điểm hoặc ghi hoàn thành bằng phiên của mình, then bị từ chối. *Kiểm tra:* lệnh SQL trong `docs/ai-grading-setup.md`.
 

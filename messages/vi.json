@@ -342,7 +342,7 @@
       "vietnamese": "Câu tiếng Việt",
       "vietnameseHelp": "Câu người học sẽ dịch sang tiếng Anh.",
       "hint": "Gợi ý từ khóa",
-      "hintHelp": "Từ khóa tiếng Anh, cách nhau bằng dấu phẩy.",
+      "hintHelp": "Từ khóa tiếng Anh. Nhấn Enter hoặc dấu phẩy để tách từng từ.",
       "level": "Trình độ",
       "category": "Chủ đề",
       "categoryPlaceholder": "Chọn chủ đề",
@@ -381,7 +381,7 @@
         "add": "Thêm đáp án",
         "suggest": "Gợi ý bằng AI",
         "suggesting": "Đang soạn gợi ý…",
-        "suggested": "Đã thêm {count} gợi ý. Hãy kiểm tra trước khi lưu.",
+        "suggested": "Đã thêm {count} đáp án và {keywords} từ khóa. Hãy kiểm tra trước khi lưu.",
         "suggestErrors": {
           "unauthorized": "Phiên đăng nhập đã hết hạn.",
           "forbidden": "Bạn không có quyền thực hiện thao tác này.",
@@ -389,7 +389,9 @@
           "unavailable": "AI đang không khả dụng. Hãy thử lại sau ít phút.",
           "unknown": "Có lỗi xảy ra. Vui lòng thử lại."
         }
-      }
+      },
+      "keywordPlaceholder": "Gõ từ khóa rồi nhấn Enter",
+      "removeKeyword": "Xóa từ khóa {word}"
     }
   },
   "Stats": {

@@ -8,7 +8,13 @@ export interface SuggestionRequest {
   hint: string;
 }
 
-/** Drafts accepted answers with grammar notes for the admin to review. Implementations may call an AI service. */
+/** What the AI drafts for one prompt: accepted answers with grammar notes, and the key words shown as the learner's hint. */
+export interface Suggestion {
+  answers: AcceptedAnswer[];
+  keywords: string[];
+}
+
+/** Drafts a suggestion for the admin to review. Implementations may call an AI service. */
 export interface AnswerSuggester {
-  suggest(request: SuggestionRequest): Promise<AcceptedAnswer[]>;
+  suggest(request: SuggestionRequest): Promise<Suggestion>;
 }

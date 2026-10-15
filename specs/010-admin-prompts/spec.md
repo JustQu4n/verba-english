@@ -50,6 +50,9 @@
 - **APR-AC-19** `manual` Người dùng thường không tự nâng quyền được: dùng chính phiên đăng nhập của họ để cập nhật vai trò hoặc ghi vào bảng đề đều bị từ chối. *Kiểm tra:* chạy lệnh cập nhật từ trình duyệt bằng khóa công khai và phiên người dùng thường, xem kết quả bị từ chối.
 - **APR-AC-20** `manual` Giao diện đen trắng, dùng được ở chiều rộng 390px không cuộn ngang, focus nhìn rõ, đủ chữ Tiếng Việt và English. *Kiểm tra:* thu hẹp cửa sổ, dùng Tab, đổi ngôn ngữ.
 - **APR-AC-21** `manual` Given tài khoản admin, when đăng nhập hoặc mở `/dashboard` hay `/dashboard/writing/sentence`, then được chuyển sang `/admin/prompts`; tài khoản người học vẫn vào dashboard bình thường và không thấy mục quản trị. *Kiểm tra:* đăng nhập bằng admin và bằng người học.
+- **APR-AC-22** Given gợi ý từ khóa, when tách chữ, then chia theo dấu phẩy, chấm phẩy hoặc xuống dòng, cắt khoảng trắng, bỏ chữ rỗng và chữ lặp (không phân biệt hoa thường); lưu lại thành một chuỗi cách nhau bằng dấu phẩy, nên gợi ý cũ vẫn đọc được.
+- **APR-AC-23** Given từ khóa có sẵn và từ khóa mới (ví dụ do AI gợi ý), when gộp, then từ khóa cũ đứng trước, bỏ chữ trùng, và dừng trước khi gợi ý vượt 200 ký tự.
+- **APR-AC-24** `manual` Ô "Gợi ý từ khóa" nhận từng từ: nhấn Enter hoặc gõ dấu phẩy thì tách thành một nhãn (Enter không gửi form); dán chuỗi có dấu phẩy thì tách hết; Backspace khi ô trống xóa nhãn cuối; bấm dấu x trên nhãn để xóa; chữ đang gõ dở vẫn được lưu khi bấm Lưu. *Kiểm tra:* gõ "want" Enter, "go to," rồi dán "beach, swim"; bấm Lưu và mở lại.
 
 ## 6. Ràng buộc phi chức năng & bảo mật
 - Vai trò chỉ đổi được bằng thao tác trực tiếp trên cơ sở dữ liệu của chủ dự án; không có đường nào từ giao diện hay từ phiên người dùng.
