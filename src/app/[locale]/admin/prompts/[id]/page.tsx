@@ -50,7 +50,7 @@ export default async function EditPromptPage({ params }: PageProps<"/[locale]/ad
   setRequestLocale(locale);
   const t = await getTranslations("Dashboard");
   return (
-    <div className="mx-auto w-full max-w-6xl px-5 py-10 sm:px-8 sm:py-14">
+    <div className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-8 sm:py-10">
       <Suspense fallback={<p className="text-muted-foreground">{t("loading")}</p>}>
         <EditPrompt params={params} />
       </Suspense>

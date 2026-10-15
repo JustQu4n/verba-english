@@ -8,7 +8,7 @@
 
 ## 2. Phạm vi
 - **Trong phạm vi:** quyền quản trị; khu Admin chỉ dành cho quản trị viên; danh sách đề (lọc, tìm kiếm, phân trang); tạo, sửa, xóa đề câu; xuất bản hoặc để bản nháp; màn luyện câu dùng đề đã xuất bản; giao diện đen trắng, hai ngôn ngữ.
-- **Ngoài phạm vi:** đề dạng đoạn văn (Paragraph); nhập hàng loạt từ tệp; lịch sử chỉnh sửa; phân quyền theo chủ đề; trang quản lý người dùng hay cấp quyền quản trị bằng giao diện.
+- **Ngoài phạm vi:** đề dạng đoạn văn (Paragraph); nhập hàng loạt từ tệp; lịch sử chỉnh sửa; phân quyền theo chủ đề; trang quản lý người dùng hay cấp quyền quản trị bằng giao diện (đã làm ở spec 019).
 
 ## 3. Kịch bản người dùng
 - Là quản trị viên, tôi xem danh sách đề, lọc theo trình độ, chủ đề, trạng thái và tìm theo nội dung.
@@ -26,7 +26,7 @@
 - **FR-6** Xóa đề cần xác nhận.
 - **FR-7** Quyền ở tầng dữ liệu cũng chặn người không phải quản trị ghi đề; việc kiểm tra ở ứng dụng chỉ là lớp thứ hai.
 - **FR-8** Khi một cặp trình độ và chủ đề chưa có đề đã xuất bản nào, luyện câu báo không có câu cho lựa chọn đó (không còn bộ câu mẫu trong mã nguồn).
-- **FR-9** Tài khoản quản trị không dùng khu người học: mở `/dashboard` (hoặc trang con) sẽ được chuyển sang `/admin/prompts`. Người học giữ nguyên.
+- **FR-9** Tài khoản quản trị không dùng khu người học: mở `/dashboard` (hoặc trang con) sẽ được chuyển sang `/admin` (Tổng quan). Người học giữ nguyên.
 
 ## 5. Tiêu chí chấp nhận
 - **APR-AC-01** Given người chưa đăng nhập, when thực hiện bất kỳ thao tác quản trị đề (xem danh sách, xem một đề, tạo, sửa, xóa), then báo chưa đăng nhập và không truy cập kho đề.
@@ -49,7 +49,7 @@
 - **APR-AC-18** `manual` Đề đã xuất bản xuất hiện khi luyện câu đúng trình độ và chủ đề; đề nháp thì không; đổi từ xuất bản sang nháp thì biến mất. *Kiểm tra:* tạo đề, mở luyện câu, đổi trạng thái.
 - **APR-AC-19** `manual` Người dùng thường không tự nâng quyền được: dùng chính phiên đăng nhập của họ để cập nhật vai trò hoặc ghi vào bảng đề đều bị từ chối. *Kiểm tra:* chạy lệnh cập nhật từ trình duyệt bằng khóa công khai và phiên người dùng thường, xem kết quả bị từ chối.
 - **APR-AC-20** `manual` Giao diện đen trắng, dùng được ở chiều rộng 390px không cuộn ngang, focus nhìn rõ, đủ chữ Tiếng Việt và English. *Kiểm tra:* thu hẹp cửa sổ, dùng Tab, đổi ngôn ngữ.
-- **APR-AC-21** `manual` Given tài khoản admin, when đăng nhập hoặc mở `/dashboard` hay `/dashboard/writing/sentence`, then được chuyển sang `/admin/prompts`; tài khoản người học vẫn vào dashboard bình thường và không thấy mục quản trị. *Kiểm tra:* đăng nhập bằng admin và bằng người học.
+- **APR-AC-21** `manual` Given tài khoản admin, when đăng nhập hoặc mở `/dashboard` hay `/dashboard/writing/sentence`, then được chuyển sang `/admin` (Tổng quan); tài khoản người học vẫn vào dashboard bình thường và không thấy mục quản trị. *Kiểm tra:* đăng nhập bằng admin và bằng người học.
 - **APR-AC-22** Given gợi ý từ khóa, when tách chữ, then chia theo dấu phẩy, chấm phẩy hoặc xuống dòng, cắt khoảng trắng, bỏ chữ rỗng và chữ lặp (không phân biệt hoa thường); lưu lại thành một chuỗi cách nhau bằng dấu phẩy, nên gợi ý cũ vẫn đọc được.
 - **APR-AC-23** Given từ khóa có sẵn và từ khóa mới (ví dụ do AI gợi ý), when gộp, then từ khóa cũ đứng trước, bỏ chữ trùng, và dừng trước khi gợi ý vượt 200 ký tự.
 - **APR-AC-24** `manual` Ô "Gợi ý từ khóa" nhận từng từ: nhấn Enter hoặc gõ dấu phẩy thì tách thành một nhãn (Enter không gửi form); dán chuỗi có dấu phẩy thì tách hết; Backspace khi ô trống xóa nhãn cuối; bấm dấu x trên nhãn để xóa; chữ đang gõ dở vẫn được lưu khi bấm Lưu. *Kiểm tra:* gõ "want" Enter, "go to," rồi dán "beach, swim"; bấm Lưu và mở lại.
