@@ -13,7 +13,7 @@ export function WritingDemo() {
       className="w-full max-w-md rounded-3xl bg-inverse p-6 text-inverse-foreground shadow-[0_30px_60px_-30px_rgba(0,0,0,0.6)] dark:ring-1 dark:ring-white/10 sm:p-7"
     >
       <div className="flex items-center justify-between gap-3">
-        <LogoMark className="size-8 bg-inverse-foreground text-[0.6rem] text-inverse ring-0" />
+        <LogoMark className="size-8 ring-0" />
         <p className="rounded-full border border-inverse-foreground/25 px-3 py-1 text-xs font-medium text-inverse-foreground/80">
           {t("tag")} / {t("level")}
         </p>

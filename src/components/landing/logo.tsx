@@ -1,18 +1,11 @@
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
-/** Brand mark: the word "VERB" in white on a black rounded square. */
+/** Brand mark: the "VERB" logo image (a black rounded square), shown at 36px by default. */
 export function LogoMark({ className = "" }: { className?: string }) {
   return (
-    <span
-      aria-hidden="true"
-      className={cn(
-        "inline-grid size-9 shrink-0 place-items-center rounded-lg bg-black text-[0.68rem] font-extrabold italic leading-none tracking-tighter text-white ring-1 ring-white/25",
-        className
-      )}
-    >
-      VERB
-    </span>
+    // eslint-disable-next-line @next/next/no-img-element -- a small fixed asset; no optimizer needed
+    <img src="/logo.png" alt="" width={36} height={36} aria-hidden="true" className={cn("size-9 shrink-0 rounded-lg ring-1 ring-white/25", className)} />
   );
 }
 
