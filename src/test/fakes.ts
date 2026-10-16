@@ -1,10 +1,15 @@
 import { vi } from "vitest";
 
 import type { RoleReader } from "@/modules/admin/application/role-reader";
+import type { UserDirectory } from "@/modules/admin/application/user-directory";
+import type { UserAccount } from "@/modules/admin/domain/user-account";
 import type { AuthService } from "@/modules/auth/application/auth-service";
 import type { CreditStore } from "@/modules/credits/application/credit-store";
 import type { LeaderboardSource } from "@/modules/leaderboard/application/leaderboard-source";
 import type { RankedLearner } from "@/modules/leaderboard/domain/leaderboard";
+import type { AvatarStorage } from "@/modules/profile/application/avatar-storage";
+import type { ProfileRepository } from "@/modules/profile/application/profile-repository";
+import type { Profile } from "@/modules/profile/domain/profile";
 import type { PointsStore } from "@/modules/points/application/points-store";
 import type { AttemptStore } from "@/modules/writing/application/attempt-store";
 import type { SentenceProgressStore } from "@/modules/writing/application/sentence-progress-store";
@@ -122,4 +127,55 @@ export function fakeLeaderboard(
   standing: { rank: number; points: number } | null = null
 ): LeaderboardSource {
   return { top: vi.fn().mockResolvedValue(top), standing: vi.fn().mockResolvedValue(standing) };
+}
+
+export function sampleProfile(overrides: Partial<Profile> = {}): Profile {
+  return { id: "u1", fullName: "Alex Lee", avatarUrl: null, createdAt: new Date("2026-01-01T00:00:00.000Z"), ...overrides };
+}
+
+/** Fake ProfileRepository: `update` returns the profile with the patch applied. */
+export function fakeProfiles(profile: Profile | null = sampleProfile(), overrides: Partial<ProfileRepository> = {}): ProfileRepository {
+  return {
+    findById: vi.fn().mockResolvedValue(profile),
+    update: vi.fn().mockImplementation(async (_id, patch) => ({ ...(profile ?? sampleProfile()), ...patch })),
+    ...overrides,
+  };
+}
+
+/** Fake AvatarStorage that "stores" every picture at a fixed public address. */
+export function fakeAvatars(overrides: Partial<AvatarStorage> = {}): AvatarStorage {
+  return {
+    upload: vi.fn().mockResolvedValue("https://files.test/storage/v1/object/public/avatars/u1/new.webp"),
+    remove: vi.fn().mockResolvedValue(undefined),
+    ...overrides,
+  };
+}
+
+export function sampleAccount(overrides: Partial<UserAccount> = {}): UserAccount {
+  return {
+    id: "22222222-2222-4222-8222-222222222222",
+    email: "learner@verba.test",
+    fullName: "Learner",
+    avatarUrl: null,
+    role: "user",
+    points: 40,
+    credits: 10,
+    createdAt: new Date("2026-02-01T00:00:00.000Z"),
+    lastSignInAt: null,
+    rank: 3,
+    ...overrides,
+  };
+}
+
+/** Fake UserDirectory: `update` returns the account with the patch applied. */
+export function fakeUsers(account: UserAccount | null = sampleAccount(), overrides: Partial<UserDirectory> = {}): UserDirectory {
+  return {
+    list: vi.fn().mockResolvedValue({ items: account ? [account] : [], total: account ? 1 : 0 }),
+    find: vi.fn().mockResolvedValue(account),
+    update: vi.fn().mockImplementation(async (_id, patch) => (account ? { ...account, ...patch } : null)),
+    overview: vi.fn().mockResolvedValue({
+      users: 5, admins: 1, newUsers7d: 2, rankedLearners: 3, pointsTotal: 120, promptsPublished: 4, promptsDraft: 1, attempts: 9, completions: 7,
+    }),
+    ...overrides,
+  };
 }

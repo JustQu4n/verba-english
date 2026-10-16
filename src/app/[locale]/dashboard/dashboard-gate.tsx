@@ -15,7 +15,7 @@ export async function DashboardGate({ children }: { children: ReactNode }) {
   const { auth, roles } = await getContainer();
   const user = await auth.getCurrentUser();
   if (user && (await roles.isAdmin(user.id))) {
-    return redirect({ href: "/admin/prompts", locale: await getLocale() });
+    return redirect({ href: "/admin", locale: await getLocale() });
   }
   return <>{children}</>;
 }

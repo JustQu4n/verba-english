@@ -15,7 +15,7 @@ const profile: Profile = {
   createdAt: new Date("2026-01-01"),
 };
 
-const reposWith = (found: Profile | null): ProfileRepository => ({ findById: async () => found });
+const reposWith = (found: Profile | null): ProfileRepository => ({ findById: async () => found, update: async () => { throw new Error("not used"); } });
 
 describe("getMyProfile", () => {
   it("PRF-AC-01: not signed in → UnauthorizedError", async () => {
@@ -42,6 +42,7 @@ describe("getMyProfile", () => {
     const seen: string[] = [];
     const profiles: ProfileRepository = {
       findById: async (id) => (seen.push(id), profile),
+      update: async () => profile,
     };
     await getMyProfile({ auth: fakeAuth({ getCurrentUser: async () => user }), profiles });
     expect(seen).toEqual(["u1"]);

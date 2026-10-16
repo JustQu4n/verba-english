@@ -1,8 +1,9 @@
-import { ChevronLeft, ChevronRight, Pencil, Plus, Search } from "lucide-react";
+import { Pencil, Plus, Search } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { connection } from "next/server";
 
 import { ForbiddenError, UnauthorizedError, ValidationError } from "@/core/errors";
+import { AdminPagination } from "@/components/admin/pagination";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/ui/native-select";
@@ -65,7 +66,7 @@ export async function PromptList({ searchParams }: { searchParams: Promise<Searc
   const errorCode = first(raw.error);
   const hasFilter = FILTER_KEYS.some((key) => Boolean(filters[key]));
   const pageHref = (page: number) => ({
-    pathname: "/admin/prompts",
+    pathname: "/admin/prompts" as const,
     query: {
       ...Object.fromEntries(FILTER_KEYS.flatMap((key) => (filters[key] ? [[key, filters[key]]] : []))),
       ...(page > 1 ? { page: String(page) } : {}),
@@ -203,23 +204,7 @@ export async function PromptList({ searchParams }: { searchParams: Promise<Searc
         </div>
       )}
 
-      {result.pageCount > 1 && (
-        <nav aria-label={t("pagination")} className="mt-6 flex items-center justify-between gap-4">
-          <Button asChild variant="outline" size="sm" aria-disabled={result.page <= 1} className={result.page <= 1 ? "pointer-events-none opacity-50" : ""}>
-            <Link href={pageHref(result.page - 1)} aria-label={t("previous")} tabIndex={result.page <= 1 ? -1 : undefined}>
-              <ChevronLeft aria-hidden="true" />
-              {t("previous")}
-            </Link>
-          </Button>
-          <p className="text-sm text-muted-foreground">{t("page", { page: result.page, pageCount: result.pageCount })}</p>
-          <Button asChild variant="outline" size="sm" aria-disabled={result.page >= result.pageCount} className={result.page >= result.pageCount ? "pointer-events-none opacity-50" : ""}>
-            <Link href={pageHref(result.page + 1)} aria-label={t("next")} tabIndex={result.page >= result.pageCount ? -1 : undefined}>
-              {t("next")}
-              <ChevronRight aria-hidden="true" />
-            </Link>
-          </Button>
-        </nav>
-      )}
+      <AdminPagination page={result.page} pageCount={result.pageCount} hrefFor={pageHref} />
     </>
   );
 }

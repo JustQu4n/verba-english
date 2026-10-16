@@ -25,7 +25,7 @@ where id = (select id from auth.users where email = 'admin@example.com');
 Sign out and in again is not required; the role is read on every request.
 
 ## 4. Use it
-Open `/dashboard`. An **Admin** card appears for admins and leads to `/admin/prompts`.
+Open `/dashboard`. An **Admin** card appears for admins and leads to `/admin` (overview).
 Non-admins get a 404 on `/admin/*`, and guests are sent to `/login`.
 
 ## Security notes

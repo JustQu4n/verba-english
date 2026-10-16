@@ -3,6 +3,8 @@ import { cache } from "react";
 
 import { createClient } from "@/infrastructure/supabase/server";
 import type { RoleReader } from "@/modules/admin/application/role-reader";
+import type { UserDirectory } from "@/modules/admin/application/user-directory";
+import { SupabaseUserDirectory } from "@/modules/admin/infrastructure/supabase-user-directory";
 import { SupabaseRoleReader } from "@/modules/admin/infrastructure/supabase-role-reader";
 import type { AuthService } from "@/modules/auth/application/auth-service";
 import { SupabaseAuthService } from "@/modules/auth/infrastructure/supabase-auth-service";
@@ -14,6 +16,8 @@ import { SupabaseLeaderboardSource } from "@/modules/leaderboard/infrastructure/
 import type { PointsStore } from "@/modules/points/application/points-store";
 import { SupabasePointsStore } from "@/modules/points/infrastructure/supabase-points-store";
 import type { ProfileRepository } from "@/modules/profile/application/profile-repository";
+import type { AvatarStorage } from "@/modules/profile/application/avatar-storage";
+import { SupabaseAvatarStorage } from "@/modules/profile/infrastructure/supabase-avatar-storage";
 import { SupabaseProfileRepository } from "@/modules/profile/infrastructure/supabase-profile-repository";
 import type { GradeCache } from "@/modules/writing/application/grade-cache";
 import type { PromptRepository } from "@/modules/writing/application/prompt-repository";
@@ -41,7 +45,11 @@ const DEFAULT_THINKING_LEVEL = "minimal";
 export interface Container {
   auth: AuthService;
   profiles: ProfileRepository;
+  /** Profile pictures (Supabase Storage). */
+  avatars: AvatarStorage;
   roles: RoleReader;
+  /** Accounts as admins see them: list, change role, credits and points (service role, admin use cases only). */
+  users: UserDirectory;
   /** Admin-side prompt storage (drafts included). */
   prompts: PromptRepository;
   /** Learner-side source: published prompts only. */
@@ -80,7 +88,9 @@ export const getContainer = cache(async (): Promise<Container> => {
   return {
     auth: new SupabaseAuthService(supabase),
     profiles: new SupabaseProfileRepository(supabase),
+    avatars: new SupabaseAvatarStorage(supabase),
     roles: new SupabaseRoleReader(supabase),
+    users: new SupabaseUserDirectory(createAdminClient),
     prompts: new SupabasePromptRepository(supabase),
     sentencePrompts: new SupabaseSentencePromptSource(supabase),
     credits: new SupabaseCreditStore(supabase),
