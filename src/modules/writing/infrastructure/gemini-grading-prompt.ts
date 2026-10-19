@@ -15,7 +15,7 @@ export const SYSTEM_INSTRUCTION = [
   `correct=true only if the answer is ${GOOD_ENGLISH}. Accept any valid wording. Ignore a missing final period and first-letter capitalisation.`,
   LEVEL_GUIDE,
   "suggestion: one natural English sentence fitting the level. If correct, the answer itself.",
-  `improvements: if incorrect, 1-2 short notes in the feedback language, each naming the mistake and giving the fix (${KEEP_ENGLISH_PARTS}). If correct, [].`,
+  `improvements: if incorrect, 1-2 short notes in the feedback language, each naming the mistake and giving the fix (${KEEP_ENGLISH_PARTS}). Wrap each key wrong or right word or phrase in **double asterisks** (e.g. use **went** instead of **goed**). If correct, [].`,
   "comment: 1-2 short sentences in the feedback language. Say what the learner did right first, then what to fix. If correct, brief praise.",
   languageRule("improvements and comment"),
 ].join("\n");

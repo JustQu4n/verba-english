@@ -275,6 +275,8 @@
     "incorrect": "Chưa đúng",
     "tryAgain": "Hãy sửa câu trả lời rồi gửi lại. Mỗi lần sai tốn 1 credit; trả lời đúng thì miễn phí.",
     "feedbackSuggestion": "Suggestion",
+    "diffWrong": "sai",
+    "diffFix": "sửa",
     "feedbackImprovements": "Suggested improvements",
     "feedbackComment": "Nhận xét",
     "gradeErrors": {
