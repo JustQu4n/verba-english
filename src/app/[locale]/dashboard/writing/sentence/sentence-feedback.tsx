@@ -5,15 +5,17 @@ import { useTranslations } from "next-intl";
 
 import { cn } from "@/lib/utils";
 
-import type { FeedbackState } from "./feedback-state";
+import { suggestionVisible, type FeedbackState } from "./feedback-state";
 
 interface SentenceFeedbackProps {
   feedback: FeedbackState;
+  /** What is in the answer box now: editing it after a wrong answer hides the suggestion. */
+  answer: string;
   /** The answer was graded correct and is unchanged: the learner may continue. */
 }
 
 /** AI feedback for the last submitted answer. Wrong answers keep the learner here until they are right. */
-export function SentenceFeedback({ feedback }: SentenceFeedbackProps) {
+export function SentenceFeedback({ feedback, answer }: SentenceFeedbackProps) {
   const t = useTranslations("Sentence");
 
   return (
@@ -63,10 +65,10 @@ export function SentenceFeedback({ feedback }: SentenceFeedbackProps) {
               </p>
             )}
 
-            {feedback.grade.suggestion && (
+            {feedback.grade.suggestion && suggestionVisible(feedback, answer) && (
               <p>
                 <span className="font-semibold">{t("feedbackSuggestion")}:</span>{" "}
-                <span lang="en" className="text-base font-medium">
+                <span lang="en" data-dictionary="" className="text-base font-medium">
                   {feedback.grade.suggestion}
                 </span>
               </p>
@@ -75,7 +77,7 @@ export function SentenceFeedback({ feedback }: SentenceFeedbackProps) {
             {feedback.grade.improvements.length > 0 && (
               <div>
                 <p className="font-semibold">{t(feedback.grade.correct || feedback.source === "reference" ? "feedbackStructure" : "feedbackImprovements")}:</p>
-                <ul className="mt-1.5 list-disc space-y-1.5 pl-5">
+                <ul data-dictionary="" className="mt-1.5 list-disc space-y-1.5 pl-5">
                   {feedback.grade.improvements.map((note) => (
                     <li key={note}>{note}</li>
                   ))}

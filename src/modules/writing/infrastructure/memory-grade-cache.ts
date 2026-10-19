@@ -25,7 +25,7 @@ export class MemoryGradeCache implements GradeCache {
     this.now = now;
   }
 
-  get(key: string): SentenceGrade | undefined {
+  async get(key: string): Promise<SentenceGrade | undefined> {
     const entry = this.entries.get(key);
     if (!entry) return undefined;
     if (entry.expiresAt <= this.now()) {
@@ -38,7 +38,7 @@ export class MemoryGradeCache implements GradeCache {
     return entry.grade;
   }
 
-  set(key: string, grade: SentenceGrade): void {
+  async set(key: string, grade: SentenceGrade): Promise<void> {
     this.entries.delete(key);
     this.entries.set(key, { grade, expiresAt: this.now() + this.ttlMs });
     if (this.entries.size > this.maxEntries) {

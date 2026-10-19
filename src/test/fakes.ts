@@ -4,6 +4,8 @@ import type { RoleReader } from "@/modules/admin/application/role-reader";
 import type { UserDirectory } from "@/modules/admin/application/user-directory";
 import type { UserAccount } from "@/modules/admin/domain/user-account";
 import type { AuthService } from "@/modules/auth/application/auth-service";
+import type { DictionaryCache, DictionaryProvider, SavedWordStore, WordTranslator } from "@/modules/dictionary/application/ports";
+import type { DictionaryEntry } from "@/modules/dictionary/domain/dictionary-entry";
 import type { CreditStore } from "@/modules/credits/application/credit-store";
 import type { LeaderboardSource } from "@/modules/leaderboard/application/leaderboard-source";
 import type { RankedLearner } from "@/modules/leaderboard/domain/leaderboard";
@@ -178,4 +180,42 @@ export function fakeUsers(account: UserAccount | null = sampleAccount(), overrid
     }),
     ...overrides,
   };
+}
+
+export function sampleEntry(overrides: Partial<DictionaryEntry> = {}): DictionaryEntry {
+  return {
+    word: "convenient",
+    ipa: "/kən\u02c8vi\u02d0.ni.ənt/",
+    audioUrl: "https://dict.test/api/v1/tts?word=convenient&lang=en",
+    meanings: [{ definition: "Thuận tiện, tiện lợi.", pos: "Tính từ", example: null, vietnamese: true }],
+    source: "dictionary",
+    ...overrides,
+  };
+}
+
+export function fakeDictionaryProvider(entry: DictionaryEntry | null = sampleEntry(), overrides: Partial<DictionaryProvider> = {}): DictionaryProvider {
+  return { lookup: vi.fn().mockResolvedValue(entry), ...overrides };
+}
+
+/** `entry` is what the cache remembers: undefined means nothing is cached, null a cached "not found". */
+export function fakeDictionaryCache(entry: DictionaryEntry | null | undefined = undefined, overrides: Partial<DictionaryCache> = {}): DictionaryCache {
+  return {
+    get: vi.fn().mockResolvedValue(entry === undefined ? undefined : { entry }),
+    put: vi.fn().mockResolvedValue(undefined),
+    ...overrides,
+  };
+}
+
+export function fakeSavedWords(overrides: Partial<SavedWordStore> = {}): SavedWordStore {
+  return {
+    list: vi.fn().mockResolvedValue([]),
+    has: vi.fn().mockResolvedValue(false),
+    save: vi.fn().mockResolvedValue(undefined),
+    remove: vi.fn().mockResolvedValue(undefined),
+    ...overrides,
+  };
+}
+
+export function fakeTranslator(entry: DictionaryEntry = sampleEntry({ source: "ai" }), overrides: Partial<WordTranslator> = {}): WordTranslator {
+  return { translate: vi.fn().mockImplementation(async (word: string) => ({ ...entry, word })), ...overrides };
 }

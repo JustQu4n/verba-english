@@ -5,41 +5,41 @@ import { sampleGrade } from "@/test/fakes";
 import { MemoryGradeCache } from "./memory-grade-cache";
 
 describe("MemoryGradeCache", () => {
-  it("AIG-AC-16: returns what was stored", () => {
+  it("AIG-AC-16: returns what was stored", async () => {
     const cache = new MemoryGradeCache();
-    cache.set("a", sampleGrade());
-    expect(cache.get("a")).toEqual(sampleGrade());
-    expect(cache.get("b")).toBeUndefined();
+    await cache.set("a", sampleGrade());
+    expect(await cache.get("a")).toEqual(sampleGrade());
+    expect(await cache.get("b")).toBeUndefined();
   });
 
-  it("AIG-AC-16: drops the least recently used entry past the limit", () => {
+  it("AIG-AC-16: drops the least recently used entry past the limit", async () => {
     const cache = new MemoryGradeCache({ maxEntries: 2 });
-    cache.set("a", sampleGrade({ comment: "a" }));
-    cache.set("b", sampleGrade({ comment: "b" }));
-    cache.get("a"); // a is now the most recently used
-    cache.set("c", sampleGrade({ comment: "c" }));
-    expect(cache.get("b")).toBeUndefined();
-    expect(cache.get("a")?.comment).toBe("a");
-    expect(cache.get("c")?.comment).toBe("c");
+    await cache.set("a", sampleGrade({ comment: "a" }));
+    await cache.set("b", sampleGrade({ comment: "b" }));
+    await cache.get("a"); // a is now the most recently used
+    await cache.set("c", sampleGrade({ comment: "c" }));
+    expect(await cache.get("b")).toBeUndefined();
+    expect((await cache.get("a"))?.comment).toBe("a");
+    expect((await cache.get("c"))?.comment).toBe("c");
   });
 
-  it("AIG-AC-16: forgets entries after the time to live", () => {
+  it("AIG-AC-16: forgets entries after the time to live", async () => {
     let now = 1_000;
     const cache = new MemoryGradeCache({ ttlMs: 100, now: () => now });
-    cache.set("a", sampleGrade());
+    await cache.set("a", sampleGrade());
     now = 1_099;
-    expect(cache.get("a")).toBeDefined();
+    expect(await cache.get("a")).toBeDefined();
     now = 1_100;
-    expect(cache.get("a")).toBeUndefined();
+    expect(await cache.get("a")).toBeUndefined();
   });
 
-  it("AIG-AC-16: storing the same key again refreshes it", () => {
+  it("AIG-AC-16: storing the same key again refreshes it", async () => {
     const cache = new MemoryGradeCache({ maxEntries: 2 });
-    cache.set("a", sampleGrade({ comment: "old" }));
-    cache.set("b", sampleGrade());
-    cache.set("a", sampleGrade({ comment: "new" }));
-    cache.set("c", sampleGrade());
-    expect(cache.get("b")).toBeUndefined();
-    expect(cache.get("a")?.comment).toBe("new");
+    await cache.set("a", sampleGrade({ comment: "old" }));
+    await cache.set("b", sampleGrade());
+    await cache.set("a", sampleGrade({ comment: "new" }));
+    await cache.set("c", sampleGrade());
+    expect(await cache.get("b")).toBeUndefined();
+    expect((await cache.get("a"))?.comment).toBe("new");
   });
 });

@@ -70,6 +70,26 @@ async function readAcceptedAnswers(references: ReferenceAnswerSource, promptId: 
   }
 }
 
+/** The shared cache only saves AI quota: when it fails the answer is graded as if it had not been there. */
+async function readGrade(cache: GradeCache, key: string): Promise<SentenceGrade | undefined> {
+  try {
+    return await cache.get(key);
+  } catch (error) {
+    if (!(error instanceof InfrastructureError)) throw error;
+    console.error(`Grade cache read failed: ${error.message}`);
+    return undefined;
+  }
+}
+
+async function writeGrade(cache: GradeCache, key: string, grade: SentenceGrade): Promise<void> {
+  try {
+    await cache.set(key, grade);
+  } catch (error) {
+    if (!(error instanceof InfrastructureError)) throw error;
+    console.error(`Grade cache write failed: ${error.message}`);
+  }
+}
+
 export async function gradeSentence(
   { auth, prompts, credits, grader, cache, progress, references, attempts }: GradeSentenceDeps,
   input: unknown,
@@ -126,7 +146,7 @@ export async function gradeSentence(
       return { grade, credits: await credits.balance(user.id), progress: null, points: null, source: "reference" };
     }
 
-    const cached = cache.get(key);
+    const cached = await readGrade(cache, key);
     if (cached) {
       const balance = await credits.balance(user.id);
       return cached.correct
@@ -138,7 +158,7 @@ export async function gradeSentence(
     if (balance < GRADING_COST) throw new InsufficientCreditsError("Not enough credits");
 
     const grade = await grader.grade({ vietnamese: prompt.vietnamese, level: prompt.level, answer: normalized, language });
-    cache.set(key, grade);
+    await writeGrade(cache, key, grade);
 
     if (grade.correct) return complete(grade, balance, "ai");
 

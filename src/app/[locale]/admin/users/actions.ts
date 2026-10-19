@@ -1,10 +1,11 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { unstable_rethrow } from "next/navigation";
 
 import { AppError, ForbiddenError, NotFoundError, UnauthorizedError, ValidationError } from "@/core/errors";
 import { updateUser } from "@/modules/admin/application/manage-user";
+import { LEADERBOARD_TAG } from "@/server/cached-sources";
 import { getContainer } from "@/server/container";
 
 export type UserFormField = "role" | "credits" | "points";
@@ -47,5 +48,7 @@ export async function updateUserAction(id: string, _: UserFormState, formData: F
     return toState(error);
   }
   revalidatePath("/", "layout");
+  // Points and names decide the cached leaderboard.
+  updateTag(LEADERBOARD_TAG);
   return { status: "saved" };
 }

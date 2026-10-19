@@ -4,6 +4,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight, Lightbulb, Send } from "lucide-re
 import { useTranslations } from "next-intl";
 import { useState, type KeyboardEvent } from "react";
 
+import { DictionaryPopup } from "@/components/dictionary/dictionary-popup";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
@@ -128,6 +129,7 @@ export function SentencePractice({
         >
           <textarea
             id="answer"
+            data-dictionary=""
             lang="en"
             rows={4}
             value={answer}
@@ -220,7 +222,8 @@ export function SentencePractice({
         </p>
       )}
 
-<SentenceFeedback feedback={feedback} />
+<SentenceFeedback feedback={feedback} answer={answer} />
+      <DictionaryPopup />
     </div>
   );
 }

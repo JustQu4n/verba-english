@@ -25,5 +25,7 @@ Mẫu ở `_templates/`. Nguyên tắc ở [constitution.md](./constitution.md).
 | [017-leaderboard](./017-leaderboard/spec.md) | Bảng xếp hạng top 10 theo điểm, bục top 3 | `LDB` |
 | [018-profile-page](./018-profile-page/spec.md) | Trang hồ sơ, xếp hạng, các lần làm bài, đổi tên và ảnh đại diện (Supabase Storage) | `PRP` |
 | [019-admin-console](./019-admin-console/spec.md) | Bảng điều khiển Admin: menu trái, tổng quan, quản lý tài khoản, bảng xếp hạng có phân trang | `ADM` |
+| [020-dictionary](./020-dictionary/spec.md) | Popup từ điển khi bôi đen từ, cache, lưu từ vựng để ôn lại | `DIC` |
+| [021-caching](./021-caching/spec.md) | Cache dùng chung: chấm AI, từ điển, top bảng xếp hạng, số câu theo chủ đề | `CHE` |
 
 Kiểm tra mọi AC đều có test: `npm run specs:check`.

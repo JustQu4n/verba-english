@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { UnauthorizedError } from "@/core/errors";
 import { getContainer } from "@/server/container";
-import { fakeAuth, fakeAttempts, fakeLeaderboard, fakeCredits, fakePoints, fakeProgress, fakePromptRepo, fakeReferences } from "@/test/fakes";
+import { fakeAuth, fakeAttempts, fakeDictionaryCache, fakeDictionaryProvider, fakeSavedWords, fakeTranslator, fakeLeaderboard, fakeCredits, fakePoints, fakeProgress, fakePromptRepo, fakeReferences } from "@/test/fakes";
 
 import { GET } from "./route";
 
@@ -28,6 +28,10 @@ beforeEach(() => {
     points: fakePoints(),
     references: fakeReferences(),
     suggester: { suggest: vi.fn() },
+    dictionary: fakeDictionaryProvider(),
+    dictionaryCache: fakeDictionaryCache(),
+    savedWords: fakeSavedWords(),
+    translator: fakeTranslator(),
     attempts: fakeAttempts(),
     leaderboard: fakeLeaderboard(),
   });

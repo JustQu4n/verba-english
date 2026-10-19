@@ -176,6 +176,19 @@ describe("gradeSentence", () => {
     expect(d.credits.spend).toHaveBeenCalledTimes(1);
   });
 
+  it("AIG-AC-31: a failing shared cache does not stop grading", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const cache = {
+      get: vi.fn().mockRejectedValue(new InfrastructureError("cache down")),
+      set: vi.fn().mockRejectedValue(new InfrastructureError("cache down")),
+    };
+    const d = deps({ cache });
+    const result = await gradeSentence(d, { promptId: ID, answer: "I want to the beach" }, "vi");
+    expect(result.grade).toEqual(sampleGrade());
+    expect(d.grader.grade).toHaveBeenCalledTimes(1);
+    expect(d.credits.spend).toHaveBeenCalledTimes(1);
+  });
+
   it("AIG-AC-08: a different answer is graded again", async () => {
     const d = deps();
     await gradeSentence(d, { promptId: ID, answer: "I want to the beach" }, "vi");

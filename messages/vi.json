@@ -79,7 +79,9 @@
     "dashboardHint": "Luyện tập và tiến độ của bạn",
     "leaderboardHint": "Xem top 10 người học",
     "profile": "Hồ sơ",
-    "profileHint": "Thông tin, xếp hạng và các lần làm bài"
+    "profileHint": "Thông tin, xếp hạng và các lần làm bài",
+    "vocabulary": "Từ vựng của tôi",
+    "vocabularyHint": "Các từ bạn đã lưu để ôn lại"
   },
   "Profile": {
     "anonymous": "Người dùng"
@@ -624,5 +626,51 @@
     "empty": "Chưa có ai trên bảng",
     "emptyBody": "Làm đúng một câu và bạn sẽ là người đầu tiên.",
     "startPractice": "Bắt đầu luyện tập"
+  },
+  "Dictionary": {
+    "popupLabel": "Từ điển: {word}",
+    "lookingUp": "Đang tra…",
+    "vietnamese": "Nghĩa tiếng Việt",
+    "noVietnamese": "Chưa có nghĩa tiếng Việt. Đang hiện định nghĩa từ từ điển.",
+    "example": "Ví dụ",
+    "notFound": "“{word}” không có trong từ điển.",
+    "unavailable": "Từ điển đang không dùng được. Hãy thử lại sau.",
+    "unauthorized": "Hãy đăng nhập lại để tra từ.",
+    "retry": "Thử lại",
+    "save": "Lưu từ",
+    "saved": "Đã lưu",
+    "saving": "Đang lưu…",
+    "saveError": "Chưa cập nhật được từ đã lưu. Hãy thử lại.",
+    "listen": "Nghe phát âm “{word}”",
+    "close": "Đóng",
+    "notFoundHint": "Bạn vẫn có thể lưu từ này và thêm nghĩa sau ở Từ vựng của tôi."
+  },
+  "Vocabulary": {
+    "title": "Từ vựng của tôi",
+    "intro": "Những từ bạn đã lưu khi luyện viết, mới nhất trước.",
+    "back": "Về dashboard",
+    "count": "{count} từ",
+    "empty": "Chưa lưu từ nào",
+    "emptyBody": "Bôi đen một từ trong câu trả lời hoặc phản hồi của AI rồi chọn Lưu từ, hoặc nhập từ ở ô trên.",
+    "startPractice": "Bắt đầu luyện viết",
+    "remove": "Bỏ lưu {word}",
+    "removeError": "Chưa bỏ lưu được. Hãy thử lại.",
+    "showMore": "Xem thêm",
+    "showLess": "Thu gọn",
+    "addLabel": "Thêm từ",
+    "addPlaceholder": "Nhập một từ hoặc cụm từ tiếng Anh",
+    "addHelp": "AI viết nghĩa và lưu từ giúp bạn. {cost}.",
+    "cost": "Tốn {count} credit",
+    "translate": "AI dịch nghĩa",
+    "translating": "Đang dịch…",
+    "added": "Đã lưu “{word}” kèm nghĩa.",
+    "noMeaning": "Chưa có nghĩa. Hãy để AI viết giúp bạn.",
+    "translateErrors": {
+      "invalid_word": "Hãy nhập một từ hoặc cụm từ tiếng Anh ngắn, không có số hay ký hiệu.",
+      "no_credits": "Bạn đã hết credit.",
+      "cannot_translate": "AI không tìm được nghĩa cho văn bản này. Hãy kiểm tra chính tả. Không tốn credit.",
+      "unauthorized": "Hãy đăng nhập lại để tiếp tục.",
+      "unavailable": "AI đang không dùng được. Không tốn credit. Hãy thử lại."
+    }
   }
 }
