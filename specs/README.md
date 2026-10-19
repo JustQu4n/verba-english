@@ -27,5 +27,6 @@ Mẫu ở `_templates/`. Nguyên tắc ở [constitution.md](./constitution.md).
 | [019-admin-console](./019-admin-console/spec.md) | Bảng điều khiển Admin: menu trái, tổng quan, quản lý tài khoản, bảng xếp hạng có phân trang | `ADM` |
 | [020-dictionary](./020-dictionary/spec.md) | Popup từ điển khi bôi đen từ, cache, lưu từ vựng để ôn lại | `DIC` |
 | [021-caching](./021-caching/spec.md) | Cache dùng chung: chấm AI, từ điển, top bảng xếp hạng, số câu theo chủ đề | `CHE` |
+| [022-custom-background](./022-custom-background/spec.md) | Màu nhấn tùy chỉnh theo tài khoản: chọn màu đậm có sẵn thay cho màu đen của các khối đậm | `BGC` |
 
 Kiểm tra mọi AC đều có test: `npm run specs:check`.

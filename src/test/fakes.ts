@@ -132,7 +132,7 @@ export function fakeLeaderboard(
 }
 
 export function sampleProfile(overrides: Partial<Profile> = {}): Profile {
-  return { id: "u1", fullName: "Alex Lee", avatarUrl: null, createdAt: new Date("2026-01-01T00:00:00.000Z"), ...overrides };
+  return { id: "u1", fullName: "Alex Lee", avatarUrl: null, accentColor: null, createdAt: new Date("2026-01-01T00:00:00.000Z"), ...overrides };
 }
 
 /** Fake ProfileRepository: `update` returns the profile with the patch applied. */

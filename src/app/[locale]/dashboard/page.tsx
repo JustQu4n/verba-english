@@ -53,13 +53,13 @@ export default async function DashboardPage({ params }: PageProps<"/[locale]/das
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
           <Link
             href="/dashboard/writing/sentence"
-            className="group flex min-h-48 flex-col justify-between rounded-2xl bg-foreground p-6 text-background transition-transform hover:-translate-y-0.5 focus-visible:outline-offset-4 sm:p-8"
+            className="group flex min-h-48 flex-col justify-between rounded-2xl bg-solid p-6 text-on-solid transition-transform hover:-translate-y-0.5 focus-visible:outline-offset-4 sm:p-8"
           >
             <span className="flex items-start justify-between gap-4">
               <span className="text-3xl font-extrabold tracking-tighter italic">{t("sentenceTitle")}</span>
               <ArrowUpRight className="size-6 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
             </span>
-            <span className="max-w-xs text-base/relaxed text-background/75">{t("sentenceBody")}</span>
+            <span className="max-w-xs text-base/relaxed text-on-solid/75">{t("sentenceBody")}</span>
           </Link>
 
           <div

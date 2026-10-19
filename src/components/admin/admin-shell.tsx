@@ -19,7 +19,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
     <div className="theme-mono min-h-screen bg-background text-foreground lg:grid lg:grid-cols-[16.5rem_minmax(0,1fr)]">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-foreground focus:px-3 focus:py-2 focus:text-sm focus:text-background"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-solid focus:px-3 focus:py-2 focus:text-sm focus:text-on-solid"
       >
         {t("skipToContent")}
       </a>
@@ -37,7 +37,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
             <div className="flex items-center gap-2 lg:hidden">
               <AdminMobileNav />
               <Logo className="text-base" />
-              <span className="hidden rounded-md bg-foreground px-2 py-0.5 text-xs font-semibold text-background min-[480px]:inline">{t("badge")}</span>
+              <span className="hidden rounded-md bg-solid px-2 py-0.5 text-xs font-semibold text-on-solid min-[480px]:inline">{t("badge")}</span>
             </div>
             <div className="hidden lg:block" />
             <div className="flex items-center gap-1 sm:gap-3">

@@ -25,7 +25,7 @@ src/
     domain/                  entities, value objects — import nothing but TS
     application/             use cases + ports (interfaces) + zod schemas — knows nothing of Next/Supabase
     infrastructure/          implements ports with Supabase (SupabaseXxxRepository)
-  infrastructure/supabase/   client/server/admin/proxy/env — shared infrastructure
+  infrastructure/supabase/   server/admin/proxy/env — shared infrastructure
   server/container.ts        composition root: wires port ↔ implementation (the only one)
   lib/http.ts, action-error.ts   presentation helpers: AppError → HTTP status / form message
   app/                       presentation: pages, route.ts, Server Actions — THIN, only call use cases

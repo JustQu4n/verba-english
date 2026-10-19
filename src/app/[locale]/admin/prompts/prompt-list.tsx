@@ -215,7 +215,7 @@ function StatusBadge({ published, label }: { published: boolean; label: string }
     <span
       className={
         published
-          ? "inline-block rounded-full bg-foreground px-2.5 py-0.5 text-xs font-medium whitespace-nowrap text-background"
+          ? "inline-block rounded-full bg-solid px-2.5 py-0.5 text-xs font-medium whitespace-nowrap text-on-solid"
           : "inline-block rounded-full border px-2.5 py-0.5 text-xs font-medium whitespace-nowrap"
       }
     >

@@ -208,7 +208,7 @@ export function RoleBadge({ role, label }: { role: UserAccount["role"]; label: s
     <span
       className={
         role === "admin"
-          ? "inline-block rounded-full bg-foreground px-2.5 py-0.5 text-xs font-medium whitespace-nowrap text-background"
+          ? "inline-block rounded-full bg-solid px-2.5 py-0.5 text-xs font-medium whitespace-nowrap text-on-solid"
           : "inline-block rounded-full border px-2.5 py-0.5 text-xs font-medium whitespace-nowrap"
       }
     >
@@ -225,7 +225,7 @@ function RankBadge({ rank, label }: { rank: number | null; label: string }) {
       aria-label={label}
       className={
         rank <= 3
-          ? "inline-flex size-8 items-center justify-center rounded-full bg-foreground text-sm font-bold tabular-nums text-background"
+          ? "inline-flex size-8 items-center justify-center rounded-full bg-solid text-sm font-bold tabular-nums text-on-solid"
           : "inline-flex size-8 items-center justify-center rounded-full border text-sm font-semibold tabular-nums"
       }
     >

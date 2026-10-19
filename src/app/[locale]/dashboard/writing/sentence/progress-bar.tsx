@@ -21,7 +21,7 @@ export function ProgressBar({ progress }: { progress: SentenceProgress }) {
         className="mt-2 h-1.5 overflow-hidden rounded-full bg-muted"
       >
         <div
-          className="h-full rounded-full bg-foreground transition-[width] duration-500 motion-reduce:transition-none"
+          className="h-full rounded-full bg-solid transition-[width] duration-500 motion-reduce:transition-none"
           style={{ width: `${percent}%` }}
         />
       </div>

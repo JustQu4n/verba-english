@@ -11,7 +11,6 @@ import {
 } from "@/core/errors";
 import { gradeSentence } from "@/modules/writing/application/grade-sentence";
 import { getAllLevelsProgress } from "@/modules/writing/application/get-all-levels-progress";
-import { getSentenceProgress } from "@/modules/writing/application/get-sentence-progress";
 import { getNextSentence } from "@/modules/writing/application/get-next-sentence";
 import type { SentencePrompt } from "@/modules/writing/domain/sentence-catalog";
 import { FEEDBACK_LANGUAGE, type SentenceGrade } from "@/modules/writing/domain/sentence-grade";
@@ -38,23 +37,6 @@ export async function nextSentence(input: unknown): Promise<NextSentenceResult> 
     unstable_rethrow(error);
     console.error(error);
     return { status: "error", reason: "unknown" };
-  }
-}
-
-export type SentenceProgressResult =
-  | { status: "ok"; progress: SentenceProgress }
-  | { status: "error" };
-
-/** Progress of the signed-in user in one level and category (for the choose screen). */
-export async function sentenceProgress(input: unknown): Promise<SentenceProgressResult> {
-  try {
-    const { auth, sentencePrompts, sentenceProgress: store } = await getContainer();
-    return { status: "ok", progress: await getSentenceProgress({ auth, prompts: sentencePrompts, progress: store }, input) };
-  } catch (error) {
-    unstable_rethrow(error);
-    // The bar is a nicety: a failure just hides it.
-    if (!(error instanceof UnauthorizedError || error instanceof ValidationError)) console.error(error);
-    return { status: "error" };
   }
 }
 

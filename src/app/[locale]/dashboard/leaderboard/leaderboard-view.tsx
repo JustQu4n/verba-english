@@ -63,7 +63,7 @@ export async function Board({ board }: { board: Leaderboard }) {
               <span className="min-w-0 flex-1 truncate font-semibold">
                 {entry.name ?? tProfile("anonymous")}
                 {entry.isMe && (
-                  <span className="ml-2 rounded-full bg-foreground px-2 py-0.5 align-middle text-[0.65rem] font-bold text-background">{t("you")}</span>
+                  <span className="ml-2 rounded-full bg-solid px-2 py-0.5 align-middle text-[0.65rem] font-bold text-on-solid">{t("you")}</span>
                 )}
               </span>
               <span className="shrink-0 text-sm font-medium tabular-nums">{t("points", { count: entry.points })}</span>

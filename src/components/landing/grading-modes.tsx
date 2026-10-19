@@ -9,7 +9,7 @@ function ModeToggle({ ai, reference, active }: { ai: string; reference: string; 
     <span
       className={cn(
         "rounded-full px-4 py-1.5 text-sm font-medium",
-        active === key ? "bg-foreground text-background" : "text-muted-foreground"
+        active === key ? "bg-solid text-on-solid" : "text-muted-foreground"
       )}
     >
       {label}
@@ -51,7 +51,7 @@ export function GradingModes() {
                 {[1, 2].map((n) => (
                   <li key={n} className="flex items-start gap-3">
                     <span
-                      className={cn("mt-0.5 grid size-5 shrink-0 place-items-center rounded-full", dark ? "bg-inverse-foreground text-inverse" : "bg-foreground text-background")}
+                      className={cn("mt-0.5 grid size-5 shrink-0 place-items-center rounded-full", dark ? "bg-inverse-foreground text-inverse" : "bg-solid text-on-solid")}
                     >
                       <Check className="size-3.5" aria-hidden="true" />
                     </span>

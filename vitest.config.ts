@@ -19,6 +19,7 @@ export default defineConfig({
         "src/lib/landing-cta.ts",
         "src/lib/profile-display.ts",
         "src/lib/form-errors.ts",
+        "src/lib/theme.ts",
         "src/lib/auth-form.ts",
         "src/lib/prompt-form.ts",
         "src/i18n/locale-path.ts",

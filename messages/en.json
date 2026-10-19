@@ -139,6 +139,52 @@
         "unavailable": "Could not save the name. Please try again in a moment.",
         "unknown": "Something went wrong. Please try again."
       }
+    },
+    "appearance": {
+      "title": "Appearance",
+      "hint": "Pick the colour of the dark blocks: stats bars, highlight cards, buttons and badges. The page background and text stay as they are.",
+      "palette": "Dark block colour",
+      "default": "Black (default)",
+      "saved": "Colour saved.",
+      "resetDone": "Back to the default black.",
+      "presets": {
+        "navy": "Navy",
+        "indigo": "Indigo",
+        "teal": "Teal",
+        "forest": "Forest",
+        "plum": "Plum",
+        "burgundy": "Burgundy",
+        "brick": "Brick",
+        "espresso": "Espresso",
+        "slate": "Slate",
+        "blue": "Blue",
+        "sky": "Sky",
+        "jade": "Jade",
+        "green": "Green",
+        "violet": "Violet",
+        "magenta": "Magenta",
+        "coral": "Coral",
+        "amber": "Amber",
+        "steel": "Steel",
+        "mintLight": "Mint",
+        "skyLight": "Pale sky",
+        "lavenderLight": "Lavender",
+        "roseLight": "Blush",
+        "peach": "Peach",
+        "butter": "Butter",
+        "sand": "Sand",
+        "aqua": "Aqua",
+        "silver": "Silver"
+      },
+      "errors": {
+        "invalid_color": "That colour is not valid.",
+        "unauthorized": "Your session has expired. Please sign in again.",
+        "unavailable": "Could not save the colour. Please try again in a few minutes.",
+        "unknown": "Something went wrong. Please try again."
+      },
+      "deepGroup": "Deep",
+      "mediumGroup": "Medium",
+      "lightGroup": "Light"
     }
   },
   "Login": {

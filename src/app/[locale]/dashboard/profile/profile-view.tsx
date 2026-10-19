@@ -15,6 +15,7 @@ import type { AttemptRecord } from "@/modules/writing/domain/attempt";
 import { getContainer } from "@/server/container";
 
 import { AttemptCard } from "../writing/sentence/history/attempt-card";
+import { AppearanceForm } from "./appearance-form";
 import { AvatarEditor } from "./avatar-editor";
 import { NameForm } from "./name-form";
 
@@ -61,6 +62,7 @@ export async function ProfileView() {
         display,
         fullName: me.profile?.fullName?.trim() ?? "",
         joinedAt: me.profile?.createdAt ?? null,
+        accentColor: me.profile?.accentColor ?? null,
         points: totalPoints,
         credits: balance,
         attemptsTotal: recent.total,
@@ -75,6 +77,8 @@ export interface ProfileData {
   display: DisplayProfile;
   fullName: string;
   joinedAt: Date | null;
+  /** The saved accent colour (#rrggbb) or null for the default black. */
+  accentColor: string | null;
   points: number | null;
   credits: number | null;
   attemptsTotal: number;
@@ -154,6 +158,15 @@ export async function ProfileContent({ data }: { data: ProfileData }) {
               <p className="mt-1 text-muted-foreground">{joined ?? "–"}</p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="appearance-title">
+        <h2 id="appearance-title" className="text-xl font-bold tracking-tight">
+          {t("appearance.title")}
+        </h2>
+        <div className="mt-3 rounded-2xl border p-5">
+          <AppearanceForm initialColor={data.accentColor} />
         </div>
       </section>
 

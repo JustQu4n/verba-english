@@ -51,7 +51,7 @@ export function SentenceFeedback({ feedback, answer }: SentenceFeedbackProps) {
             <p
               className={cn(
                 "inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold",
-                feedback.grade.correct ? "bg-foreground text-background" : "border-2 border-foreground"
+                feedback.grade.correct ? "bg-solid text-on-solid" : "border-2 border-foreground"
               )}
             >
               {feedback.grade.correct ? (

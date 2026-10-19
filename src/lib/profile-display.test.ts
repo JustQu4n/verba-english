@@ -9,6 +9,7 @@ const profile = (over: Partial<Profile> = {}): Profile => ({
   id: "u1",
   fullName: "Lê Quốc",
   avatarUrl: "https://lh3.googleusercontent.com/a/abc",
+  accentColor: null,
   createdAt: new Date("2026-01-01"),
   ...over,
 });
