@@ -139,6 +139,52 @@
         "unavailable": "Không lưu được tên. Hãy thử lại sau ít phút.",
         "unknown": "Có lỗi xảy ra. Vui lòng thử lại."
       }
+    },
+    "appearance": {
+      "title": "Giao diện",
+      "hint": "Chọn màu cho các khối đậm: thanh số liệu, thẻ nổi bật, nút và huy hiệu. Nền trang và chữ giữ nguyên.",
+      "palette": "Màu khối đậm",
+      "default": "Đen (mặc định)",
+      "saved": "Đã lưu màu.",
+      "resetDone": "Đã về màu đen mặc định.",
+      "presets": {
+        "navy": "Xanh navy",
+        "indigo": "Chàm",
+        "teal": "Xanh lục bảo",
+        "forest": "Xanh rừng",
+        "plum": "Tím mận",
+        "burgundy": "Đỏ rượu",
+        "brick": "Đỏ gạch",
+        "espresso": "Nâu cà phê",
+        "slate": "Xám đen",
+        "blue": "Xanh dương",
+        "sky": "Xanh da trời",
+        "jade": "Ngọc",
+        "green": "Xanh lá",
+        "violet": "Tím",
+        "magenta": "Hồng tím",
+        "coral": "Cam đỏ",
+        "amber": "Hổ phách",
+        "steel": "Xám xanh",
+        "mintLight": "Bạc hà",
+        "skyLight": "Trời nhạt",
+        "lavenderLight": "Oải hương",
+        "roseLight": "Hồng phấn",
+        "peach": "Đào",
+        "butter": "Vàng bơ",
+        "sand": "Cát",
+        "aqua": "Ngọc nhạt",
+        "silver": "Bạc"
+      },
+      "errors": {
+        "invalid_color": "Màu không hợp lệ.",
+        "unauthorized": "Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại.",
+        "unavailable": "Không lưu được màu. Hãy thử lại sau ít phút.",
+        "unknown": "Có lỗi xảy ra. Vui lòng thử lại."
+      },
+      "deepGroup": "Đậm",
+      "mediumGroup": "Vừa",
+      "lightGroup": "Nhạt"
     }
   },
   "Login": {

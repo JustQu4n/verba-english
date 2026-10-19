@@ -98,7 +98,7 @@ export function PromptForm({ action, initial = EMPTY_PROMPT, mode }: PromptFormP
           {LEVELS.map((level) => (
             <label
               key={level}
-              className="flex cursor-pointer items-center justify-center rounded-md border px-3 py-2 text-sm font-medium transition-colors hover:border-foreground has-[:checked]:border-foreground has-[:checked]:bg-foreground has-[:checked]:text-background has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2"
+              className="flex cursor-pointer items-center justify-center rounded-md border px-3 py-2 text-sm font-medium transition-colors hover:border-foreground has-[:checked]:border-foreground has-[:checked]:bg-solid has-[:checked]:text-on-solid has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2"
             >
               <input
                 type="radio"

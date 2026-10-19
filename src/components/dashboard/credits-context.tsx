@@ -54,7 +54,7 @@ export function HeaderCredits({ className }: { className?: string }) {
     <p
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full border px-2 py-1 text-sm font-medium tabular-nums sm:px-3",
-        credits === 0 && "border-foreground bg-foreground text-background",
+        credits === 0 && "border-transparent bg-solid text-on-solid",
         className
       )}
     >

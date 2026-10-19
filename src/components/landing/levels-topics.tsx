@@ -41,7 +41,7 @@ export function LevelsTopics() {
           return (
             <li
               key={category}
-              className="inline-flex items-center gap-2 rounded-full border bg-background px-4 py-2 text-sm font-medium transition-colors hover:border-foreground hover:bg-foreground hover:text-background"
+              className="inline-flex items-center gap-2 rounded-full border bg-background px-4 py-2 text-sm font-medium transition-colors hover:border-foreground hover:bg-solid hover:text-on-solid"
             >
               <Icon className="size-4" strokeWidth={1.75} aria-hidden="true" />
               {tSentence(`categories.${category}`)}

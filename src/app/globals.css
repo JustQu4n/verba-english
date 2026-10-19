@@ -108,11 +108,41 @@
   --inverse-foreground: #fafafa;
 }
 
+/*
+ * Accent colour chosen by the learner (spec 022): the colour of the dark blocks, solid buttons and solid fills, in both
+ * the light and the dark theme. <html> carries `data-accent` and the colour in `--user-accent` (set before first paint,
+ * see THEME_INIT_SCRIPT). The page background and the normal text keep the light/dark theme. `--solid` is the fill of
+ * small solid elements (badges, progress bar, selected cards and chips) and `--on-solid` the text on it: the ink colours
+ * by default, the accent with white text (near-black text on a light accent) once one is chosen.
+ */
+:root {
+  --solid: var(--foreground);
+  --on-solid: var(--background);
+}
+
+:root[data-accent]:has(.theme-mono) {
+  --inverse: var(--user-accent);
+  --inverse-foreground: #ffffff;
+  --primary: var(--user-accent);
+  --primary-foreground: #ffffff;
+  --solid: var(--user-accent);
+  --on-solid: #ffffff;
+}
+
+/* A light accent (pastel) needs near-black text on it instead of white. */
+:root[data-accent-tone="light"]:has(.theme-mono) {
+  --inverse-foreground: #0a0a0a;
+  --primary-foreground: #0a0a0a;
+  --on-solid: #0a0a0a;
+}
+
 @theme inline {
   --font-sans: "Be Vietnam Pro", ui-sans-serif, system-ui, sans-serif;
   --font-hand: "Caveat Variable", "Segoe Print", "Bradley Hand", cursive;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-solid: var(--solid);
+  --color-on-solid: var(--on-solid);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);

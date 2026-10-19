@@ -19,7 +19,7 @@ export async function LearnerAvatar({ entry, className }: { entry: LeaderboardEn
 
 // `place` is the index in the ranking (0 = first). SLOT is indexed by place.
 const SLOT = [
-  { place: 0, plinth: "h-28 sm:h-36", avatar: "size-16 sm:size-24", tone: "bg-foreground text-background" },
+  { place: 0, plinth: "h-28 sm:h-36", avatar: "size-16 sm:size-24", tone: "bg-solid text-on-solid" },
   { place: 1, plinth: "h-20 sm:h-24", avatar: "size-12 sm:size-20", tone: "bg-muted text-foreground" },
   { place: 2, plinth: "h-14 sm:h-16", avatar: "size-12 sm:size-20", tone: "bg-muted text-foreground" },
 ] as const;
@@ -46,7 +46,7 @@ export async function Podium({ entries }: { entries: LeaderboardEntry[] }) {
               {entry.name ?? tProfile("anonymous")}
             </p>
             {entry.isMe && (
-              <span className="mt-1 rounded-full bg-foreground px-2 py-0.5 text-[0.65rem] font-bold text-background">{t("you")}</span>
+              <span className="mt-1 rounded-full bg-solid px-2 py-0.5 text-[0.65rem] font-bold text-on-solid">{t("you")}</span>
             )}
             <p className="mt-1 text-xs tabular-nums text-muted-foreground sm:text-sm">{t("points", { count: entry.points })}</p>
             <div

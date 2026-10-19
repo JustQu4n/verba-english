@@ -4,6 +4,7 @@ import type { Profile } from "@/modules/profile/domain/profile";
 export interface ProfilePatch {
   fullName?: string;
   avatarUrl?: string | null;
+  accentColor?: string | null;
 }
 
 export interface ProfileRepository {

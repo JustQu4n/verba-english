@@ -1,5 +1,6 @@
 "use client";
 
+import { storeAccent } from "@/lib/appearance";
 import { useRef, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { BookMarked, ChevronDown, ChevronRight, LayoutDashboard, LogOut, Trophy, UserRound } from "lucide-react";
@@ -78,7 +79,11 @@ export function UserMenu({ profile }: { profile: DisplayProfile }) {
             <MenuLink href="/dashboard/leaderboard" icon={<Trophy />} title={t("UserMenu.leaderboard")} hint={t("UserMenu.leaderboardHint")} />
           </div>
           <DropdownMenuSeparator className="my-2" />
-          <DropdownMenuItem onSelect={() => formRef.current?.requestSubmit()} className={ROW}>
+          <DropdownMenuItem onSelect={() => {
+              // The next person on this browser must not inherit this account's accent colour.
+              storeAccent(null);
+              formRef.current?.requestSubmit();
+            }} className={ROW}>
             <span className={CHIP}>
               <LogOut />
             </span>

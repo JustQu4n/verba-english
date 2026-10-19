@@ -6,12 +6,13 @@ import { unstable_rethrow } from "next/navigation";
 import { ForbiddenError, InfrastructureError, NotFoundError, UnauthorizedError, ValidationError } from "@/core/errors";
 import { MAX_AVATAR_BYTES } from "@/modules/profile/domain/avatar";
 import { removeMyAvatar, uploadMyAvatar } from "@/modules/profile/application/change-my-avatar";
+import { updateMyAccent } from "@/modules/profile/application/update-my-accent";
 import { updateMyName } from "@/modules/profile/application/update-my-profile";
 import { LEADERBOARD_TAG } from "@/server/cached-sources";
 import { getContainer } from "@/server/container";
 
 export type ProfileActionResult =
-  | { status: "ok"; avatarUrl?: string | null; fullName?: string | null }
+  | { status: "ok"; avatarUrl?: string | null; fullName?: string | null; accentColor?: string | null }
   | { status: "error"; code: string };
 
 /** The first validation message is a stable code the screen translates; anything unexpected becomes "unknown". */
@@ -66,6 +67,17 @@ export async function removeAvatarAction(): Promise<ProfileActionResult> {
     const profile = await removeMyAvatar({ auth, profiles, avatars });
     refreshEverywhere();
     return { status: "ok", avatarUrl: profile.avatarUrl };
+  } catch (error) {
+    return { status: "error", code: toErrorCode(error) };
+  }
+}
+
+/** Saves the accent colour (one of the offered #rrggbb colours), or null for the default black. Only this learner sees it, so no shared cache is refreshed. */
+export async function updateAccentAction(color: string | null): Promise<ProfileActionResult> {
+  try {
+    const { auth, profiles } = await getContainer();
+    const profile = await updateMyAccent({ auth, profiles }, { color });
+    return { status: "ok", accentColor: profile.accentColor };
   } catch (error) {
     return { status: "error", code: toErrorCode(error) };
   }

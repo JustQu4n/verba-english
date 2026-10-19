@@ -12,6 +12,7 @@ const profile: Profile = {
   id: "u1",
   fullName: "Alex Lee",
   avatarUrl: null,
+  accentColor: null,
   createdAt: new Date("2026-01-01"),
 };
 

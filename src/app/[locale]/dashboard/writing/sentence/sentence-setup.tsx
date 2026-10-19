@@ -88,7 +88,7 @@ export function SentenceSetup({
                 <LevelMeter rank={index + 1} />
                 <span className="flex flex-col gap-1.5">
                   <span className="text-lg font-semibold tracking-tight">{t(`levels.${l}.name`)}</span>
-                  <span className={`text-sm/relaxed ${level === l ? "text-background/75" : "text-muted-foreground"}`}>
+                  <span className={`text-sm/relaxed ${level === l ? "text-on-solid/75" : "text-muted-foreground"}`}>
                     {t(`levels.${l}.description`)}
                   </span>
                 </span>

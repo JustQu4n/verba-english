@@ -8,15 +8,17 @@ interface ProfileRow {
   id: string;
   full_name: string | null;
   avatar_url: string | null;
+  accent_color: string | null;
   created_at: string;
 }
 
-const COLUMNS = "id, full_name, avatar_url, created_at";
+const COLUMNS = "id, full_name, avatar_url, accent_color, created_at";
 
 const toProfile = (row: ProfileRow): Profile => ({
   id: row.id,
   fullName: row.full_name,
   avatarUrl: row.avatar_url,
+  accentColor: row.accent_color,
   createdAt: new Date(row.created_at),
 });
 
@@ -42,6 +44,7 @@ export class SupabaseProfileRepository implements ProfileRepository {
     const changes: Record<string, string | null> = {};
     if (patch.fullName !== undefined) changes.full_name = patch.fullName;
     if (patch.avatarUrl !== undefined) changes.avatar_url = patch.avatarUrl;
+    if (patch.accentColor !== undefined) changes.accent_color = patch.accentColor;
 
     // Row level security lets a session change its own row only; no row back means it is not there.
     const { data, error } = await this.client.from("profiles").update(changes).eq("id", id).select(COLUMNS).maybeSingle<ProfileRow>();

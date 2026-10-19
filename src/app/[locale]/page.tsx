@@ -28,7 +28,7 @@ function HomeContent() {
     <div className="theme-mono landing flex min-h-screen flex-col bg-background text-foreground">
       <a
         href="#main"
-        className="sr-only z-50 rounded-md bg-foreground px-4 py-2 text-background focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+        className="sr-only z-50 rounded-md bg-solid px-4 py-2 text-on-solid focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
       >
         {t("skipToContent")}
       </a>

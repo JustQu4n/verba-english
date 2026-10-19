@@ -67,7 +67,7 @@ export function KeywordInput({ id, value, onChange, invalid, describedBy }: Keyw
     >
       <input type="hidden" name="hint" value={submitted} />
       {words.map((word, index) => (
-        <span key={word} className="inline-flex items-center gap-1 rounded-full bg-foreground py-0.5 pl-2.5 pr-1 text-sm text-background">
+        <span key={word} className="inline-flex items-center gap-1 rounded-full bg-solid py-0.5 pl-2.5 pr-1 text-sm text-on-solid">
           <span lang="en">{word}</span>
           <button
             type="button"
@@ -76,7 +76,7 @@ export function KeywordInput({ id, value, onChange, invalid, describedBy }: Keyw
               event.stopPropagation();
               remove(index);
             }}
-            className="inline-flex size-5 items-center justify-center rounded-full hover:bg-background/20 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-background"
+            className="inline-flex size-5 items-center justify-center rounded-full hover:bg-on-solid/20 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-background"
           >
             <X className="size-3" aria-hidden="true" />
           </button>

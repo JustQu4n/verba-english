@@ -17,7 +17,7 @@ function MiniProgress() {
   return (
     <span aria-hidden="true" className="mt-6 flex items-center gap-3">
       <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-foreground/15">
-        <span className="block h-full w-3/5 rounded-full bg-foreground" />
+        <span className="block h-full w-3/5 rounded-full bg-solid" />
       </span>
       <span className="text-xs font-semibold tabular-nums">3/5</span>
     </span>
@@ -39,7 +39,7 @@ export function Features() {
             )}
           >
             <span
-              className={cn("grid size-11 place-items-center rounded-2xl", dark ? "bg-inverse-foreground text-inverse" : "bg-foreground text-background")}
+              className={cn("grid size-11 place-items-center rounded-2xl", dark ? "bg-inverse-foreground text-inverse" : "bg-solid text-on-solid")}
             >
               <Icon className="size-5" aria-hidden="true" />
             </span>

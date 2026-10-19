@@ -19,6 +19,7 @@ describe("SupabaseProfileRepository", () => {
         id: "u1",
         full_name: "Alex Lee",
         avatar_url: null,
+        accent_color: "#0f1b3f",
         created_at: "2026-01-01T00:00:00.000Z",
       },
       error: null,
@@ -32,6 +33,7 @@ describe("SupabaseProfileRepository", () => {
       id: "u1",
       fullName: "Alex Lee",
       avatarUrl: null,
+      accentColor: "#0f1b3f",
       createdAt: new Date("2026-01-01T00:00:00.000Z"),
     });
     expect(profile?.createdAt).toBeInstanceOf(Date);
