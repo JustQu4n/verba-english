@@ -1,5 +1,6 @@
 "use server";
 
+import { updateTag } from "next/cache";
 import { getLocale } from "next-intl/server";
 
 import { ForbiddenError, InfrastructureError, UnauthorizedError, ValidationError } from "@/core/errors";
@@ -11,6 +12,7 @@ import { unstable_rethrow } from "next/navigation";
 import { deletePrompt } from "@/modules/writing/application/delete-prompt";
 import { suggestAnswers } from "@/modules/writing/application/suggest-answers";
 import { updatePrompt } from "@/modules/writing/application/update-prompt";
+import { PROMPTS_TAG } from "@/server/cached-sources";
 import { getContainer } from "@/server/container";
 
 const LIST = "/admin/prompts";
@@ -27,6 +29,7 @@ export async function createPromptAction(_: PromptFormState, formData: FormData)
   } catch (error) {
     return { status: "error", errors: toPromptFormErrors(error), values };
   }
+  updateTag(PROMPTS_TAG);
   return backToList({ saved: "created" });
 }
 
@@ -42,6 +45,7 @@ export async function updatePromptAction(
   } catch (error) {
     return { status: "error", errors: toPromptFormErrors(error), values };
   }
+  updateTag(PROMPTS_TAG);
   return backToList({ saved: "updated" });
 }
 
@@ -52,6 +56,7 @@ export async function deletePromptAction(id: string): Promise<void> {
   } catch (error) {
     return backToList({ error: toPromptFormErrors(error).formError ?? "unknown" });
   }
+  updateTag(PROMPTS_TAG);
   return backToList({ saved: "deleted" });
 }
 

@@ -44,6 +44,7 @@ Người học muốn luyện viết từng câu tiếng Anh: đọc một câu 
 - **WSN-AC-16** `manual` Giao diện đen trắng (nền trắng, chữ đen, thẻ đang chọn nền đen), dùng được ở chiều rộng 390px không cuộn ngang, có viền focus nhìn rõ khi dùng bàn phím, và đủ chữ ở cả Tiếng Việt lẫn English. *Kiểm tra:* thu hẹp cửa sổ, dùng Tab, đổi ngôn ngữ.
 - **WSN-AC-17** `manual` Trong ô nhập, Enter gửi bài, Shift+Enter xuống dòng, Enter khi đang gõ bộ gõ (IME) không gửi; sau khi làm đúng, Enter sang câu tiếp theo; dưới ô nhập có dòng gợi ý phím. *Kiểm tra:* thử từng phím.
 - **WSN-AC-18** `manual` Làm đúng câu cuối cùng của cặp (tiến độ 100%) thì tự chuyển sang trang hoàn thành, không cần bấm Câu sau; làm lại câu đã đúng không kích hoạt lại. *Kiểm tra:* hoàn thành câu cuối của một cặp.
+- **WSN-AC-19** Given câu trả lời chưa đúng đã có phản hồi, when người học bắt đầu sửa ô nhập (nội dung khác với bản đã chấm), then dòng "Suggestion" bị ẩn để họ tự nghĩ lại; khi nội dung trở về đúng bản đã chấm thì hiện lại; các phần phản hồi khác (nhận xét, gợi ý cải thiện) giữ nguyên. Câu trả lời đúng luôn hiện "Suggestion".
 
 ## 6. Ràng buộc phi chức năng & bảo mật
 - Bài viết của người học không được ghi log. Từ spec 015, mỗi lần gửi bài đã chấm được lưu vào cơ sở dữ liệu và chỉ chủ sở hữu đọc được.

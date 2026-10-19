@@ -1,6 +1,7 @@
 import "server-only";
 import { cache } from "react";
 
+import { CachedLeaderboardSource, CachedPromptSource } from "@/server/cached-sources";
 import { createClient } from "@/infrastructure/supabase/server";
 import type { RoleReader } from "@/modules/admin/application/role-reader";
 import type { UserDirectory } from "@/modules/admin/application/user-directory";
@@ -11,6 +12,11 @@ import { SupabaseAuthService } from "@/modules/auth/infrastructure/supabase-auth
 import type { CreditStore } from "@/modules/credits/application/credit-store";
 import { createAdminClient } from "@/infrastructure/supabase/admin";
 import { SupabaseCreditStore } from "@/modules/credits/infrastructure/supabase-credit-store";
+import type { DictionaryCache, DictionaryProvider, SavedWordStore, WordTranslator } from "@/modules/dictionary/application/ports";
+import { GeminiWordTranslator } from "@/modules/dictionary/infrastructure/gemini-word-translator";
+import { HttpDictionaryProvider } from "@/modules/dictionary/infrastructure/http-dictionary-provider";
+import { SupabaseDictionaryCache } from "@/modules/dictionary/infrastructure/supabase-dictionary-cache";
+import { SupabaseSavedWordStore } from "@/modules/dictionary/infrastructure/supabase-saved-word-store";
 import type { LeaderboardSource } from "@/modules/leaderboard/application/leaderboard-source";
 import { SupabaseLeaderboardSource } from "@/modules/leaderboard/infrastructure/supabase-leaderboard-source";
 import type { PointsStore } from "@/modules/points/application/points-store";
@@ -32,6 +38,8 @@ import { SupabaseReferenceAnswerSource } from "@/modules/writing/infrastructure/
 import { GeminiSentenceGrader } from "@/modules/writing/infrastructure/gemini-sentence-grader";
 import { SupabaseAttemptStore } from "@/modules/writing/infrastructure/supabase-attempt-store";
 import { SupabaseSentenceProgressStore } from "@/modules/writing/infrastructure/supabase-sentence-progress-store";
+import { LayeredGradeCache } from "@/modules/writing/infrastructure/layered-grade-cache";
+import { SupabaseGradeCache } from "@/modules/writing/infrastructure/supabase-grade-cache";
 import { MemoryGradeCache } from "@/modules/writing/infrastructure/memory-grade-cache";
 import { SupabasePromptRepository } from "@/modules/writing/infrastructure/supabase-prompt-repository";
 import { SupabaseSentencePromptSource } from "@/modules/writing/infrastructure/supabase-sentence-prompt-source";
@@ -40,6 +48,8 @@ import { SupabaseSentencePromptSource } from "@/modules/writing/infrastructure/s
 const DEFAULT_GEMINI_MODEL = "gemini-3.5-flash-lite";
 /** Lowest thinking level this model accepts. Other models may need "low" (GEMINI_THINKING_LEVEL). */
 const DEFAULT_THINKING_LEVEL = "minimal";
+/** Dictionary service; override with DICTIONARY_API_URL. */
+const DEFAULT_DICTIONARY_URL = "https://dict.minhqnd.com";
 
 /** Presentation only sees the ports, not the concrete Supabase classes. */
 export interface Container {
@@ -69,10 +79,18 @@ export interface Container {
   leaderboard: LeaderboardSource;
   /** Every graded attempt, written by trusted server code. */
   attempts: AttemptStore;
+  /** The dictionary service behind the popup. */
+  dictionary: DictionaryProvider;
+  /** Lookups kept server side so the dictionary service is called once per word. */
+  dictionaryCache: DictionaryCache;
+  /** Words the learner saved to review later. */
+  savedWords: SavedWordStore;
+  /** AI meaning for a saved word, paid with credits. */
+  translator: WordTranslator;
 }
 
-// Module level on purpose: the container is rebuilt per request, the cache must outlive it.
-const gradeCache = new MemoryGradeCache();
+// Module level on purpose: the container is rebuilt per request, the in-memory layer must outlive it.
+const memoryGrades = new MemoryGradeCache();
 
 /**
  * Composition root: the ONLY place that wires ports to concrete implementations.
@@ -92,17 +110,23 @@ export const getContainer = cache(async (): Promise<Container> => {
     roles: new SupabaseRoleReader(supabase),
     users: new SupabaseUserDirectory(createAdminClient),
     prompts: new SupabasePromptRepository(supabase),
-    sentencePrompts: new SupabaseSentencePromptSource(supabase),
+    sentencePrompts: new CachedPromptSource(new SupabaseSentencePromptSource(supabase)),
     credits: new SupabaseCreditStore(supabase),
     grader: new GeminiSentenceGrader(gemini),
     suggester: new GeminiAnswerSuggester(gemini),
     // Learners cannot read prompt_answers, so the answers are read with the service role by server code only.
     references: new SupabaseReferenceAnswerSource(createAdminClient),
-    gradeCache,
+    // Memory first (this instance), then the shared table (every instance).
+    gradeCache: new LayeredGradeCache(memoryGrades, new SupabaseGradeCache(createAdminClient)),
     // Completions award points, so they are written by trusted server code with the service role, never by the user's session.
     sentenceProgress: new SupabaseSentenceProgressStore(supabase, createAdminClient),
     points: new SupabasePointsStore(supabase),
-    leaderboard: new SupabaseLeaderboardSource(createAdminClient),
+    leaderboard: new CachedLeaderboardSource(new SupabaseLeaderboardSource(createAdminClient)),
     attempts: new SupabaseAttemptStore(supabase, createAdminClient),
+    dictionary: new HttpDictionaryProvider(process.env.DICTIONARY_API_URL || DEFAULT_DICTIONARY_URL),
+    // The cache table has no learner policy, so only the service role reads it.
+    dictionaryCache: new SupabaseDictionaryCache(createAdminClient),
+    savedWords: new SupabaseSavedWordStore(supabase),
+    translator: new GeminiWordTranslator(gemini),
   };
 });

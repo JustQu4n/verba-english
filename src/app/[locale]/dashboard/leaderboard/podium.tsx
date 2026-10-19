@@ -17,16 +17,17 @@ export async function LearnerAvatar({ entry, className }: { entry: LeaderboardEn
   );
 }
 
-// Left to right: second, first, third. The middle one stands tallest.
+// `place` is the index in the ranking (0 = first). SLOT is indexed by place.
 const SLOT = [
-  { place: 1, plinth: "h-28 sm:h-36", avatar: "size-16 sm:size-24", tone: "bg-foreground text-background" },
-  { place: 0, plinth: "h-20 sm:h-24", avatar: "size-12 sm:size-20", tone: "bg-muted text-foreground" },
+  { place: 0, plinth: "h-28 sm:h-36", avatar: "size-16 sm:size-24", tone: "bg-foreground text-background" },
+  { place: 1, plinth: "h-20 sm:h-24", avatar: "size-12 sm:size-20", tone: "bg-muted text-foreground" },
   { place: 2, plinth: "h-14 sm:h-16", avatar: "size-12 sm:size-20", tone: "bg-muted text-foreground" },
 ] as const;
 
 /** The first three on a podium. Fewer than three learners simply leave the other stands empty. */
 export async function Podium({ entries }: { entries: LeaderboardEntry[] }) {
   const [t, tProfile] = await Promise.all([getTranslations("Leaderboard"), getTranslations("Profile")]);
+  // Left to right: second, first, third, so the first sits in the middle and stands tallest.
   const order = [SLOT[1], SLOT[0], SLOT[2]];
   return (
     <ol className="mt-10 grid grid-cols-3 items-end gap-2 sm:gap-5" aria-label={t("podium")}>
@@ -39,7 +40,7 @@ export async function Podium({ entries }: { entries: LeaderboardEntry[] }) {
             {first && <Crown className="mb-1 size-6 sm:size-8" aria-hidden="true" />}
             <LearnerAvatar
               entry={entry}
-              className={cn(first ? SLOT[0].avatar : SLOT[1].avatar, "ring-2 ring-offset-2 ring-offset-background", entry.isMe ? "ring-foreground" : "ring-border")}
+              className={cn(slot.avatar, "ring-2 ring-offset-2 ring-offset-background", entry.isMe ? "ring-foreground" : "ring-border")}
             />
             <p className="mt-3 line-clamp-2 w-full break-words text-sm font-semibold leading-tight sm:text-base">
               {entry.name ?? tProfile("anonymous")}
@@ -51,8 +52,8 @@ export async function Podium({ entries }: { entries: LeaderboardEntry[] }) {
             <div
               className={cn(
                 "mt-3 grid w-full place-items-center rounded-t-2xl",
-                first ? SLOT[0].plinth : slot.place === 1 ? SLOT[1].plinth : SLOT[2].plinth,
-                first ? SLOT[0].tone : SLOT[1].tone
+                slot.plinth,
+                slot.tone
               )}
             >
               <span className="display text-4xl sm:text-6xl">{entry.rank}</span>

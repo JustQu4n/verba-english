@@ -79,7 +79,9 @@
     "dashboardHint": "Practice and your progress",
     "leaderboardHint": "See the top 10 learners",
     "profile": "Profile",
-    "profileHint": "Your details, ranking and attempts"
+    "profileHint": "Your details, ranking and attempts",
+    "vocabulary": "Vocabulary",
+    "vocabularyHint": "Words you saved to review"
   },
   "Profile": {
     "anonymous": "User"
@@ -624,5 +626,51 @@
     "empty": "Nobody is on the board yet",
     "emptyBody": "Get a sentence right and you will be the first.",
     "startPractice": "Start practicing"
+  },
+  "Dictionary": {
+    "popupLabel": "Dictionary: {word}",
+    "lookingUp": "Looking up…",
+    "vietnamese": "Vietnamese meaning",
+    "noVietnamese": "No Vietnamese meaning yet. Showing the definition from the dictionary.",
+    "example": "Example",
+    "notFound": "“{word}” is not in the dictionary.",
+    "unavailable": "The dictionary is not available right now.",
+    "unauthorized": "Sign in again to look up words.",
+    "retry": "Try again",
+    "save": "Save word",
+    "saved": "Saved",
+    "saving": "Saving…",
+    "saveError": "Could not update your saved words. Try again.",
+    "listen": "Listen to {word}",
+    "close": "Close",
+    "notFoundHint": "You can still save it. Add its meaning later in My vocabulary."
+  },
+  "Vocabulary": {
+    "title": "My vocabulary",
+    "intro": "Words you saved while practising, newest first.",
+    "back": "Back to dashboard",
+    "count": "{count, plural, one {# word} other {# words}}",
+    "empty": "No saved words yet",
+    "emptyBody": "Select a word in your answer or in the AI feedback and choose Save word, or type one above.",
+    "startPractice": "Start practising",
+    "remove": "Remove {word}",
+    "removeError": "Could not remove the word. Try again.",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "addLabel": "Add a word",
+    "addPlaceholder": "Type an English word or phrase",
+    "addHelp": "The AI writes the meaning and saves the word. {cost}.",
+    "cost": "Costs {count} credit",
+    "translate": "Translate with AI",
+    "translating": "Translating…",
+    "added": "Saved “{word}” with its meaning.",
+    "noMeaning": "No meaning yet. Let the AI write it for you.",
+    "translateErrors": {
+      "invalid_word": "Type one English word or a short phrase, without numbers or symbols.",
+      "no_credits": "You are out of credits.",
+      "cannot_translate": "The AI could not find a meaning for this text. Check the spelling. No credit was used.",
+      "unauthorized": "Sign in again to continue.",
+      "unavailable": "The AI is not available right now. No credit was used. Try again."
+    }
   }
 }

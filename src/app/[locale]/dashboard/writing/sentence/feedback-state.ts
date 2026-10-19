@@ -23,6 +23,15 @@ export function isGradedAnswer(feedback: FeedbackState, answer: string, mode?: G
   );
 }
 
+/**
+ * Whether the suggested answer may be shown next to the feedback. A wrong answer keeps it until the learner starts
+ * editing the box: then the suggestion is hidden, so the next try comes from them and not from copying it.
+ * A correct answer always shows it (the box is locked and there is nothing left to try).
+ */
+export function suggestionVisible(feedback: FeedbackState, answer: string): boolean {
+  return feedback.status === "graded" && (feedback.grade.correct || feedback.answer === normalizeAnswer(answer));
+}
+
 /** The learner may move on only with an answer that was graded correct and has not been edited since. */
 export function hasPassed(feedback: FeedbackState, answer: string): boolean {
   return feedback.status === "graded" && feedback.grade.correct && isGradedAnswer(feedback, answer);

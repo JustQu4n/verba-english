@@ -1,12 +1,13 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { unstable_rethrow } from "next/navigation";
 
 import { ForbiddenError, InfrastructureError, NotFoundError, UnauthorizedError, ValidationError } from "@/core/errors";
 import { MAX_AVATAR_BYTES } from "@/modules/profile/domain/avatar";
 import { removeMyAvatar, uploadMyAvatar } from "@/modules/profile/application/change-my-avatar";
 import { updateMyName } from "@/modules/profile/application/update-my-profile";
+import { LEADERBOARD_TAG } from "@/server/cached-sources";
 import { getContainer } from "@/server/container";
 
 export type ProfileActionResult =
@@ -27,7 +28,11 @@ function toErrorCode(error: unknown): string {
 }
 
 /** The name and picture show in the navbar of every page, so every cached page must be refreshed. */
-const refreshEverywhere = () => revalidatePath("/", "layout");
+const refreshEverywhere = () => {
+  revalidatePath("/", "layout");
+  // The name and picture also show on the leaderboard, which is cached for everyone.
+  updateTag(LEADERBOARD_TAG);
+};
 
 export async function updateNameAction(fullName: string): Promise<ProfileActionResult> {
   try {
