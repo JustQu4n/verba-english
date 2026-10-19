@@ -275,6 +275,8 @@
     "incorrect": "Not quite yet",
     "tryAgain": "Edit your answer and submit again. Each wrong attempt costs 1 credit; a correct answer is free.",
     "feedbackSuggestion": "Suggestion",
+    "diffWrong": "wrong",
+    "diffFix": "fix",
     "feedbackImprovements": "Suggested improvements",
     "feedbackComment": "Comment",
     "gradeErrors": {

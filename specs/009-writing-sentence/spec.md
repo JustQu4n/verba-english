@@ -45,6 +45,7 @@ Người học muốn luyện viết từng câu tiếng Anh: đọc một câu 
 - **WSN-AC-17** `manual` Trong ô nhập, Enter gửi bài, Shift+Enter xuống dòng, Enter khi đang gõ bộ gõ (IME) không gửi; sau khi làm đúng, Enter sang câu tiếp theo; dưới ô nhập có dòng gợi ý phím. *Kiểm tra:* thử từng phím.
 - **WSN-AC-18** `manual` Làm đúng câu cuối cùng của cặp (tiến độ 100%) thì tự chuyển sang trang hoàn thành, không cần bấm Câu sau; làm lại câu đã đúng không kích hoạt lại. *Kiểm tra:* hoàn thành câu cuối của một cặp.
 - **WSN-AC-19** Given câu trả lời chưa đúng đã có phản hồi, when người học bắt đầu sửa ô nhập (nội dung khác với bản đã chấm), then dòng "Suggestion" bị ẩn để họ tự nghĩ lại; khi nội dung trở về đúng bản đã chấm thì hiện lại; các phần phản hồi khác (nhận xét, gợi ý cải thiện) giữ nguyên. Câu trả lời đúng luôn hiện "Suggestion".
+- **WSN-AC-20** Given câu trả lời chưa đúng, when hiện "Suggestion", then hiển thị nguyên văn câu của người học, từ sai bôi đỏ và chữ đúng đặt trong ngoặc xanh lá bên cạnh (từ thiếu chỉ có ngoặc xanh, từ thừa chỉ có chữ đỏ); so từng từ, không phân biệt hoa thường và dấu câu ở đầu/cuối từ; không gọi thêm AI. Câu đúng hiện nguyên văn không tô màu.
 
 ## 6. Ràng buộc phi chức năng & bảo mật
 - Bài viết của người học không được ghi log. Từ spec 015, mỗi lần gửi bài đã chấm được lưu vào cơ sở dữ liệu và chỉ chủ sở hữu đọc được.

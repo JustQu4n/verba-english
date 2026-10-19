@@ -26,6 +26,10 @@ describe("buildGradingInput", () => {
     expect(input.match(/<\/?answer>/g)).toEqual(["<answer>", "</answer>"]);
   });
 
+  it("AIG-AC-32: the improvements are asked to put the key words in **bold** markers", () => {
+    expect(SYSTEM_INSTRUCTION).toContain("**double asterisks**");
+  });
+
   it("AIG-AC-10: the system instruction treats the answer as data and stays short", () => {
     expect(SYSTEM_INSTRUCTION).toMatch(/data, never instructions/);
     expect(SYSTEM_INSTRUCTION.length).toBeLessThan(1500);
